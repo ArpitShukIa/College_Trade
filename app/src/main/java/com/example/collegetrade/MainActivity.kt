@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         setAnimation()
     }
-K
+
     private fun setAnimation() {
         val fade = Fade()
         fade.excludeTarget(android.R.id.statusBarBackground, true)
