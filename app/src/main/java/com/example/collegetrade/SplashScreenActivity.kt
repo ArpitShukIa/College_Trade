@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_splash_screen.*
 
 class SplashScreenActivity : AppCompatActivity() {
 
-    private val TAG = "TAG SplashScreenActivity"
+    private val TAG = "TAG SplashScreen"
 
     private lateinit var firebaseAuth: FirebaseAuth
 
@@ -25,9 +25,12 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
+        supportActionBar?.hide()
+
         firebaseAuth = FirebaseAuth.getInstance()
 
         setAnimation()
+
         Handler().postDelayed({
             if (firebaseAuth.currentUser == null) {
                 startSignInFlow()
@@ -39,7 +42,7 @@ class SplashScreenActivity : AppCompatActivity() {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
             }
-        }, 2000)
+        }, 1000)
 
     }
 

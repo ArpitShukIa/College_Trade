@@ -5,4 +5,10 @@
 
     <string name="facebook_application_id">356210038674161</string>
     <string name="fb_login_protocol_scheme">fb356210038674161</string>
+    <string name="home">Home</string>
+    <string name="chats">Chats</string>
+    <string name="sell">Sell</string>
+    <string name="favorites">Favorites</string>
+    <string name="account">Account</string>
+    <string name="sign_out">Sign Out</string>
 </resources>

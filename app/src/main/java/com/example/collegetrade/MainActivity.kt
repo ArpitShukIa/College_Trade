@@ -18,8 +18,31 @@ class MainActivity : AppCompatActivity() {
             AuthUI.getInstance().signOut(this)
             // Start Login Flow
         }
-
         setAnimation()
+        setupBottomNavigation()
+    }
+
+    private fun setupBottomNavigation() {
+        bottom_navigation.setOnNavigationItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.home -> {
+                    true
+                }
+                R.id.chats -> {
+                    true
+                }
+                R.id.sell -> {
+                    true
+                }
+                R.id.favorites -> {
+                    true
+                }
+                R.id.account -> {
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setAnimation() {
