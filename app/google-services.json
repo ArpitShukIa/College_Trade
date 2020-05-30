@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1003433677182",
+    "firebase_url": "https://college-trade.firebaseio.com",
+    "project_id": "college-trade",
+    "storage_bucket": "college-trade.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1003433677182:android:376cfe5253118526e4a32f",
+        "android_client_info": {
+          "package_name": "com.example.collegetrade"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1003433677182-ol5csgjullblssp64vrej22n1ien6p2g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.collegetrade",
+            "certificate_hash": "db68d5ac6a6f04f71b2f4d521014cd18626e442a"
+          }
+        },
+        {
+          "client_id": "1003433677182-cjr2pdontr2pscnor8p9fbl1vrn96fla.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACEkOlAcKpriS3cEV15JyaCC4TCgA7l1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1003433677182-cjr2pdontr2pscnor8p9fbl1vrn96fla.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,2 @@
+rootProject.name='College Trade'
+include ':app'

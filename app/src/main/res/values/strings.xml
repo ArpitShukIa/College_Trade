@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">College Trade</string>
+    <string name="app_tag_line">ONE-STOP SOLUTION FOR ALL YOUR COLLEGE NEEDS</string>
+    <string name="app_icon">App Icon</string>
+
+    <string name="facebook_application_id">356210038674161</string>
+    <string name="fb_login_protocol_scheme">fb356210038674161</string>
+</resources>
