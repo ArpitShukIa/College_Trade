@@ -3,46 +3,37 @@ package com.example.collegetrade
 import android.os.Bundle
 import android.transition.Fade
 import androidx.appcompat.app.AppCompatActivity
-import com.firebase.ui.auth.AuthUI
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
+import com.example.collegetrade.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "TAG MainActivity"
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        btn_sign_out.setOnClickListener {
-            AuthUI.getInstance().signOut(this)
-            // Start Login Flow
-        }
         setAnimation()
         setupBottomNavigation()
+        setupFab()
+    }
+
+    private fun setupFab() {
+        binding.sellFab.setOnClickListener {
+            findNavController(R.id.nav_host).navigate(R.id.sellFragment)
+        }
     }
 
     private fun setupBottomNavigation() {
-        bottom_navigation.setOnNavigationItemSelectedListener { item ->
-            when(item.itemId) {
-                R.id.home -> {
-                    true
-                }
-                R.id.chats -> {
-                    true
-                }
-                R.id.sell -> {
-                    true
-                }
-                R.id.favorites -> {
-                    true
-                }
-                R.id.account -> {
-                    true
-                }
-                else -> false
-            }
-        }
+        val navController = Navigation.findNavController(this, R.id.nav_host)
+        NavigationUI.setupWithNavController(bottom_navigation, navController)
     }
 
     private fun setAnimation() {
@@ -55,7 +46,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        finishAffinity()
+        if (bottom_navigation.selectedItemId == R.id.homeFragment) {
+            finishAffinity()
+        } else {
+            bottom_navigation.selectedItemId = R.id.homeFragment
+        }
     }
 
 }

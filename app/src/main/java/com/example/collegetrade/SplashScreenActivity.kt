@@ -8,14 +8,17 @@ import android.transition.Fade
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.example.collegetrade.databinding.ActivitySplashScreenBinding
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_splash_screen.*
 
 class SplashScreenActivity : AppCompatActivity() {
 
     private val TAG = "TAG SplashScreen"
+
+    private lateinit var binding: ActivitySplashScreenBinding
 
     private lateinit var firebaseAuth: FirebaseAuth
 
@@ -23,7 +26,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash_screen)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen)
 
         supportActionBar?.hide()
 
@@ -34,10 +37,9 @@ class SplashScreenActivity : AppCompatActivity() {
         Handler().postDelayed({
             if (firebaseAuth.currentUser == null) {
                 startSignInFlow()
-                app_name.visibility = View.INVISIBLE
-                app_tag_line.visibility = View.INVISIBLE
-            }
-            else {
+                binding.appName.visibility = View.INVISIBLE
+                binding.appTagLine.visibility = View.INVISIBLE
+            } else {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
@@ -91,7 +93,7 @@ class SplashScreenActivity : AppCompatActivity() {
                     Log.d(TAG, "onActivityResult: back button pressed")
                     Handler().postDelayed({
                         finish()
-                    },100)
+                    }, 100)
                 }
                 else -> {
                     Log.d(TAG, "onActivityResult: ${response.error}")
