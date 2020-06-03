@@ -12,7 +12,6 @@
     <string name="account">Account</string>
     <string name="sign_out">Sign Out</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="categories_title">WHAT ARE YOU OFFERING?</string>
     <string name="other_stuff">Other Stuff</string>
@@ -20,4 +19,8 @@
     <string name="electronic_appliances">Electronic\nAppliances</string>
     <string name="vehicles">Vehicles</string>
     <string name="academic_material">Academic\nMaterial</string>
+    <string name="ad_title_hint">Ad title</string>
+    <string name="ad_description_hint">Ad Description</string>
+    <string name="ad_details_title">INCLUDE SOME DETAILS</string>
+    <string name="next">Next</string>
 </resources>
