@@ -9,5 +9,39 @@
         android:id="@+id/categoryFragment"
         android:name="com.example.collegetrade.sell.category.CategoryFragment"
         android:label="fragment_category"
-        tools:layout="@layout/fragment_category" />
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_categoryFragment_to_subCategoryFragment"
+            app:destination="@id/subCategoryFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/subCategoryFragment"
+        android:name="com.example.collegetrade.sell.subcategory.SubCategoryFragment"
+        android:label="SubCategoryFragment"
+        tools:layout="@layout/fragment_sub_category">
+        <argument
+            android:name="category_index"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_subCategoryFragment_to_adDetailsFragment"
+            app:destination="@id/adDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/adDetailsFragment"
+        android:name="com.example.collegetrade.sell.adDetails.AdDetailsFragment"
+        android:label="fragment_ad_details"
+        tools:layout="@layout/fragment_ad_details" >
+        <argument
+            android:name="cat_and_sub_cat_indices"
+            app:argType="integer[]" />
+    </fragment>
 </navigation>
