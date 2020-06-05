@@ -40,8 +40,29 @@
         android:name="com.example.collegetrade.sell.adDetails.AdDetailsFragment"
         android:label="fragment_ad_details"
         tools:layout="@layout/fragment_ad_details" >
+        <action
+            android:id="@+id/action_adDetailsFragment_to_choosePhotoFragment"
+            app:destination="@id/choosePhotoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <argument
-            android:name="cat_and_sub_cat_indices"
-            app:argType="integer[]" />
+            android:name="cat_index"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="sub_cat_index"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+    <fragment
+        android:id="@+id/choosePhotoFragment"
+        android:name="com.example.collegetrade.sell.choosePhoto.ChoosePhotoFragment"
+        android:label="fragment_choose_photo"
+        tools:layout="@layout/fragment_choose_photo" >
+        <argument
+            android:name="ad_details"
+            app:argType="string[]" />
     </fragment>
 </navigation>

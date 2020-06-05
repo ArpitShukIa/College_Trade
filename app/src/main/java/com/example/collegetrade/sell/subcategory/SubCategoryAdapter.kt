@@ -40,10 +40,8 @@ class SubCategoryAdapter : RecyclerView.Adapter<SubCategoryAdapter.ViewHolder>()
                 setOnClickListener {
                     val action = SubCategoryFragmentDirections
                         .actionSubCategoryFragmentToAdDetailsFragment(
-                            intArrayOf(
-                                category_index,
-                                adapterPosition
-                            )
+                            category_index,
+                            adapterPosition
                         )
                     findNavController().navigate(action)
                 }

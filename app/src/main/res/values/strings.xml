@@ -23,4 +23,10 @@
     <string name="ad_description_hint">Ad Description</string>
     <string name="ad_details_title">INCLUDE SOME DETAILS</string>
     <string name="next">Next</string>
+    <string name="upload_photo_title">UPLOAD A PHOTO</string>
+    <string name="gallery_icon">Gallery Icon</string>
+    <string name="camera_icon">Camera Icon</string>
+    <string name="pick_from_gallery">Pick from Gallery</string>
+    <string name="take_a_picture">Take a picture</string>
+    <string name="ad_image">Ad Image</string>
 </resources>

@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.collegetrade.databinding.FragmentAdDetailsBinding
 import com.google.android.material.snackbar.Snackbar
@@ -51,13 +51,27 @@ class AdDetailsFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        adViewModel.titleError.observe(viewLifecycleOwner, Observer {})
+        adViewModel.titleError.observe(viewLifecycleOwner, Observer {
+            if (it == null) binding.adTitle.error = null
+        })
 
-        adViewModel.descError.observe(viewLifecycleOwner, Observer {})
+        adViewModel.descError.observe(viewLifecycleOwner, Observer {
+            if (it == null) binding.adDescription.error = null
+        })
 
         adViewModel.isInfoValid.observe(viewLifecycleOwner, Observer { isInfoValid ->
             if (isInfoValid) {
-                Toast.makeText(activity, "1234", Toast.LENGTH_SHORT).show()
+                val adDetails = arrayOf(
+                    "${args.catIndex}",
+                    "${args.subCatIndex}",
+                    adViewModel.title.value!!,
+                    adViewModel.desc.value!!
+                )
+                val action =
+                    AdDetailsFragmentDirections.actionAdDetailsFragmentToChoosePhotoFragment(
+                        adDetails
+                    )
+                findNavController().navigate(action)
                 adViewModel.doneNavigation()
             }
         })
