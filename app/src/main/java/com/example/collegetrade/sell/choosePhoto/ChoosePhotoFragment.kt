@@ -6,11 +6,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
@@ -19,8 +19,10 @@ import com.bumptech.glide.Glide
 import com.example.collegetrade.R
 import com.example.collegetrade.databinding.FragmentChoosePhotoBinding
 import id.zelory.compressor.Compressor
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -28,6 +30,8 @@ import java.text.DateFormat
 import java.util.*
 
 class ChoosePhotoFragment : Fragment(), View.OnClickListener {
+
+    private val TAG = "ChoosePhotoFragment"
 
     private val args: ChoosePhotoFragmentArgs by navArgs()
 
@@ -104,9 +108,19 @@ class ChoosePhotoFragment : Fragment(), View.OnClickListener {
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 CAMERA_INTENT_REQUEST_CODE -> {
-                    val f = File(currentPhotoPath)
-                    setImage(f)
-                    activateButtonNext()
+                    try {
+                        File(currentPhotoPath).also {
+                            setImage(it)
+                            activateButtonNext()
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            requireActivity(),
+                            "Some error occurred. Try again...",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.e(TAG, "onActivityResult: ${e.stackTrace}", e)
+                    }
                 }
 
                 GALLERY_INTENT_REQUEST_CODE -> {
@@ -121,20 +135,21 @@ class ChoosePhotoFragment : Fragment(), View.OnClickListener {
     }
 
     private fun activateButtonNext() {
-        binding.btnNext.apply {
-            isEnabled = true
-            setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
-        }
+        binding.btnNext.isEnabled = true
+        binding.btnNext.alpha = 1.0f
+        binding.btnCamera.alpha = 0.8f
+        binding.btnGallery.alpha = 0.8f
     }
 
     private fun setImage(f: File) {
-        Glide.with(this)
-            .load(Uri.fromFile(f))
-            .into(binding.adImage)
-
         GlobalScope.launch {
             val compressedImageFile = Compressor.compress(requireContext(), f)
             imageUri = Uri.fromFile(compressedImageFile)
+            withContext(Dispatchers.Main) {
+                Glide.with(this@ChoosePhotoFragment)
+                    .load(Uri.fromFile(f))
+                    .into(binding.adImage)
+            }
         }
     }
 

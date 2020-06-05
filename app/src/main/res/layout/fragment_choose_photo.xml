@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:contentDescription="@string/camera_icon"
-            android:elevation="8dp"
+            android:elevation="16dp"
             android:src="@drawable/ic_camera"
             app:layout_constraintBottom_toBottomOf="@+id/btn_camera"
             app:layout_constraintStart_toStartOf="@+id/btn_camera"
@@ -64,11 +64,13 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="8dp"
+            android:paddingStart="32dp"
             android:text="@string/take_a_picture"
             app:layout_constraintBottom_toTopOf="@+id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="RtlSymmetry" />
 
         <View
             android:id="@+id/divider"
@@ -86,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:contentDescription="@string/gallery_icon"
-            android:elevation="8dp"
+            android:elevation="16dp"
             android:src="@drawable/ic_gallery"
             app:layout_constraintBottom_toBottomOf="@+id/btn_gallery"
             app:layout_constraintStart_toStartOf="@+id/btn_gallery"
@@ -99,17 +101,20 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
+            android:paddingStart="32dp"
             android:text="@string/pick_from_gallery"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            tools:ignore="RtlSymmetry" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_next"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/dark_gray"
+            android:alpha=".5"
+            android:background="@color/colorPrimary"
             android:enabled="false"
             android:foreground="?selectableItemBackground"
             android:text="@string/next"

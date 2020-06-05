@@ -1,9 +1,11 @@
 package com.example.collegetrade.sell.adDetails
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -36,11 +38,21 @@ class AdDetailsFragment : Fragment() {
                 requireActivity().onBackPressed()
             }
 
+            titleText.setOnClickListener {
+                showSoftKeyboard(it)
+            }
+
+            descText.setOnClickListener {
+                showSoftKeyboard(it)
+            }
+
             titleText.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) showSoftKeyboard(titleText)
                 adTitle.error = if (hasFocus) null else adViewModel.titleError.value
             }
 
             descText.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) showSoftKeyboard(descText)
                 adDescription.error = if (hasFocus) null else adViewModel.descError.value
             }
         }
@@ -64,8 +76,8 @@ class AdDetailsFragment : Fragment() {
                 val adDetails = arrayOf(
                     "${args.catIndex}",
                     "${args.subCatIndex}",
-                    adViewModel.title.value!!,
-                    adViewModel.desc.value!!
+                    adViewModel.title.value!!.trim(),
+                    adViewModel.desc.value!!.trim()
                 )
                 val action =
                     AdDetailsFragmentDirections.actionAdDetailsFragmentToChoosePhotoFragment(
@@ -90,5 +102,22 @@ class AdDetailsFragment : Fragment() {
                 adViewModel.finishSnackBarEvent()
             }
         })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        hideKeyboard()
+    }
+
+    private fun showSoftKeyboard(view: View) {
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    private fun hideKeyboard() {
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
 }

@@ -57,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textCapSentences"
                 android:singleLine="true"
+                android:imeOptions="actionNext"
                 android:text="@={viewModel.title}"
                 android:textIsSelectable="true" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -86,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textCapSentences|textMultiLine"
                 android:maxLines="5"
+                android:imeOptions="actionDone"
                 android:text="@={viewModel.desc}"
                 android:textIsSelectable="true" />
         </com.google.android.material.textfield.TextInputLayout>

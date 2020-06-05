@@ -20,7 +20,7 @@ class CategoryFragment : Fragment(), View.OnClickListener {
         binding.topAppBar.setNavigationOnClickListener {
             requireActivity().finish()
         }
-        
+
         binding.apply {
             academicCard.setOnClickListener(this@CategoryFragment)
             vehicleCard.setOnClickListener(this@CategoryFragment)
@@ -40,10 +40,11 @@ class CategoryFragment : Fragment(), View.OnClickListener {
             R.id.recreational_card -> 3
             else -> 4
         }
-        if (pos < 4) {
-            val action = CategoryFragmentDirections.actionCategoryFragmentToSubCategoryFragment(pos)
-            findNavController().navigate(action)
-        }
+        val action =
+            if (pos < 4) CategoryFragmentDirections.actionCategoryFragmentToSubCategoryFragment(pos)
+            else
+                CategoryFragmentDirections.actionCategoryFragmentToAdDetailsFragment(pos)
+        findNavController().navigate(action)
     }
 
 }
