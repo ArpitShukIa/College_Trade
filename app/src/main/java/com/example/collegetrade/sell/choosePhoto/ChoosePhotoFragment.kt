@@ -10,26 +10,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
-import com.example.collegetrade.R
+import com.example.collegetrade.EventObserver
 import com.example.collegetrade.databinding.FragmentChoosePhotoBinding
-import id.zelory.compressor.Compressor
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.collegetrade.sell.choosePhoto.ButtonEvent.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.text.DateFormat
 import java.util.*
 
-class ChoosePhotoFragment : Fragment(), View.OnClickListener {
+class ChoosePhotoFragment : Fragment() {
 
     private val TAG = "ChoosePhotoFragment"
 
@@ -37,8 +32,11 @@ class ChoosePhotoFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentChoosePhotoBinding
 
-    private lateinit var currentPhotoPath: String
-    private lateinit var imageUri: Uri
+    private val viewModel: ChoosePhotoViewModel by viewModels {
+        ChoosePhotoViewModelFactory(
+            requireActivity().application
+        )
+    }
 
     private val CAMERA_INTENT_REQUEST_CODE = 1
     private val GALLERY_INTENT_REQUEST_CODE = 2
@@ -49,40 +47,22 @@ class ChoosePhotoFragment : Fragment(), View.OnClickListener {
     ): View? {
         binding = FragmentChoosePhotoBinding.inflate(inflater, container, false)
 
-        try {
-            imageUri = savedInstanceState?.getString("adImage")!!.toUri()
-            Glide.with(this)
-                .load(imageUri)
-                .into(binding.adImage)
-            activateButtonNext()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
         binding.topAppBar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
-        binding.btnCamera.setOnClickListener(this)
-        binding.btnGallery.setOnClickListener(this)
-        binding.btnNext.setOnClickListener(this)
+
+        viewModel.event.observe(viewLifecycleOwner, EventObserver { buttonEvent ->
+            when (buttonEvent) {
+                CAMERA_INTENT -> launchCameraIntent()
+                GALLERY_INTENT -> launchGalleryIntent()
+                NAVIGATE -> navigate()
+            }
+        })
 
         return binding.root
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.btn_camera -> launchCameraIntent()
-
-            R.id.btn_gallery -> {
-                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).also {
-                    startActivityForResult(it, GALLERY_INTENT_REQUEST_CODE)
-                }
-            }
-
-            R.id.btn_next -> {
-                Toast.makeText(requireActivity(), "Image Captured", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     private fun launchCameraIntent() {
@@ -90,6 +70,7 @@ class ChoosePhotoFragment : Fragment(), View.OnClickListener {
         val photoFile = try {
             createImageFile()
         } catch (e: IOException) {
+            Log.e(TAG, "launchCameraIntent: ${e.stackTrace}", e)
             null
         }
         photoFile?.also {
@@ -103,52 +84,38 @@ class ChoosePhotoFragment : Fragment(), View.OnClickListener {
         startActivityForResult(cameraIntent, CAMERA_INTENT_REQUEST_CODE)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            when (requestCode) {
-                CAMERA_INTENT_REQUEST_CODE -> {
-                    try {
-                        File(currentPhotoPath).also {
-                            setImage(it)
-                            activateButtonNext()
-                        }
-                    } catch (e: Exception) {
-                        Toast.makeText(
-                            requireActivity(),
-                            "Some error occurred. Try again...",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        Log.e(TAG, "onActivityResult: ${e.stackTrace}", e)
-                    }
-                }
-
-                GALLERY_INTENT_REQUEST_CODE -> {
-                    imageUri = data?.data!!
-                    getImageFile(imageUri)?.also {
-                        setImage(it)
-                        activateButtonNext()
-                    }
-                }
-            }
+    private fun launchGalleryIntent() {
+        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).also {
+            startActivityForResult(it, GALLERY_INTENT_REQUEST_CODE)
         }
     }
 
-    private fun activateButtonNext() {
-        binding.btnNext.isEnabled = true
-        binding.btnNext.alpha = 1.0f
-        binding.btnCamera.alpha = 0.8f
-        binding.btnGallery.alpha = 0.8f
+    private fun navigate() {
+        val imageUri = viewModel.imageUri.value
+        val adDetails = args.adDetails.plus(imageUri.toString())
+        val directions =
+            ChoosePhotoFragmentDirections.actionChoosePhotoFragmentToSetPriceFragment(adDetails)
+        findNavController().navigate(directions)
     }
 
-    private fun setImage(f: File) {
-        GlobalScope.launch {
-            val compressedImageFile = Compressor.compress(requireContext(), f)
-            imageUri = Uri.fromFile(compressedImageFile)
-            withContext(Dispatchers.Main) {
-                Glide.with(this@ChoosePhotoFragment)
-                    .load(Uri.fromFile(f))
-                    .into(binding.adImage)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            try {
+                when (requestCode) {
+                    CAMERA_INTENT_REQUEST_CODE -> {
+                        val file = File(viewModel.currentPhotoPath)
+                        viewModel.compressImage(file)
+                    }
+
+                    GALLERY_INTENT_REQUEST_CODE -> {
+                        val uri = data?.data!!
+                        val file = getImageFile(uri)
+                        viewModel.compressImage(file!!)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "onActivityResult: ${e.stackTrace}", e)
             }
         }
     }
@@ -156,14 +123,13 @@ class ChoosePhotoFragment : Fragment(), View.OnClickListener {
     @Throws(IOException::class)
     private fun createImageFile(): File {
         val timeStamp = DateFormat.getDateTimeInstance().format(Date())
-        val storageDir: File =
-            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+        val storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
             "JPEG_${timeStamp}_",
             ".jpg",
-            storageDir
+            storageDir!!
         ).apply {
-            currentPhotoPath = absolutePath
+            viewModel.currentPhotoPath = absolutePath
         }
     }
 
@@ -171,10 +137,10 @@ class ChoosePhotoFragment : Fragment(), View.OnClickListener {
         val photoFile = try {
             createImageFile()
         } catch (e: IOException) {
+            Log.e(TAG, "getImageFile: ${e.stackTrace}", e)
             return null
         }
-        val inputStream =
-            requireActivity().contentResolver.openInputStream(imageUri)
+        val inputStream = requireActivity().contentResolver.openInputStream(imageUri)
         val fileOutputStream = FileOutputStream(photoFile)
         val buffer = ByteArray(1024)
         while (true) {
@@ -187,9 +153,4 @@ class ChoosePhotoFragment : Fragment(), View.OnClickListener {
         return photoFile
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        if (this::imageUri.isInitialized)
-            outState.putString("adImage", imageUri.toString())
-    }
 }

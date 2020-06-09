@@ -10,8 +10,8 @@ import kotlinx.android.synthetic.main.subcategory_list_item.view.*
 
 class SubCategoryAdapter : RecyclerView.Adapter<SubCategoryAdapter.ViewHolder>() {
 
-    private var subcategories: List<String> = ArrayList()
-    private var category_index = -1
+    private var subCategories: List<String> = ArrayList()
+    private var categoryIndex = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -21,29 +21,29 @@ class SubCategoryAdapter : RecyclerView.Adapter<SubCategoryAdapter.ViewHolder>()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(subcategories[position], category_index)
+        holder.bind(subCategories[position], categoryIndex)
     }
 
-    override fun getItemCount() = subcategories.size
+    override fun getItemCount() = subCategories.size
 
     fun submitList(list: List<String>, index: Int) {
-        subcategories = list
-        category_index = index
+        subCategories = list
+        categoryIndex = index
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(subcategory: String, category_index: Int) {
+        fun bind(subcategory: String, categoryIndex: Int) {
 
             itemView.apply {
                 subcategory_title.text = subcategory
                 setOnClickListener {
-                    val action = SubCategoryFragmentDirections
+                    val directions = SubCategoryFragmentDirections
                         .actionSubCategoryFragmentToAdDetailsFragment(
-                            category_index,
+                            categoryIndex,
                             adapterPosition
                         )
-                    findNavController().navigate(action)
+                    findNavController().navigate(directions)
                 }
             }
         }

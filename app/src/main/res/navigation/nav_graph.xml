@@ -8,26 +8,107 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.collegetrade.home.HomeFragment"
-        android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/chatsFragment"
         android:name="com.example.collegetrade.chats.ChatsFragment"
-        android:label="fragment_chats"
         tools:layout="@layout/fragment_chats" />
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.example.collegetrade.favorites.FavoritesFragment"
-        android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" />
-    <fragment
-        android:id="@+id/sellFragment"
-        android:name="com.example.collegetrade.sell.SellFragment"
-        android:label="fragment_sell"
-        tools:layout="@layout/fragment_sell" />
     <fragment
         android:id="@+id/accountFragment"
         android:name="com.example.collegetrade.account.AccountFragment"
-        android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
+
+    <navigation
+        android:id="@+id/postAdFlow"
+        app:startDestination="@id/categoryFragment">
+        <fragment
+            android:id="@+id/choosePhotoFragment"
+            android:name="com.example.collegetrade.sell.choosePhoto.ChoosePhotoFragment"
+            tools:layout="@layout/fragment_choose_photo">
+            <argument
+                android:name="adDetails"
+                app:argType="string[]" />
+            <action
+                android:id="@+id/action_choosePhotoFragment_to_setPriceFragment"
+                app:destination="@id/setPriceFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+        </fragment>
+        <fragment
+            android:id="@+id/categoryFragment"
+            android:name="com.example.collegetrade.sell.category.CategoryFragment"
+            tools:layout="@layout/fragment_category">
+            <action
+                android:id="@+id/action_categoryFragment_to_subCategoryFragment"
+                app:destination="@id/subCategoryFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+            <action
+                android:id="@+id/action_categoryFragment_to_adDetailsFragment"
+                app:destination="@id/adDetailsFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+        </fragment>
+        <fragment
+            android:id="@+id/setPriceFragment"
+            android:name="com.example.collegetrade.sell.price.SetPriceFragment"
+            tools:layout="@layout/fragment_set_price">
+            <argument
+                android:name="adDetails"
+                app:argType="string[]" />
+        </fragment>
+        <fragment
+            android:id="@+id/subCategoryFragment"
+            android:name="com.example.collegetrade.sell.subcategory.SubCategoryFragment"
+
+            tools:layout="@layout/fragment_sub_category">
+            <action
+                android:id="@+id/action_subCategoryFragment_to_adDetailsFragment"
+                app:destination="@id/adDetailsFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+            <argument
+                android:name="category"
+                app:argType="integer"
+                android:defaultValue="-1" />
+        </fragment>
+        <fragment
+            android:id="@+id/adDetailsFragment"
+            android:name="com.example.collegetrade.sell.adDetails.AdDetailsFragment"
+            tools:layout="@layout/fragment_ad_details">
+            <action
+                android:id="@+id/action_adDetailsFragment_to_choosePhotoFragment"
+                app:destination="@id/choosePhotoFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+            <argument
+                android:name="cat_index"
+                android:defaultValue="-1"
+                app:argType="integer" />
+            <argument
+                android:name="sub_cat_index"
+                android:defaultValue="-1"
+                app:argType="integer" />
+        </fragment>
+    </navigation>
+    <action
+        android:id="@+id/action_global_homeFragment"
+        app:destination="@id/homeFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/homeFragment"
+        app:popUpToInclusive="true" />
 </navigation>

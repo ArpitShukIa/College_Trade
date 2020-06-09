@@ -4,15 +4,12 @@
     <string name="app_icon">App Icon</string>
 
     <string name="facebook_application_id">356210038674161</string>
-    <string name="fb_login_protocol_scheme">fb356210038674161</string>
     <string name="home">Home</string>
     <string name="chats">Chats</string>
     <string name="sell">Sell</string>
     <string name="favorites">Favorites</string>
     <string name="account">Account</string>
-    <string name="sign_out">Sign Out</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="categories_title">WHAT ARE YOU OFFERING?</string>
     <string name="other_stuff">Other Stuff</string>
     <string name="recreational_items">Recreational\nItems</string>
@@ -29,4 +26,7 @@
     <string name="pick_from_gallery">Pick from Gallery</string>
     <string name="take_a_picture">Take a picture</string>
     <string name="ad_image">Ad Image</string>
+    <string name="set_price_title">SET A PRICE</string>
+    <string name="ad_price_hint">Price</string>
+    <string name="Rs">"\u20B9 "</string>
 </resources>

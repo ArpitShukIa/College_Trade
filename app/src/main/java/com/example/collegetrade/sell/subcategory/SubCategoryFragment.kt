@@ -22,7 +22,7 @@ class SubCategoryFragment : Fragment() {
     ): View? {
         binding = FragmentSubCategoryBinding.inflate(inflater, container, false)
 
-        categoryIndex = args.categoryIndex
+        categoryIndex = args.category
 
         binding.topAppBar.title = getTitle()
 
@@ -35,16 +35,6 @@ class SubCategoryFragment : Fragment() {
         return binding.root
     }
 
-    private fun getTitle(): CharSequence? {
-        return when(categoryIndex) {
-            0 -> "ACADEMIC MATERIAL"
-            1 -> "VEHICLES"
-            2 -> "ELECTRONIC APPLIANCES"
-            3 -> "RECREATIONAL ITEMS"
-            else -> ""
-        }
-    }
-
     private fun initRecyclerView() {
         val subCategoryAdapter = SubCategoryAdapter()
         subCategoryAdapter.submitList(
@@ -52,6 +42,16 @@ class SubCategoryFragment : Fragment() {
             categoryIndex
         )
         binding.subcategoryList.adapter = subCategoryAdapter
+    }
+
+    private fun getTitle(): String {
+        return when (categoryIndex) {
+            0 -> "ACADEMIC MATERIAL"
+            1 -> "VEHICLES"
+            2 -> "ELECTRONIC APPLIANCES"
+            3 -> "RECREATIONAL ITEMS"
+            else -> ""
+        }
     }
 
     private fun getSubCategories(): Array<String> {
@@ -63,5 +63,4 @@ class SubCategoryFragment : Fragment() {
             else -> arrayOf()
         }
     }
-
 }

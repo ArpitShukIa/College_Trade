@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.collegetrade.EventObserver
 import com.example.collegetrade.databinding.FragmentAdDetailsBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -20,15 +21,13 @@ class AdDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentAdDetailsBinding
 
-    private lateinit var adViewModel: AdDetailsViewModel
+    private val adViewModel: AdDetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAdDetailsBinding.inflate(inflater, container, false)
-
-        adViewModel = ViewModelProvider(this).get(AdDetailsViewModel::class.java)
 
         binding.apply {
             viewModel = adViewModel
@@ -71,7 +70,7 @@ class AdDetailsFragment : Fragment() {
             if (it == null) binding.adDescription.error = null
         })
 
-        adViewModel.isInfoValid.observe(viewLifecycleOwner, Observer { isInfoValid ->
+        adViewModel.isInfoValid.observe(viewLifecycleOwner, EventObserver { isInfoValid ->
             if (isInfoValid) {
                 val adDetails = arrayOf(
                     "${args.catIndex}",
@@ -84,12 +83,7 @@ class AdDetailsFragment : Fragment() {
                         adDetails
                     )
                 findNavController().navigate(action)
-                adViewModel.doneNavigation()
-            }
-        })
-
-        adViewModel.showSnackBar.observe(viewLifecycleOwner, Observer { showSnackBar ->
-            if (showSnackBar) {
+            } else {
                 Snackbar.make(
                     binding.btnNext,
                     "Provide a proper title and description first",
@@ -98,8 +92,6 @@ class AdDetailsFragment : Fragment() {
 
                 binding.adTitle.error = adViewModel.titleError.value
                 binding.adDescription.error = adViewModel.descError.value
-
-                adViewModel.finishSnackBarEvent()
             }
         })
     }
@@ -112,7 +104,7 @@ class AdDetailsFragment : Fragment() {
     private fun showSoftKeyboard(view: View) {
         val imm =
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+        imm.showSoftInput(view, InputMethodManager.SHOW_FORCED)
     }
 
     private fun hideKeyboard() {

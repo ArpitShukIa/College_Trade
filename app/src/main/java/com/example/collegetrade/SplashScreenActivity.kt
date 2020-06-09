@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.transition.Fade
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -28,11 +27,7 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen)
 
-        supportActionBar?.hide()
-
         firebaseAuth = FirebaseAuth.getInstance()
-
-        setAnimation()
 
         Handler().postDelayed({
             if (firebaseAuth.currentUser == null) {
@@ -41,8 +36,8 @@ class SplashScreenActivity : AppCompatActivity() {
                 binding.appTagLine.visibility = View.INVISIBLE
             } else {
                 val intent = Intent(this, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
+                finish()
             }
         }, 1000)
 
@@ -68,14 +63,6 @@ class SplashScreenActivity : AppCompatActivity() {
         )
     }
 
-    private fun setAnimation() {
-        val fade = Fade()
-        fade.excludeTarget(android.R.id.statusBarBackground, true)
-        fade.excludeTarget(android.R.id.navigationBarBackground, true)
-
-        window.exitTransition = fade
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -86,8 +73,8 @@ class SplashScreenActivity : AppCompatActivity() {
                 resultCode == Activity.RESULT_OK -> {
                     Log.d(TAG, "onActivityResult: Successfully signed in")
                     val intent = Intent(this, MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
+                    finish()
                 }
                 response == null -> {
                     Log.d(TAG, "onActivityResult: back button pressed")

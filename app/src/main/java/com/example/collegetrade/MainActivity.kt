@@ -1,18 +1,14 @@
 package com.example.collegetrade
 
 import android.os.Bundle
-import android.transition.Fade
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.example.collegetrade.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-    private val TAG = "TAG MainActivity"
 
     private lateinit var binding: ActivityMainBinding
 
@@ -20,37 +16,28 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        setAnimation()
-        setupBottomNavigation()
-        setupFab()
-    }
+        val rootDestinations = setOf(
+            R.id.homeFragment,
+            R.id.chatsFragment,
+            R.id.favoritesFragment,
+            R.id.accountFragment
+        )
 
-    private fun setupFab() {
+        val navController = findNavController(R.id.nav_host)
+        binding.bottomNavigation.setupWithNavController(navController)
+
         binding.sellFab.setOnClickListener {
-            findNavController(R.id.nav_host).navigate(R.id.sellFragment)
+            navController.navigate(R.id.postAdFlow)
+        }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id in rootDestinations) {
+                binding.sellFab.visibility = View.VISIBLE
+                binding.bottomNavigation.visibility = View.VISIBLE
+            } else {
+                binding.sellFab.visibility = View.GONE
+                binding.bottomNavigation.visibility = View.GONE
+            }
         }
     }
-
-    private fun setupBottomNavigation() {
-        val navController = Navigation.findNavController(this, R.id.nav_host)
-        NavigationUI.setupWithNavController(bottom_navigation, navController)
-    }
-
-    private fun setAnimation() {
-        val fade = Fade()
-        fade.excludeTarget(android.R.id.statusBarBackground, true)
-        fade.excludeTarget(android.R.id.navigationBarBackground, true)
-
-        window.enterTransition = fade
-        window.exitTransition = fade
-    }
-
-    override fun onBackPressed() {
-        if (bottom_navigation.selectedItemId == R.id.homeFragment) {
-            finishAffinity()
-        } else {
-            bottom_navigation.selectedItemId = R.id.homeFragment
-        }
-    }
-
 }

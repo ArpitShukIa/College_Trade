@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.collegetrade.Event
 import com.example.collegetrade.util.getErrorMessage
 
 class AdDetailsViewModel : ViewModel() {
@@ -11,11 +12,8 @@ class AdDetailsViewModel : ViewModel() {
     val title = MutableLiveData<String>()
     val desc = MutableLiveData<String>()
 
-    private val _isInfoValid = MutableLiveData<Boolean>()
-    val isInfoValid: LiveData<Boolean> = _isInfoValid
-
-    private val _showSnackBar = MutableLiveData<Boolean>()
-    val showSnackBar: LiveData<Boolean> = _showSnackBar
+    private val _isInfoValid = MutableLiveData<Event<Boolean>>()
+    val isInfoValid: LiveData<Event<Boolean>> = _isInfoValid
 
     val titleError: LiveData<String> = Transformations.map(title) {
         getErrorMessage(it, 50)
@@ -31,15 +29,7 @@ class AdDetailsViewModel : ViewModel() {
     }
 
     fun navigate() {
-        _isInfoValid.value = titleError.value == null && descError.value == null
-        _showSnackBar.value = titleError.value != null || descError.value != null
+        _isInfoValid.value = Event(titleError.value == null && descError.value == null)
     }
 
-    fun doneNavigation() {
-        _isInfoValid.value = false
-    }
-
-    fun finishSnackBarEvent() {
-        _showSnackBar.value = false
-    }
 }

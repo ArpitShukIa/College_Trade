@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.collegetrade.R
@@ -11,14 +12,28 @@ import com.example.collegetrade.databinding.FragmentCategoryBinding
 
 class CategoryFragment : Fragment(), View.OnClickListener {
 
+    private lateinit var binding: FragmentCategoryBinding
+
+    private var doneNavigation = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentCategoryBinding.inflate(inflater, container, false)
+        binding = FragmentCategoryBinding.inflate(inflater, container, false)
+
+        doneNavigation = false
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigate(R.id.action_global_homeFragment)
+                }
+            })
 
         binding.topAppBar.setNavigationOnClickListener {
-            requireActivity().finish()
+            requireActivity().onBackPressed()
         }
 
         binding.apply {
@@ -33,18 +48,20 @@ class CategoryFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val pos = when (v!!.id) {
+        if(doneNavigation) return
+        doneNavigation = true
+        val category = when (v!!.id) {
             R.id.academic_card -> 0
             R.id.vehicle_card -> 1
             R.id.electronics_card -> 2
             R.id.recreational_card -> 3
             else -> 4
         }
-        val action =
-            if (pos < 4) CategoryFragmentDirections.actionCategoryFragmentToSubCategoryFragment(pos)
+        val directions =
+            if (category < 4)
+                CategoryFragmentDirections.actionCategoryFragmentToSubCategoryFragment(category)
             else
-                CategoryFragmentDirections.actionCategoryFragmentToAdDetailsFragment(pos)
-        findNavController().navigate(action)
+                CategoryFragmentDirections.actionCategoryFragmentToAdDetailsFragment(category)
+        findNavController().navigate(directions)
     }
-
 }
