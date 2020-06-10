@@ -12,7 +12,8 @@ class SubCategoryFragment : Fragment() {
 
     private val args: SubCategoryFragmentArgs by navArgs()
 
-    private lateinit var binding: FragmentSubCategoryBinding
+    private var _binding: FragmentSubCategoryBinding? = null
+    private val binding get() = _binding!!
 
     private var categoryIndex = -1
 
@@ -20,7 +21,7 @@ class SubCategoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSubCategoryBinding.inflate(inflater, container, false)
+        _binding = FragmentSubCategoryBinding.inflate(inflater, container, false)
 
         categoryIndex = args.category
 
@@ -62,5 +63,10 @@ class SubCategoryFragment : Fragment() {
             3 -> arrayOf("Board Game", "Card Game", "Sports Equipment", "Musical Instrument", "Other")
             else -> arrayOf()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

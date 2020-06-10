@@ -18,7 +18,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.io.File
 
-enum class SomeEvent { CAMERA_INTENT, GALLERY_INTENT, NAVIGATE, ERROR_TOAST }
+enum class SomeEvent { CAMERA_INTENT, GALLERY_INTENT, NAVIGATE, ERROR_MSG }
 
 class ChoosePhotoViewModel(private val application: Application) : ViewModel() {
 
@@ -63,7 +63,7 @@ class ChoosePhotoViewModel(private val application: Application) : ViewModel() {
                     val uri = Uri.fromFile(compressedImageFile)
                     _imageUri.postValue(uri)
                 } catch (e: Exception) {
-                    _event.postValue(Event(ERROR_TOAST))
+                    _event.postValue(Event(ERROR_MSG))
                 }
             }
         }

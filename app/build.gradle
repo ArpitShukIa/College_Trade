@@ -72,4 +72,6 @@ dependencies {
 
     // For Zoom Image
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
 }

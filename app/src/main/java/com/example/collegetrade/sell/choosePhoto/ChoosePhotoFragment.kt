@@ -13,7 +13,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -26,6 +25,7 @@ import com.example.collegetrade.EventObserver
 import com.example.collegetrade.R
 import com.example.collegetrade.databinding.FragmentChoosePhotoBinding
 import com.example.collegetrade.sell.choosePhoto.SomeEvent.*
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.IOException
 import java.text.DateFormat
@@ -37,7 +37,8 @@ class ChoosePhotoFragment : Fragment() {
 
     private val args: ChoosePhotoFragmentArgs by navArgs()
 
-    private lateinit var binding: FragmentChoosePhotoBinding
+    private var _binding: FragmentChoosePhotoBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: ChoosePhotoViewModel by viewModels {
         ChoosePhotoViewModelFactory(
@@ -49,7 +50,7 @@ class ChoosePhotoFragment : Fragment() {
     private val GALLERY_INTENT_REQUEST_CODE = 2
     private val READ_PERMISSION_REQUEST_CODE = 3
 
-    private var displayPermissionDenialToast = true
+    private var displayPermissionDenialMsg = true
 
     private val readPermission = Manifest.permission.READ_EXTERNAL_STORAGE
 
@@ -57,7 +58,7 @@ class ChoosePhotoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentChoosePhotoBinding.inflate(inflater, container, false)
+        _binding = FragmentChoosePhotoBinding.inflate(inflater, container, false)
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -71,11 +72,12 @@ class ChoosePhotoFragment : Fragment() {
                 CAMERA_INTENT -> launchCameraIntent()
                 GALLERY_INTENT -> checkPermissionAndLaunchGalleryIntent()
                 NAVIGATE -> navigate()
-                ERROR_TOAST -> Toast.makeText(
-                    requireContext(),
+                ERROR_MSG -> Snackbar.make(
+                    binding.btnNext,
                     "Some Error has occurred. Try again...",
-                    Toast.LENGTH_SHORT
-                ).show()
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setAnchorView(binding.btnNext).show()
             }
         })
 
@@ -109,12 +111,12 @@ class ChoosePhotoFragment : Fragment() {
             ) == PackageManager.PERMISSION_GRANTED -> launchGalleryIntent()
 
             shouldShowRequestPermissionRationale(readPermission) -> {
-                displayPermissionDenialToast = true
+                displayPermissionDenialMsg = true
                 showInfoDialog(1)
             }
 
             else -> {
-                displayPermissionDenialToast = false
+                displayPermissionDenialMsg = false
                 requestPermissions(arrayOf(readPermission), READ_PERMISSION_REQUEST_CODE)
             }
         }
@@ -147,12 +149,12 @@ class ChoosePhotoFragment : Fragment() {
         if (requestCode == READ_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 launchGalleryIntent()
-            } else if (shouldShowRequestPermissionRationale(readPermission) || displayPermissionDenialToast) {
-                Toast.makeText(
-                    requireContext(),
+            } else if (shouldShowRequestPermissionRationale(readPermission) || displayPermissionDenialMsg) {
+                Snackbar.make(
+                    binding.btnGallery,
                     getString(R.string.permission_denial_message),
-                    Toast.LENGTH_LONG
-                ).show()
+                    Snackbar.LENGTH_LONG
+                ).setAnchorView(binding.btnNext).show()
             } else {
                 showInfoDialog(2)
             }
@@ -228,5 +230,10 @@ class ChoosePhotoFragment : Fragment() {
             Log.e(TAG, "getPath: ${e.stackTrace}", e)
             null
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

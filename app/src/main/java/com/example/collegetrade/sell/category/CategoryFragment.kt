@@ -12,7 +12,8 @@ import com.example.collegetrade.databinding.FragmentCategoryBinding
 
 class CategoryFragment : Fragment(), View.OnClickListener {
 
-    private lateinit var binding: FragmentCategoryBinding
+    private var _binding: FragmentCategoryBinding? = null
+    private val binding get() = _binding!!
 
     private var doneNavigation = false
 
@@ -20,7 +21,7 @@ class CategoryFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCategoryBinding.inflate(inflater, container, false)
+        _binding = FragmentCategoryBinding.inflate(inflater, container, false)
 
         doneNavigation = false
 
@@ -48,7 +49,7 @@ class CategoryFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        if(doneNavigation) return
+        if (doneNavigation) return
         doneNavigation = true
         val category = when (v!!.id) {
             R.id.academic_card -> 0
@@ -63,5 +64,10 @@ class CategoryFragment : Fragment(), View.OnClickListener {
             else
                 CategoryFragmentDirections.actionCategoryFragmentToAdDetailsFragment(category)
         findNavController().navigate(directions)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

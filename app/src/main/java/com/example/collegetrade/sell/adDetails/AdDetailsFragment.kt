@@ -19,7 +19,8 @@ class AdDetailsFragment : Fragment() {
 
     private val args: AdDetailsFragmentArgs by navArgs()
 
-    private lateinit var binding: FragmentAdDetailsBinding
+    private var _binding: FragmentAdDetailsBinding? = null
+    private val binding get() = _binding!!
 
     private val adViewModel: AdDetailsViewModel by viewModels()
 
@@ -27,7 +28,7 @@ class AdDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAdDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentAdDetailsBinding.inflate(inflater, container, false)
 
         binding.apply {
             viewModel = adViewModel
@@ -96,11 +97,6 @@ class AdDetailsFragment : Fragment() {
         })
     }
 
-    override fun onStop() {
-        super.onStop()
-        hideKeyboard()
-    }
-
     private fun showSoftKeyboard(view: View) {
         val imm =
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -111,5 +107,15 @@ class AdDetailsFragment : Fragment() {
         val imm =
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        hideKeyboard()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

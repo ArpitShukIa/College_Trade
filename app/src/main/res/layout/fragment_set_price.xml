@@ -26,7 +26,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ad_price"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/TextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -34,9 +34,6 @@
             android:layout_marginEnd="16dp"
             android:hint="@string/ad_price_hint"
             app:prefixText="@string/Rs"
-            app:errorEnabled="true"
-            app:errorIconDrawable="@null"
-            app:errorTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appBarLayout">
@@ -46,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:maxLength="10"
+                android:maxLength="8"
                 android:singleLine="true"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -57,8 +54,6 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:foreground="?selectableItemBackground"
-            android:alpha=".5"
-            android:enabled="false"
             android:text="@string/next"
             android:textColor="@color/white"
             android:textSize="18sp"
