@@ -29,4 +29,9 @@
     <string name="set_price_title">SET A PRICE</string>
     <string name="ad_price_hint">Price</string>
     <string name="Rs">"\u20B9 "</string>
+    <string name="permission_dialog_title">Grant Permission</string>
+    <string name="permission_dialog_message">College Trade needs permission to access Gallery</string>
+    <string name="proceed">Proceed</string>
+    <string name="no_thanks">No Thanks</string>
+    <string name="permission_denial_message">Picking images from Gallery requires permission that you just denied.</string>
 </resources>

@@ -33,6 +33,7 @@
 
         <ImageView
             android:id="@+id/ad_image"
+            backgroundColor="@{viewModel.backgroundColor}"
             image="@{viewModel.imageUri}"
             android:layout_width="0dp"
             android:layout_height="0dp"

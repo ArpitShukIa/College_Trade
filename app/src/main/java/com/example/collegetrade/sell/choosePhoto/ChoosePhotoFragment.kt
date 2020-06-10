@@ -1,25 +1,32 @@
 package com.example.collegetrade.sell.choosePhoto
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.loader.content.CursorLoader
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.afollestad.materialdialogs.MaterialDialog
 import com.example.collegetrade.EventObserver
+import com.example.collegetrade.R
 import com.example.collegetrade.databinding.FragmentChoosePhotoBinding
-import com.example.collegetrade.sell.choosePhoto.ButtonEvent.*
+import com.example.collegetrade.sell.choosePhoto.SomeEvent.*
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
 import java.text.DateFormat
 import java.util.*
@@ -40,6 +47,11 @@ class ChoosePhotoFragment : Fragment() {
 
     private val CAMERA_INTENT_REQUEST_CODE = 1
     private val GALLERY_INTENT_REQUEST_CODE = 2
+    private val READ_PERMISSION_REQUEST_CODE = 3
+
+    private var displayPermissionDenialToast = true
+
+    private val readPermission = Manifest.permission.READ_EXTERNAL_STORAGE
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,11 +66,16 @@ class ChoosePhotoFragment : Fragment() {
             requireActivity().onBackPressed()
         }
 
-        viewModel.event.observe(viewLifecycleOwner, EventObserver { buttonEvent ->
-            when (buttonEvent) {
+        viewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
+            when (event) {
                 CAMERA_INTENT -> launchCameraIntent()
-                GALLERY_INTENT -> launchGalleryIntent()
+                GALLERY_INTENT -> checkPermissionAndLaunchGalleryIntent()
                 NAVIGATE -> navigate()
+                ERROR_TOAST -> Toast.makeText(
+                    requireContext(),
+                    "Some Error has occurred. Try again...",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
 
@@ -84,6 +101,64 @@ class ChoosePhotoFragment : Fragment() {
         startActivityForResult(cameraIntent, CAMERA_INTENT_REQUEST_CODE)
     }
 
+    private fun checkPermissionAndLaunchGalleryIntent() {
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                readPermission
+            ) == PackageManager.PERMISSION_GRANTED -> launchGalleryIntent()
+
+            shouldShowRequestPermissionRationale(readPermission) -> {
+                displayPermissionDenialToast = true
+                showInfoDialog(1)
+            }
+
+            else -> {
+                displayPermissionDenialToast = false
+                requestPermissions(arrayOf(readPermission), READ_PERMISSION_REQUEST_CODE)
+            }
+        }
+    }
+
+    private fun showInfoDialog(code: Int) {
+        MaterialDialog(requireContext())
+            .show {
+                title(R.string.permission_dialog_title)
+                message(R.string.permission_dialog_message)
+                positiveButton(R.string.proceed) {
+                    if (code == 1) {
+                        requestPermissions(arrayOf(readPermission), READ_PERMISSION_REQUEST_CODE)
+                    } else {
+                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            data = Uri.fromParts("package", requireContext().packageName, null)
+                            startActivity(this)
+                        }
+                    }
+                }
+                negativeButton(R.string.no_thanks)
+            }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == READ_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                launchGalleryIntent()
+            } else if (shouldShowRequestPermissionRationale(readPermission) || displayPermissionDenialToast) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.permission_denial_message),
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                showInfoDialog(2)
+            }
+        }
+    }
+
     private fun launchGalleryIntent() {
         Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).also {
             startActivityForResult(it, GALLERY_INTENT_REQUEST_CODE)
@@ -104,14 +179,19 @@ class ChoosePhotoFragment : Fragment() {
             try {
                 when (requestCode) {
                     CAMERA_INTENT_REQUEST_CODE -> {
-                        val file = File(viewModel.currentPhotoPath)
-                        viewModel.compressImage(file)
+                        viewModel.currentPhotoPath?.let {
+                            val file = File(it)
+                            viewModel.compressImage(file)
+                        }
                     }
 
                     GALLERY_INTENT_REQUEST_CODE -> {
                         val uri = data?.data!!
-                        val file = getImageFile(uri)
-                        viewModel.compressImage(file!!)
+                        val path = getPath(uri)
+                        path?.let {
+                            val file = File(it)
+                            viewModel.compressImage(file)
+                        }
                     }
                 }
             } catch (e: Exception) {
@@ -133,24 +213,20 @@ class ChoosePhotoFragment : Fragment() {
         }
     }
 
-    private fun getImageFile(imageUri: Uri): File? {
-        val photoFile = try {
-            createImageFile()
-        } catch (e: IOException) {
-            Log.e(TAG, "getImageFile: ${e.stackTrace}", e)
-            return null
+    @Suppress("DEPRECATION")
+    private fun getPath(uri: Uri): String? {
+        return try {
+            val projection = arrayOf(MediaStore.Images.Media.DATA)
+            val loader = CursorLoader(requireContext(), uri, projection, null, null, null)
+            val cursor = loader.loadInBackground()!!
+            val columnIndex: Int = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor.moveToFirst()
+            cursor.getString(columnIndex).also {
+                cursor.close()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "getPath: ${e.stackTrace}", e)
+            null
         }
-        val inputStream = requireActivity().contentResolver.openInputStream(imageUri)
-        val fileOutputStream = FileOutputStream(photoFile)
-        val buffer = ByteArray(1024)
-        while (true) {
-            val bytesRead = inputStream?.read(buffer)!!
-            if (bytesRead == -1) break
-            fileOutputStream.write(buffer, 0, bytesRead)
-        }
-        fileOutputStream.close()
-        inputStream.close()
-        return photoFile
     }
-
 }

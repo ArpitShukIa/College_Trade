@@ -1,5 +1,6 @@
 package com.example.collegetrade.sell.choosePhoto
 
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.widget.Button
 import android.widget.ImageView
@@ -30,4 +31,9 @@ fun enableButton(button: Button, uri: Uri?) {
         button.isEnabled = true
         button.alpha = 1.0f
     }
+}
+
+@BindingAdapter("backgroundColor")
+fun setBackgroundColor(imageView: ImageView, color: Int) {
+    imageView.background = ColorDrawable(color)
 }
