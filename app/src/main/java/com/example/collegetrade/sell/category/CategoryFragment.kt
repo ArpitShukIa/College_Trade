@@ -62,7 +62,7 @@ class CategoryFragment : Fragment(), View.OnClickListener {
             if (category < 4)
                 CategoryFragmentDirections.actionCategoryFragmentToSubCategoryFragment(category)
             else
-                CategoryFragmentDirections.actionCategoryFragmentToAdDetailsFragment(category)
+                CategoryFragmentDirections.actionCategoryFragmentToAdDetailsFlow(category)
         findNavController().navigate(directions)
     }
 

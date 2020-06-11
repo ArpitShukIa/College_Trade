@@ -39,7 +39,7 @@ class SubCategoryAdapter : RecyclerView.Adapter<SubCategoryAdapter.ViewHolder>()
                 subcategory_title.text = subcategory
                 setOnClickListener {
                     val directions = SubCategoryFragmentDirections
-                        .actionSubCategoryFragmentToAdDetailsFragment(
+                        .actionSubCategoryFragmentToAdDetailsFlow(
                             categoryIndex,
                             adapterPosition
                         )

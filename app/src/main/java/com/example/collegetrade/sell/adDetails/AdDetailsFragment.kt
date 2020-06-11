@@ -7,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
 import com.example.collegetrade.EventObserver
+import com.example.collegetrade.R
 import com.example.collegetrade.databinding.FragmentAdDetailsBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -22,7 +23,7 @@ class AdDetailsFragment : Fragment() {
     private var _binding: FragmentAdDetailsBinding? = null
     private val binding get() = _binding!!
 
-    private val adViewModel: AdDetailsViewModel by viewModels()
+    private val adViewModel: AdDetailsViewModel by navGraphViewModels(R.id.adDetailsFlow)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

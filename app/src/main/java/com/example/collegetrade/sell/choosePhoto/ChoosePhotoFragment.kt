@@ -16,10 +16,10 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.loader.content.CursorLoader
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.collegetrade.EventObserver
 import com.example.collegetrade.R
@@ -40,7 +40,7 @@ class ChoosePhotoFragment : Fragment() {
     private var _binding: FragmentChoosePhotoBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ChoosePhotoViewModel by viewModels {
+    private val viewModel: ChoosePhotoViewModel by navGraphViewModels(R.id.adDetailsFlow) {
         ChoosePhotoViewModelFactory(
             requireActivity().application
         )

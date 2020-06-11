@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".sell.price.SetPriceFragment">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.collegetrade.sell.price.SetPriceViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -33,10 +40,11 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/ad_price_hint"
-            app:prefixText="@string/Rs"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appBarLayout">
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+            app:prefixText="@string/Rs"
+            app:prefixTextAppearance="@style/RupeeSymbolStyle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/price_text"
@@ -44,7 +52,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:maxLength="8"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:text="@={viewModel.price}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -54,12 +63,13 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:foreground="?selectableItemBackground"
+            android:onClick="@{() -> viewModel.navigate()}"
             android:text="@string/next"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

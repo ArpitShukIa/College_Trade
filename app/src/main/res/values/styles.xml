@@ -14,4 +14,9 @@
         <item name="errorTextColor">@color/red</item>
         <item name="boxStrokeErrorColor">@color/red</item>
     </style>
+
+    <style name="RupeeSymbolStyle">
+        <item name="android:textSize">18sp</item>
+    </style>
+
 </resources>
