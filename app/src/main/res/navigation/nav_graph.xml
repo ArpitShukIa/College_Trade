@@ -57,7 +57,6 @@
         <fragment
             android:id="@+id/subCategoryFragment"
             android:name="com.example.collegetrade.sell.subcategory.SubCategoryFragment"
-
             tools:layout="@layout/fragment_sub_category">
             <argument
                 android:name="category"
@@ -123,6 +122,21 @@
                 android:id="@+id/setPriceFragment"
                 android:name="com.example.collegetrade.sell.price.SetPriceFragment"
                 tools:layout="@layout/fragment_set_price">
+                <argument
+                    android:name="adDetails"
+                    app:argType="string[]" />
+                <action
+                    android:id="@+id/action_setPriceFragment_to_reviewDetailsFragment"
+                    app:destination="@id/reviewDetailsFragment"
+                    app:enterAnim="@anim/slide_in_right"
+                    app:exitAnim="@anim/slide_out_left"
+                    app:popEnterAnim="@anim/slide_in_left"
+                    app:popExitAnim="@anim/slide_out_right" />
+            </fragment>
+            <fragment
+                android:id="@+id/reviewDetailsFragment"
+                android:name="com.example.collegetrade.sell.reviewDetails.ReviewDetailsFragment"
+                tools:layout="@layout/fragment_review_details">
                 <argument
                     android:name="adDetails"
                     app:argType="string[]" />

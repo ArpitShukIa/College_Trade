@@ -9,8 +9,8 @@ import com.example.collegetrade.util.getErrorMessage
 
 class AdDetailsViewModel : ViewModel() {
 
-    val title = MutableLiveData<String>()
-    val desc = MutableLiveData<String>()
+    val title = MutableLiveData("")
+    val desc = MutableLiveData("")
 
     private val _isInfoValid = MutableLiveData<Event<Boolean>>()
     val isInfoValid: LiveData<Event<Boolean>> = _isInfoValid
@@ -21,11 +21,6 @@ class AdDetailsViewModel : ViewModel() {
 
     val descError: LiveData<String> = Transformations.map(desc) {
         getErrorMessage(it, 2000)
-    }
-
-    init {
-        title.value = ""
-        desc.value = ""
     }
 
     fun navigate() {

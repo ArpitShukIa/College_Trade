@@ -34,4 +34,14 @@
     <string name="proceed">Proceed</string>
     <string name="no_thanks">No Thanks</string>
     <string name="permission_denial_message">Picking images from Gallery requires permission that you just denied.</string>
+    <string name="review_details_title">REVIEW YOUR DETAILS</string>
+    <string name="post_ad">Post Ad</string>
+    <string name="your_name">Your Name</string>
+    <string name="provide_proper_details">Provide a proper title and description first</string>
+    <string name="some_error_occurred_msg">Some error has occurred. Try again…</string>
+    <string name="name_cannot_be_empty">Name cannot be empty</string>
+    <string name="retry_posting_ad">Ad was not posted. Try again…</string>
+    <string name="posting_ad">Posting your ad…</string>
+    <string name="ad_posted">You ad has been successfully posted.</string>
+    <string name="sign_in_failed">Sign In Failed. Try again…</string>
 </resources>

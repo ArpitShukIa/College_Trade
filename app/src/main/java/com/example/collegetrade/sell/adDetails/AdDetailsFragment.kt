@@ -14,7 +14,8 @@ import androidx.navigation.navGraphViewModels
 import com.example.collegetrade.EventObserver
 import com.example.collegetrade.R
 import com.example.collegetrade.databinding.FragmentAdDetailsBinding
-import com.google.android.material.snackbar.Snackbar
+import com.example.collegetrade.util.hideKeyboard
+import com.example.collegetrade.util.showSnackBar
 
 class AdDetailsFragment : Fragment() {
 
@@ -86,12 +87,7 @@ class AdDetailsFragment : Fragment() {
                     )
                 findNavController().navigate(action)
             } else {
-                Snackbar.make(
-                    binding.btnNext,
-                    "Provide a proper title and description first",
-                    Snackbar.LENGTH_SHORT
-                ).setAnchorView(binding.btnNext).show()
-
+                showSnackBar(binding.btnNext, getString(R.string.provide_proper_details))
                 binding.adTitle.error = adViewModel.titleError.value
                 binding.adDescription.error = adViewModel.descError.value
             }
@@ -104,15 +100,9 @@ class AdDetailsFragment : Fragment() {
         imm.showSoftInput(view, InputMethodManager.SHOW_FORCED)
     }
 
-    private fun hideKeyboard() {
-        val imm =
-            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
-    }
-
     override fun onStop() {
         super.onStop()
-        hideKeyboard()
+        hideKeyboard(requireActivity(), binding.root)
     }
 
     override fun onDestroyView() {

@@ -25,6 +25,7 @@ import com.example.collegetrade.EventObserver
 import com.example.collegetrade.R
 import com.example.collegetrade.databinding.FragmentChoosePhotoBinding
 import com.example.collegetrade.sell.choosePhoto.SomeEvent.*
+import com.example.collegetrade.util.showSnackBar
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.IOException
@@ -33,7 +34,7 @@ import java.util.*
 
 class ChoosePhotoFragment : Fragment() {
 
-    private val TAG = "ChoosePhotoFragment"
+    private val TAG = "TAG ChoosePhotoFragment"
 
     private val args: ChoosePhotoFragmentArgs by navArgs()
 
@@ -41,9 +42,7 @@ class ChoosePhotoFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ChoosePhotoViewModel by navGraphViewModels(R.id.adDetailsFlow) {
-        ChoosePhotoViewModelFactory(
-            requireActivity().application
-        )
+        ChoosePhotoViewModelFactory(requireActivity().application)
     }
 
     private val CAMERA_INTENT_REQUEST_CODE = 1
@@ -72,12 +71,10 @@ class ChoosePhotoFragment : Fragment() {
                 CAMERA_INTENT -> launchCameraIntent()
                 GALLERY_INTENT -> checkPermissionAndLaunchGalleryIntent()
                 NAVIGATE -> navigate()
-                ERROR_MSG -> Snackbar.make(
+                ERROR_MSG -> showSnackBar(
                     binding.btnNext,
-                    "Some Error has occurred. Try again...",
-                    Snackbar.LENGTH_SHORT
+                    getString(R.string.some_error_occurred_msg)
                 )
-                    .setAnchorView(binding.btnNext).show()
             }
         })
 
@@ -150,11 +147,11 @@ class ChoosePhotoFragment : Fragment() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 launchGalleryIntent()
             } else if (shouldShowRequestPermissionRationale(readPermission) || displayPermissionDenialMsg) {
-                Snackbar.make(
-                    binding.btnGallery,
+                showSnackBar(
+                    binding.btnNext,
                     getString(R.string.permission_denial_message),
                     Snackbar.LENGTH_LONG
-                ).setAnchorView(binding.btnNext).show()
+                )
             } else {
                 showInfoDialog(2)
             }

@@ -24,11 +24,8 @@ class ChoosePhotoViewModel(private val application: Application) : ViewModel() {
 
     var currentPhotoPath: String? = null
 
-    private val _imageUri = MutableLiveData<Uri?>()
+    private val _imageUri = MutableLiveData<Uri?>(null)
     val imageUri: LiveData<Uri?> = _imageUri
-
-    private val _backgroundColor = MutableLiveData<Int>()
-    val backgroundColor: LiveData<Int> = _backgroundColor
 
     private val _event = MutableLiveData<Event<SomeEvent>>()
     val event: LiveData<Event<SomeEvent>> = _event
@@ -36,13 +33,11 @@ class ChoosePhotoViewModel(private val application: Application) : ViewModel() {
     private val defaultColor =
         ContextCompat.getColor(application.applicationContext, R.color.adImageBack)
 
+    private val _backgroundColor = MutableLiveData(defaultColor)
+    val backgroundColor: LiveData<Int> = _backgroundColor
+
     private val job = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
-
-    init {
-        _imageUri.value = null
-        _backgroundColor.value = defaultColor
-    }
 
     fun compressImage(file: File) {
         coroutineScope.launch {
