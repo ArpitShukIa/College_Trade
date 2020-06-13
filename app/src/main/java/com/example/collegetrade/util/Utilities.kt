@@ -6,7 +6,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
-import java.util.*
+import java.util.Calendar.*
 
 fun getErrorMessage(s: String, n: Int): String? {
     val l = s.trim()
@@ -36,10 +36,10 @@ fun hideKeyboard(activity: Activity, view: View) {
 }
 
 fun getCurrentDate() : String {
-    val calendar = Calendar.getInstance()
-    val date = calendar.get(Calendar.DAY_OF_MONTH)
-    val month = calendar.get(Calendar.MONTH) + 1
-    val year = calendar.get(Calendar.YEAR)
+    val calendar = getInstance()
+    val date = calendar.get(DAY_OF_MONTH)
+    val month = calendar.get(MONTH) + 1
+    val year = calendar.get(YEAR)
 
     return "$date/$month/$year"
 }

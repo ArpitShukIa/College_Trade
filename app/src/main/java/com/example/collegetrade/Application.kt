@@ -7,6 +7,5 @@ import com.example.collegetrade.data.DefaultAdRepository
 class Application : Application() {
     var currentUserId = ""
     var currentUserName = "Anonymous"
-    val repository: AdRepository
-        get() = DefaultAdRepository
+    val repository: AdRepository by lazy { DefaultAdRepository }
 }

@@ -71,10 +71,7 @@ class ChoosePhotoFragment : Fragment() {
                 CAMERA_INTENT -> launchCameraIntent()
                 GALLERY_INTENT -> checkPermissionAndLaunchGalleryIntent()
                 NAVIGATE -> navigate()
-                ERROR_MSG -> showSnackBar(
-                    binding.btnNext,
-                    getString(R.string.some_error_occurred_msg)
-                )
+                ERROR_MSG -> showSnackBar(binding.btnNext, getString(R.string.something_went_wrong))
             }
         })
 

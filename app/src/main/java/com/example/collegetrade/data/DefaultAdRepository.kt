@@ -28,8 +28,11 @@ object DefaultAdRepository : AdRepository {
 
             ad.id = doc1.id
             ad.image = downloadUrl.toString()
-            doc1.set(ad).await()
-            doc2.set(ad).await()
+
+            firestore.runBatch { batch ->
+                batch.set(doc1, ad)
+                batch.set(doc2, ad)
+            }.await()
         }
     }
 }

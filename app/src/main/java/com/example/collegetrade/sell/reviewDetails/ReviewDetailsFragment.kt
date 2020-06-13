@@ -63,20 +63,25 @@ class ReviewDetailsFragment : Fragment() {
 
                 UPLOAD_FAILED -> {
                     dialog.cancel()
-                    showSnackBar(binding.btnPost, getString(R.string.retry_posting_ad))
+                    showToast(requireContext(), getString(R.string.something_went_wrong))
+                    showToast(requireContext(), getString(R.string.ad_not_posted))
+                    navigate()
                 }
 
                 UPLOAD_SUCCEEDED -> {
                     dialog.cancel()
                     showToast(requireContext(), getString(R.string.ad_posted))
-                    findNavController().navigate(R.id.action_global_homeFragment)
-
+                    navigate()
                 }
             }
-
         })
 
         return binding.root
+    }
+
+    fun navigate() {
+        val directions = ReviewDetailsFragmentDirections.actionGlobalHomeFragment()
+        findNavController().navigate(directions)
     }
 
     override fun onStop() {

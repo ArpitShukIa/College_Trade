@@ -30,36 +30,32 @@ class ReviewDetailsViewModel(application: Application) : ViewModel() {
     fun postAd() {
         if (name.value.isNullOrEmpty()) {
             _action.value = Event(EMPTY_NAME)
-        } else {
-            _action.value = Event(UPLOAD_STARTED)
-            val ad = getAd()
-            viewModelScope.launch {
-                try {
-                    repository.postAd(ad)
-                    _action.value = Event(UPLOAD_SUCCEEDED)
-                } catch (e: Exception) {
-                    Log.e(TAG, "postAd: ${e.stackTrace}", e)
-                    _action.value = Event((UPLOAD_FAILED))
-                }
+            return
+        }
+        _action.value = Event(UPLOAD_STARTED)
+        val ad = getAd()
+        viewModelScope.launch {
+            try {
+                repository.postAd(ad)
+                _action.value = Event(UPLOAD_SUCCEEDED)
+            } catch (e: Exception) {
+                Log.e(TAG, "postAd: ${e.stackTrace}", e)
+                _action.value = Event((UPLOAD_FAILED))
             }
         }
     }
 
     private fun getAd(): Ad {
         return Ad(
-            id = "",
             sellerName = name.value!!,
             sellerId = userId,
-            category = adDetails[0].toInt(),
-            subCategory = adDetails[1].toInt(),
+            category = adDetails[0],
+            subCategory = adDetails[1],
             title = adDetails[2],
-            desc = adDetails[3],
+            description = adDetails[3],
             image = adDetails[4],
             price = adDetails[5],
-            dataPosted = getCurrentDate(),
-            viewsCount = 0,
-            likesCount = 0,
-            isPremium = false
+            dataPosted = getCurrentDate()
         )
     }
 
