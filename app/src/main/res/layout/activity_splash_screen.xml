@@ -11,6 +11,7 @@
 
         <ImageView
             android:id="@+id/app_icon"
+            android:visibility="gone"
             android:layout_width="285dp"
             android:layout_height="158dp"
             android:layout_marginStart="16dp"
@@ -24,6 +25,7 @@
 
         <TextView
             android:id="@+id/app_name"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -40,6 +42,7 @@
 
         <TextView
             android:id="@+id/app_tag_line"
+            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
@@ -55,6 +58,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/app_name" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/splash_screen_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

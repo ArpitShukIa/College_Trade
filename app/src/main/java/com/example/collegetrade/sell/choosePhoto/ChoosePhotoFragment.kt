@@ -25,6 +25,7 @@ import com.example.collegetrade.EventObserver
 import com.example.collegetrade.R
 import com.example.collegetrade.databinding.FragmentChoosePhotoBinding
 import com.example.collegetrade.sell.choosePhoto.SomeEvent.*
+import com.example.collegetrade.util.getViewModelFactory
 import com.example.collegetrade.util.showSnackBar
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
@@ -42,7 +43,7 @@ class ChoosePhotoFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ChoosePhotoViewModel by navGraphViewModels(R.id.adDetailsFlow) {
-        ChoosePhotoViewModelFactory(requireActivity().application)
+        getViewModelFactory()
     }
 
     private val CAMERA_INTENT_REQUEST_CODE = 1

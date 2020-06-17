@@ -38,10 +38,14 @@
     <string name="post_ad">Post Ad</string>
     <string name="your_name">Your Name</string>
     <string name="provide_proper_details">Provide a proper title and description first</string>
-    <string name="something_went_wrong">Oops! Something went wrong. Try again…</string>
+    <string name="something_went_wrong">Oops! Something went wrong. Try again in a while…</string>
     <string name="name_cannot_be_empty">Name cannot be empty</string>
     <string name="ad_not_posted">Your ad was NOT posted…</string>
     <string name="posting_ad">Posting your ad…</string>
     <string name="ad_posted">Your ad has been successfully posted.</string>
     <string name="sign_in_failed">Sign In Failed. Try again…</string>
+    <string name="search_college_trade">Search College Trade</string>
+    <string name="filter">Filter</string>
+    <string name="search_icon">Search Icon</string>
+    <string name="filter_icon">Filter Icon</string>
 </resources>

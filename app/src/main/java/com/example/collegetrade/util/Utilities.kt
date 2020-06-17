@@ -3,6 +3,7 @@ package com.example.collegetrade.util
 import android.app.Activity
 import android.content.Context
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
@@ -35,11 +36,18 @@ fun hideKeyboard(activity: Activity, view: View) {
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-fun getCurrentDate() : String {
+fun getCurrentDate(): String {
     val calendar = getInstance()
     val date = calendar.get(DAY_OF_MONTH)
     val month = calendar.get(MONTH) + 1
     val year = calendar.get(YEAR)
 
     return "$date/$month/$year"
+}
+
+fun adjustResize(activity: Activity, required: Boolean) {
+    if (required)
+        activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+    else
+        activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
 }

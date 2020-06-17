@@ -14,6 +14,7 @@ import androidx.navigation.navGraphViewModels
 import com.example.collegetrade.EventObserver
 import com.example.collegetrade.R
 import com.example.collegetrade.databinding.FragmentAdDetailsBinding
+import com.example.collegetrade.util.adjustResize
 import com.example.collegetrade.util.hideKeyboard
 import com.example.collegetrade.util.showSnackBar
 
@@ -31,6 +32,7 @@ class AdDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAdDetailsBinding.inflate(inflater, container, false)
+        adjustResize(requireActivity(), true)
 
         binding.apply {
             viewModel = adViewModel

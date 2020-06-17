@@ -10,14 +10,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
-import com.example.collegetrade.Application
 import com.example.collegetrade.EventObserver
 import com.example.collegetrade.R
 import com.example.collegetrade.databinding.FragmentReviewDetailsBinding
 import com.example.collegetrade.sell.reviewDetails.Actions.*
-import com.example.collegetrade.util.hideKeyboard
-import com.example.collegetrade.util.showSnackBar
-import com.example.collegetrade.util.showToast
+import com.example.collegetrade.util.*
 import kotlinx.android.synthetic.main.progress_bar.*
 
 class ReviewDetailsFragment : Fragment() {
@@ -28,7 +25,7 @@ class ReviewDetailsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ReviewDetailsViewModel by navGraphViewModels(R.id.adDetailsFlow) {
-        ReviewDetailsViewModelFactory(requireActivity().application as Application)
+        getViewModelFactory()
     }
 
     override fun onCreateView(
@@ -36,6 +33,7 @@ class ReviewDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentReviewDetailsBinding.inflate(inflater, container, false)
+        adjustResize(requireActivity(), true)
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel

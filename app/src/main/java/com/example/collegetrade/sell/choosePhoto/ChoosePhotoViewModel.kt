@@ -46,6 +46,8 @@ class ChoosePhotoViewModel(private val application: Application) : ViewModel() {
                     try {
                         Palette.from(BitmapFactory.decodeFile(file.path)).generate()
                             .getLightMutedColor(defaultColor)
+                    } catch (e: Error) {
+                        defaultColor
                     } catch (e: Exception) {
                         defaultColor
                     }

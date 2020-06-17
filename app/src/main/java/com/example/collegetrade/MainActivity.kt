@@ -3,26 +3,37 @@ package com.example.collegetrade
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.collegetrade.data.User
 import com.example.collegetrade.databinding.ActivityMainBinding
+import com.example.collegetrade.home.HomeViewModel
+import com.example.collegetrade.util.getViewModelFactory
+import com.example.collegetrade.util.showToast
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
+    private val viewModel: HomeViewModel by viewModels {
+        getViewModelFactory()
+    }
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         updateDatabase()
+
+        if (savedInstanceState == null || !savedInstanceState.containsKey("refresh"))
+            viewModel.refresh()
 
         val rootDestinations = setOf(
             R.id.homeFragment,
@@ -56,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         val app = application as Application
         app.currentUserId = currentUserId
         firebaseAuth.currentUser?.displayName.also {
-            if(!it.isNullOrEmpty()) app.currentUserName = it
+            if (!it.isNullOrEmpty()) app.currentUserName = it
         }
 
         val db = Firebase.firestore.collection("Users").document(currentUserId)
@@ -72,11 +83,16 @@ class MainActivity : AppCompatActivity() {
 
                 db.set(newUser).addOnFailureListener {
                     firebaseAuth.signOut()
-                    Toast.makeText(this, getString(R.string.sign_in_failed), Toast.LENGTH_SHORT).show()
+                    showToast(this, getString(R.string.sign_in_failed))
                     startActivity(Intent(this, SplashScreenActivity::class.java))
                     finish()
                 }
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("refresh", false)
     }
 }

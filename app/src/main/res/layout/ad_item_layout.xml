@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="ad"
+            type="com.example.collegetrade.data.Ad" />
+
+        <variable
+            name="viewModel"
+            type="com.example.collegetrade.home.HomeViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@drawable/ad_item_background"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/ad_image"
+            image="@{ad.image}"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            android:layout_margin="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/light_gray"
+            android:contentDescription="@string/ad_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/cycle" />
+
+        <TextView
+            android:id="@+id/rupee_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/Rs"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_image" />
+
+        <TextView
+            android:id="@+id/ad_price"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:text="@{ad.price}"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/rupee_sign"
+            app:layout_constraintEnd_toStartOf="@+id/favorite_icon"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/rupee_sign"
+            app:layout_constraintTop_toTopOf="@+id/rupee_sign"
+            tools:text="1,250" />
+
+        <TextView
+            android:id="@+id/ad_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@{ad.title}"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_price"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="Good book for reading" />
+
+        <com.like.LikeButton
+            android:id="@+id/favorite_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="8dp"
+            app:icon_size="25dp"
+            app:layout_constraintBottom_toBottomOf="@+id/ad_price"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ad_price"
+            app:like_drawable="@drawable/ic_favorite_red"
+            app:unlike_drawable="@drawable/ic_favorite" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

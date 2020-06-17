@@ -13,6 +13,7 @@ import com.example.collegetrade.EventObserver
 import com.example.collegetrade.R
 import com.example.collegetrade.databinding.FragmentSetPriceBinding
 import com.example.collegetrade.sell.price.PriceState.*
+import com.example.collegetrade.util.adjustResize
 import com.example.collegetrade.util.hideKeyboard
 import com.example.collegetrade.util.showSnackBar
 
@@ -30,6 +31,7 @@ class SetPriceFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSetPriceBinding.inflate(inflater, container, false)
+        adjustResize(requireActivity(), true)
 
         binding.topAppBar.setNavigationOnClickListener {
             requireActivity().onBackPressed()

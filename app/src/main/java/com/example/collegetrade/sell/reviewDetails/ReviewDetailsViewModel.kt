@@ -10,11 +10,12 @@ import com.example.collegetrade.Event
 import com.example.collegetrade.data.Ad
 import com.example.collegetrade.sell.reviewDetails.Actions.*
 import com.example.collegetrade.util.getCurrentDate
+import com.instacart.library.truetime.TrueTime
 import kotlinx.coroutines.launch
 
 enum class Actions { EMPTY_NAME, UPLOAD_STARTED, UPLOAD_SUCCEEDED, UPLOAD_FAILED }
 
-class ReviewDetailsViewModel(application: Application) : ViewModel() {
+class ReviewDetailsViewModel(private val application: Application) : ViewModel() {
 
     private val TAG = "TAG ReviewDetailsModel"
 
@@ -27,12 +28,14 @@ class ReviewDetailsViewModel(application: Application) : ViewModel() {
     val action: LiveData<Event<Actions>> = _action
 
     private lateinit var adDetails: Array<String>
+
     fun postAd() {
         if (name.value.isNullOrEmpty()) {
             _action.value = Event(EMPTY_NAME)
             return
         }
         _action.value = Event(UPLOAD_STARTED)
+
         val ad = getAd()
         viewModelScope.launch {
             try {
@@ -46,6 +49,12 @@ class ReviewDetailsViewModel(application: Application) : ViewModel() {
     }
 
     private fun getAd(): Ad {
+
+        val timestamp = if (application.trueTimeAvailable)
+            TrueTime.now().time.toString()
+        else
+            System.currentTimeMillis().toString()
+
         return Ad(
             sellerName = name.value!!,
             sellerId = userId,
@@ -55,6 +64,7 @@ class ReviewDetailsViewModel(application: Application) : ViewModel() {
             description = adDetails[3],
             image = adDetails[4],
             price = adDetails[5],
+            timestamp = timestamp,
             dataPosted = getCurrentDate()
         )
     }

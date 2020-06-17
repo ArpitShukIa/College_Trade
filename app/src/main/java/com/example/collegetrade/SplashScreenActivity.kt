@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.collegetrade.databinding.ActivitySplashScreenBinding
@@ -29,17 +28,13 @@ class SplashScreenActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        Handler().postDelayed({
-            if (firebaseAuth.currentUser == null) {
-                startSignInFlow()
-                binding.appName.visibility = View.INVISIBLE
-                binding.appTagLine.visibility = View.INVISIBLE
-            } else {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-        }, 1000)
+        if (firebaseAuth.currentUser == null) {
+            startSignInFlow()
+        } else {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
     }
 
