@@ -7,10 +7,14 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.collegetrade.R
+import com.example.collegetrade.data.Ad
 import com.example.collegetrade.databinding.FragmentCategoryBinding
 
 class CategoryFragment : Fragment(), View.OnClickListener {
+
+    private val args: CategoryFragmentArgs by navArgs()
 
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
@@ -58,11 +62,18 @@ class CategoryFragment : Fragment(), View.OnClickListener {
             R.id.recreational_card -> 3
             else -> 4
         }
+
+        val ad = try {
+            args.ad
+        } catch (e: Exception) {
+            Ad()
+        }
+        ad.category = "$category"
         val directions =
             if (category < 4)
-                CategoryFragmentDirections.actionCategoryFragmentToSubCategoryFragment(category)
+                CategoryFragmentDirections.actionCategoryFragmentToSubCategoryFragment(ad)
             else
-                CategoryFragmentDirections.actionCategoryFragmentToAdDetailsFlow(category)
+                CategoryFragmentDirections.actionCategoryFragmentToAdDetailsFlow(ad)
         findNavController().navigate(directions)
     }
 

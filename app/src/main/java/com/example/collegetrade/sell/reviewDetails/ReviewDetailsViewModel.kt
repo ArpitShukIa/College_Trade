@@ -27,7 +27,7 @@ class ReviewDetailsViewModel(private val application: Application) : ViewModel()
     private val _action = MutableLiveData<Event<Actions>>()
     val action: LiveData<Event<Actions>> = _action
 
-    private lateinit var adDetails: Array<String>
+    private lateinit var ad: Ad
 
     fun postAd() {
         if (name.value.isNullOrEmpty()) {
@@ -49,28 +49,23 @@ class ReviewDetailsViewModel(private val application: Application) : ViewModel()
     }
 
     private fun getAd(): Ad {
+        ad.sellerName = name.value!!
 
-        val timestamp = if (application.trueTimeAvailable)
-            TrueTime.now().time.toString()
-        else
-            System.currentTimeMillis().toString()
+        if(ad.timestamp == 0L) {
+            val timestamp = if (application.trueTimeAvailable)
+                TrueTime.now().time
+            else
+                System.currentTimeMillis()
 
-        return Ad(
-            sellerName = name.value!!,
-            sellerId = userId,
-            category = adDetails[0],
-            subCategory = adDetails[1],
-            title = adDetails[2],
-            description = adDetails[3],
-            image = adDetails[4],
-            price = adDetails[5],
-            timestamp = timestamp,
-            dataPosted = getCurrentDate()
-        )
+            ad.sellerId = userId
+            ad.timestamp = timestamp
+            ad.datePosted = getCurrentDate()
+        }
+        return ad
     }
 
-    fun getAdDetails(details: Array<String>) {
-        adDetails = details
+    fun getAdDetails(ad: Ad) {
+        this.ad = ad
+        name.value = ad.sellerName
     }
-
 }

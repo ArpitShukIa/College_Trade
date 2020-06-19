@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -57,6 +58,13 @@ class MainActivity : AppCompatActivity() {
                 binding.sellFab.visibility = View.GONE
                 binding.bottomNavigation.visibility = View.GONE
             }
+        }
+
+        // Deep Link scenario
+        val adId = intent.getStringExtra("adId")
+        if (!adId.isNullOrEmpty()) {
+            val bundle = bundleOf("adId" to adId)
+            navController.navigate(R.id.adFragment, bundle)
         }
     }
 

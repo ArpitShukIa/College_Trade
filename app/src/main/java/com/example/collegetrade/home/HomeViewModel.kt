@@ -44,7 +44,7 @@ class HomeViewModel(application: Application) : ViewModel() {
 
             _showProgressBar.postValue(false)
 
-            (result["lastDoc"] as DocumentSnapshot).also {
+            (result["lastDoc"] as DocumentSnapshot?).also {
                 if (it == lastDocSnapshot)
                     allAdsShown = true
                 else

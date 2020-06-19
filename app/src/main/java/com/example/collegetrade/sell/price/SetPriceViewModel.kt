@@ -28,6 +28,10 @@ class SetPriceViewModel : ViewModel() {
         it.isNotEmpty()
     }
 
+    fun setPrice(price: String) {
+        this.price.value = price
+    }
+
     fun navigate() {
         val amt = price.value!!
         _priceState.value = Event(

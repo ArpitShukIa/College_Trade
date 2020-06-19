@@ -67,6 +67,8 @@ class ChoosePhotoFragment : Fragment() {
             requireActivity().onBackPressed()
         }
 
+        viewModel.setImageUri(args.ad.image)
+
         viewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
             when (event) {
                 CAMERA_INTENT -> launchCameraIntent()
@@ -164,9 +166,10 @@ class ChoosePhotoFragment : Fragment() {
 
     private fun navigate() {
         val imageUri = viewModel.imageUri.value
-        val adDetails = args.adDetails.plus(imageUri.toString())
+        val ad = args.ad
+        ad.image = imageUri.toString()
         val directions =
-            ChoosePhotoFragmentDirections.actionChoosePhotoFragmentToSetPriceFragment(adDetails)
+            ChoosePhotoFragmentDirections.actionChoosePhotoFragmentToSetPriceFragment(ad)
         findNavController().navigate(directions)
     }
 

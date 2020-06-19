@@ -2,6 +2,7 @@ package com.example.collegetrade.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,11 @@ class AdsAdapter(private val viewModel: HomeViewModel) :
             binding.viewModel = viewModel
             binding.ad = ad
             binding.executePendingBindings()
+
+            binding.adLayout.setOnClickListener {
+                val directions = HomeFragmentDirections.actionHomeFragmentToAdFragment(ad)
+                binding.root.findNavController().navigate(directions)
+            }
         }
     }
 }

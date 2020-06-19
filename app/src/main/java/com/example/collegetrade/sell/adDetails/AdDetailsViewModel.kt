@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.collegetrade.Event
+import com.example.collegetrade.data.Ad
 import com.example.collegetrade.util.getErrorMessage
 
 class AdDetailsViewModel : ViewModel() {
@@ -25,6 +26,11 @@ class AdDetailsViewModel : ViewModel() {
 
     fun navigate() {
         _isInfoValid.value = Event(titleError.value == null && descError.value == null)
+    }
+
+    fun setData(ad: Ad) {
+        title.value = ad.title
+        desc.value = ad.description
     }
 
 }

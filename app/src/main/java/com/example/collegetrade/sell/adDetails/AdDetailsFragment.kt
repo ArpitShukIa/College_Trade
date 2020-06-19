@@ -37,6 +37,7 @@ class AdDetailsFragment : Fragment() {
         binding.apply {
             viewModel = adViewModel
             lifecycleOwner = this@AdDetailsFragment
+            adViewModel.setData(args.ad)
 
             topAppBar.setNavigationOnClickListener {
                 requireActivity().onBackPressed()
@@ -77,16 +78,11 @@ class AdDetailsFragment : Fragment() {
 
         adViewModel.isInfoValid.observe(viewLifecycleOwner, EventObserver { isInfoValid ->
             if (isInfoValid) {
-                val adDetails = arrayOf(
-                    "${args.catIndex}",
-                    "${args.subCatIndex}",
-                    adViewModel.title.value!!.trim(),
-                    adViewModel.desc.value!!.trim()
-                )
+                val ad = args.ad
+                ad.title = adViewModel.title.value!!.trim()
+                ad.description = adViewModel.desc.value!!.trim()
                 val action =
-                    AdDetailsFragmentDirections.actionAdDetailsFragmentToChoosePhotoFragment(
-                        adDetails
-                    )
+                    AdDetailsFragmentDirections.actionAdDetailsFragmentToChoosePhotoFragment(ad)
                 findNavController().navigate(action)
             } else {
                 showSnackBar(binding.btnNext, getString(R.string.provide_proper_details))

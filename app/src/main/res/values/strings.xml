@@ -29,6 +29,7 @@
     <string name="set_price_title">SET A PRICE</string>
     <string name="ad_price_hint">Price</string>
     <string name="Rs">"\u20B9 "</string>
+    <string name="price">"\u20B9 %s"</string>
     <string name="permission_dialog_title">Grant Permission</string>
     <string name="permission_dialog_message">College Trade needs permission to access Gallery</string>
     <string name="proceed">Proceed</string>
@@ -48,4 +49,18 @@
     <string name="filter">Filter</string>
     <string name="search_icon">Search Icon</string>
     <string name="filter_icon">Filter Icon</string>
+    <string name="chat">Chat</string>
+    <string name="ad_posted_by">Ad Posted By</string>
+    <string name="description">Description</string>
+    <string name="views_icon">Views Icon</string>
+    <string name="likes_icon">Likes Icon</string>
+    <string name="seller_image">Seller Image</string>
+    <string name="close_icon">Close Icon</string>
+    <string name="done_icon">Done Icon</string>
+    <string name="edit_icon">Edit Icon</string>
+    <string name="share_icon">Share Icon</string>
+    <string name="more_icon">More Icon</string>
+    <string name="share_text">Hey check out this ad on College Trade about \"%s\"\nwww.collegetrade.com/ad/%s</string>
+    <string name="app_logo_and_name">App Logo and Name</string>
+
 </resources>

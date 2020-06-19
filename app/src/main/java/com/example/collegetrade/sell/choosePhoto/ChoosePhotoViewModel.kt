@@ -4,6 +4,7 @@ import android.app.Application
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,6 +39,10 @@ class ChoosePhotoViewModel(private val application: Application) : ViewModel() {
 
     private val job = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
+
+    fun setImageUri(uri: String) {
+        _imageUri.value = uri.toUri()
+    }
 
     fun compressImage(file: File) {
         coroutineScope.launch {

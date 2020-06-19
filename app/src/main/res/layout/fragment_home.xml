@@ -146,6 +146,7 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/adsRecyclerView"
+                        items="@{viewModel.ads}"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -155,7 +156,6 @@
                         android:nestedScrollingEnabled="false"
                         android:paddingBottom="70dp"
                         android:visibility="@{viewModel.refreshing ? View.GONE : View.VISIBLE}"
-                        app:items="@{viewModel.ads}"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

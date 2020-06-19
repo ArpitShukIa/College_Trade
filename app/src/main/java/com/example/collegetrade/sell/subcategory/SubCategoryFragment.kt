@@ -23,7 +23,7 @@ class SubCategoryFragment : Fragment() {
     ): View? {
         _binding = FragmentSubCategoryBinding.inflate(inflater, container, false)
 
-        categoryIndex = args.category
+        categoryIndex = args.ad.category.toInt()
 
         binding.topAppBar.title = getTitle()
 
@@ -40,7 +40,7 @@ class SubCategoryFragment : Fragment() {
         val subCategoryAdapter = SubCategoryAdapter()
         subCategoryAdapter.submitList(
             getSubCategories().toList(),
-            categoryIndex
+            args.ad
         )
         binding.subcategoryList.adapter = subCategoryAdapter
     }
@@ -56,11 +56,24 @@ class SubCategoryFragment : Fragment() {
     }
 
     private fun getSubCategories(): Array<String> {
-        return when(categoryIndex) {
+        return when (categoryIndex) {
             0 -> arrayOf("Books", "ED Material", "Lab Coat", "Calculator", "Other")
             1 -> arrayOf("Bicycle", "Scooty", "Bike")
-            2 -> arrayOf("Table Fan", "Electric Kettle", "Cooler", "Room Heater", "Extension Board", "Other")
-            3 -> arrayOf("Board Game", "Card Game", "Sports Equipment", "Musical Instrument", "Other")
+            2 -> arrayOf(
+                "Table Fan",
+                "Electric Kettle",
+                "Cooler",
+                "Room Heater",
+                "Extension Board",
+                "Other"
+            )
+            3 -> arrayOf(
+                "Board Game",
+                "Card Game",
+                "Sports Equipment",
+                "Musical Instrument",
+                "Other"
+            )
             else -> arrayOf()
         }
     }

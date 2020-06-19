@@ -14,7 +14,7 @@ import com.example.collegetrade.R
 import com.example.collegetrade.data.Ad
 import com.facebook.shimmer.ShimmerFrameLayout
 
-@BindingAdapter("app:items")
+@BindingAdapter("items")
 fun setItems(listView: RecyclerView, items: List<Ad>?) {
     items?.let {
         (listView.adapter as? AdsAdapter)?.submitList(items)

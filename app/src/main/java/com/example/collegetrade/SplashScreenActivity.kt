@@ -22,16 +22,23 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private val RC_SIGN_IN = 1
 
+    private var adId: String? = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen)
 
         firebaseAuth = FirebaseAuth.getInstance()
 
+        intent?.let {
+            adId = it.data?.lastPathSegment
+        }
+
         if (firebaseAuth.currentUser == null) {
             startSignInFlow()
         } else {
             val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("adId", adId)
             startActivity(intent)
             finish()
         }
@@ -68,6 +75,7 @@ class SplashScreenActivity : AppCompatActivity() {
                 resultCode == Activity.RESULT_OK -> {
                     Log.d(TAG, "onActivityResult: Successfully signed in")
                     val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("adId", adId)
                     startActivity(intent)
                     finish()
                 }

@@ -39,6 +39,7 @@ class SetPriceFragment : Fragment() {
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        viewModel.setPrice(args.ad.price)
 
         viewModel.formattedPrice.observe(viewLifecycleOwner, Observer {
             if (it) binding.priceText.setSelection(binding.priceText.text!!.length)
@@ -60,9 +61,10 @@ class SetPriceFragment : Fragment() {
     }
 
     private fun navigate() {
-        val adDetails = args.adDetails.plus(viewModel.price.value!!)
+        val ad = args.ad
+        ad.price = viewModel.price.value!!
         val directions =
-            SetPriceFragmentDirections.actionSetPriceFragmentToReviewDetailsFragment(adDetails)
+            SetPriceFragmentDirections.actionSetPriceFragmentToReviewDetailsFragment(ad)
         findNavController().navigate(directions)
     }
 

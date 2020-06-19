@@ -11,12 +11,12 @@
 
         <ImageView
             android:id="@+id/app_icon"
-            android:visibility="gone"
             android:layout_width="285dp"
             android:layout_height="158dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:contentDescription="@string/app_icon"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/app_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,6 @@
 
         <TextView
             android:id="@+id/app_name"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -35,6 +34,7 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="36sp"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/app_tag_line"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,6 @@
 
         <TextView
             android:id="@+id/app_tag_line"
-            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
@@ -54,6 +53,7 @@
             android:text="@string/app_tag_line"
             android:textColor="@android:color/white"
             android:textSize="16sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
+            android:contentDescription="@string/app_logo_and_name"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

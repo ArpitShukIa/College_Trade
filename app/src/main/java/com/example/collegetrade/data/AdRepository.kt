@@ -11,4 +11,6 @@ interface AdRepository {
         adsTreeMap: TreeMap<String, Ad>,
         lastDocSnapshot: DocumentSnapshot?
     ): HashMap<String, Any?>
+
+    suspend fun getAdFromId(id: String): Ad?
 }

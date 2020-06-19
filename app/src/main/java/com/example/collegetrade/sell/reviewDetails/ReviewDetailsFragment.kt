@@ -37,12 +37,11 @@ class ReviewDetailsFragment : Fragment() {
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        viewModel.getAdDetails(args.ad)
 
         binding.topAppBar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
-
-        viewModel.getAdDetails(args.adDetails)
 
         val dialog = MaterialDialog(requireContext())
             .noAutoDismiss()
