@@ -6,11 +6,11 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.example.collegetrade.R
-import de.hdodenhof.circleimageview.CircleImageView
 
 @SuppressLint("SetTextI18n")
 @BindingAdapter("datePosted")
-fun setDate(view: TextView, date: String) {
+fun setDate(view: TextView, date: String?) {
+    if(date == null) return
     val a = date.indexOf('/')
     val b = date.lastIndexOf('/')
     val d = date.substring(0, a)
@@ -21,14 +21,14 @@ fun setDate(view: TextView, date: String) {
 }
 
 @BindingAdapter("adImage")
-fun setImage(view: ImageView, uri: String) {
+fun setImage(view: ImageView, uri: String?) {
     Glide.with(view.context)
         .load(uri)
         .into(view)
 }
 
 @BindingAdapter("sellerImage")
-fun setSellerImage(view: CircleImageView, uri: String) {
+fun setSellerImage(view: ImageView, uri: String?) {
     Glide.with(view.context)
         .load(uri)
         .placeholder(R.drawable.default_user_image)
