@@ -5,13 +5,12 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.example.collegetrade.home.ad.AdViewModel" />
 
-        <variable
-            name="ad"
-            type="com.example.collegetrade.data.Ad" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,6 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:visibility="@{viewModel.isSeller ? View.VISIBLE : View.GONE}"
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/edit_icon"
                 android:src="@drawable/ic_edit"
@@ -121,7 +121,7 @@
 
                 <ImageView
                     android:id="@+id/ad_image"
-                    adImage="@{ad.image}"
+                    adImage="@{viewModel.ad.image}"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@color/primary25"
@@ -138,7 +138,7 @@
                     android:id="@+id/view_likes_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:visibility="@{viewModel.isSeller ? View.VISIBLE : View.GONE}"
                     app:layout_constraintTop_toBottomOf="@id/guideline40">
 
                     <ImageView
@@ -197,7 +197,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="@{String.valueOf(ad.viewsCount)}"
+                        android:text="@{String.valueOf(viewModel.ad.viewsCount)}"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -212,7 +212,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="@{String.valueOf(ad.likesCount)}"
+                        android:text="@{String.valueOf(viewModel.ad.likesCount)}"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -236,7 +236,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:text="@{@string/price(ad.price)}"
+                        android:text="@{@string/price(viewModel.ad.price)}"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -250,7 +250,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
-                        android:text="@{ad.title}"
+                        android:text="@{viewModel.ad.title}"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -264,6 +264,7 @@
                         android:layout_height="35dp"
                         android:layout_marginEnd="8dp"
                         app:icon_size="25dp"
+                        app:liked="@{viewModel.ad.isLiked}"
                         app:layout_constraintBottom_toTopOf="@+id/ad_title"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -272,7 +273,7 @@
 
                     <TextView
                         android:id="@+id/date_ad_posted"
-                        datePosted="@{ad.datePosted}"
+                        datePosted="@{viewModel.ad.datePosted}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -319,7 +320,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
-                        android:text="@{ad.description}"
+                        android:text="@{viewModel.ad.description}"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -346,14 +347,14 @@
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/seller_image"
+                        sellerImage="@{viewModel.ad.sellerPhoto}"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        sellerImage="@{ad.sellerPhoto}"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
                         android:contentDescription="@string/seller_image"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/ad_posted_by"
@@ -373,7 +374,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:singleLine="true"
-                        android:text="@{ad.sellerName}"
+                        android:text="@{viewModel.ad.sellerName}"
                         android:textAllCaps="true"
                         android:textColor="@color/black"
                         android:textSize="18sp"
@@ -411,6 +412,7 @@
             android:background="@color/colorPrimary"
             android:text="@string/chat"
             android:textColor="@color/white"
+            android:visibility="@{viewModel.isSeller ? View.GONE : View.INVISIBLE}"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

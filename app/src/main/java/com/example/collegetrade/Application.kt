@@ -5,7 +5,7 @@ import android.os.AsyncTask
 import android.util.Log
 import com.example.collegetrade.data.AdRepository
 import com.example.collegetrade.data.DefaultAdRepository
-import com.instacart.library.truetime.TrueTime
+import io.tempo.Tempo
 
 class Application : Application() {
 
@@ -20,10 +20,10 @@ class Application : Application() {
         super.onCreate()
         AsyncTask.execute {
             trueTimeAvailable = try {
-                TrueTime.build().initialize()
+                Tempo.initialize(this)
                 true
             } catch (e: Exception) {
-                Log.d(TAG, "onCreate: ${e.stackTrace}")
+                Log.e(TAG, "onCreate: ${e.stackTrace}", e)
                 false
             }
         }

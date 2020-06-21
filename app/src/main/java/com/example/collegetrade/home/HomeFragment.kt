@@ -12,8 +12,6 @@ import com.example.collegetrade.util.getViewModelFactory
 
 class HomeFragment : Fragment() {
 
-    private val TAG = "TAG HomeFragment"
-
     private val viewModel: HomeViewModel by activityViewModels { getViewModelFactory() }
 
     private var _binding: FragmentHomeBinding? = null

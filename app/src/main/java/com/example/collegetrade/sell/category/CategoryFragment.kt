@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.collegetrade.R
 import com.example.collegetrade.data.Ad
 import com.example.collegetrade.databinding.FragmentCategoryBinding
+
 
 class CategoryFragment : Fragment(), View.OnClickListener {
 
@@ -21,11 +23,26 @@ class CategoryFragment : Fragment(), View.OnClickListener {
 
     private var doneNavigation = false
 
+    private lateinit var ad: Ad
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
+
+        ad = try {
+            args.ad.also {
+                val navOptions = NavOptions.Builder()
+                    .setPopUpTo(R.id.adFragment, false)
+                    .build()
+                val directions =
+                    CategoryFragmentDirections.actionCategoryFragmentToAdDetailsFlow(it)
+                findNavController().navigate(directions, navOptions)
+            }
+        } catch (e: Exception) {
+            Ad()
+        }
 
         doneNavigation = false
 
@@ -63,11 +80,6 @@ class CategoryFragment : Fragment(), View.OnClickListener {
             else -> 4
         }
 
-        val ad = try {
-            args.ad
-        } catch (e: Exception) {
-            Ad()
-        }
         ad.category = "$category"
         val directions =
             if (category < 4)

@@ -2,7 +2,6 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
     <fragment
@@ -152,11 +151,7 @@
             app:argType="com.example.collegetrade.data.Ad" />
         <action
             android:id="@+id/action_adFragment_to_postAdFlow"
-            app:destination="@id/postAdFlow"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right">
+            app:destination="@id/postAdFlow">
             <argument
                 android:name="ad"
                 app:argType="com.example.collegetrade.data.Ad" />

@@ -1,5 +1,6 @@
 package com.example.collegetrade.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,7 @@ import kotlin.collections.ArrayList
 class HomeViewModel(application: Application) : ViewModel() {
 
     private val repository = application.repository
+    private val userId = application.currentUserId
 
     private val _ads = MutableLiveData<List<Ad>>()
     val ads: LiveData<List<Ad>> = _ads
@@ -57,6 +59,14 @@ class HomeViewModel(application: Application) : ViewModel() {
         viewModelScope.launch {
             if (!allAdsShown)
                 getAdsBatch()
+        }
+    }
+
+    fun updateFavList(ad: Ad, addToFav: Boolean) {
+        try {
+            repository.updateFavList(ad, userId, addToFav)
+        } catch (e: Exception) {
+            Log.e("TAG", "updateFavList: ${e.stackTrace}", e)
         }
     }
 

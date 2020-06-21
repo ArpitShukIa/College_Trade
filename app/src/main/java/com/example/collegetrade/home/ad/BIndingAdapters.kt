@@ -10,7 +10,7 @@ import com.example.collegetrade.R
 @SuppressLint("SetTextI18n")
 @BindingAdapter("datePosted")
 fun setDate(view: TextView, date: String?) {
-    if(date == null) return
+    if(date.isNullOrEmpty()) return
     val a = date.indexOf('/')
     val b = date.lastIndexOf('/')
     val d = date.substring(0, a)

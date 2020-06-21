@@ -1,6 +1,8 @@
 package com.example.collegetrade.data
 
 import androidx.core.net.toUri
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -14,8 +16,7 @@ import kotlin.collections.HashMap
 
 object DefaultAdRepository : AdRepository {
 
-    private const val TAG = "TAG DefaultAdRepository"
-
+    private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val firestore: FirebaseFirestore by lazy { Firebase.firestore }
     private val storage: StorageReference by lazy { Firebase.storage.reference }
 
@@ -64,7 +65,11 @@ object DefaultAdRepository : AdRepository {
                 val timestamp = doc.get("timestamp").toString()
                 val adId = doc.get("id").toString()
                 val key = timestamp + adId
-                adsTreeMap[key] = doc.toObject(Ad::class.java)
+                val ad = doc.toObject(Ad::class.java)
+                ad.likesCount = getLikesCount(ad.id)
+                ad.viewsCount = getViewsCount(ad.id)
+                ad.isLiked = isLiked(ad.id, auth.currentUser!!.uid)
+                adsTreeMap[key] = ad
             }
 
             lastVisible = documentSnapshots.documents[documentsCount - 1]
@@ -76,6 +81,25 @@ object DefaultAdRepository : AdRepository {
         return hashMap
     }
 
+    override suspend fun isLiked(adId: String, uid: String): Boolean {
+        return try {
+            firestore.collection("Users").document(uid)
+                .collection("Favorites").document(adId).get().await().exists()
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    override suspend fun getViewsCount(adId: String): Int {
+        return firestore.collection("Ads").document(adId)
+            .collection("Viewed By").get().await().documents.size
+    }
+
+    override suspend fun getLikesCount(adId: String): Int {
+        return firestore.collection("Ads").document(adId)
+            .collection("Liked By").get().await().documents.size
+    }
+
     override suspend fun getAdFromId(id: String): Ad? {
         return try {
             firestore.collection("Ads").document(id).get()
@@ -84,5 +108,28 @@ object DefaultAdRepository : AdRepository {
         } catch (e: Exception) {
             null
         }
+    }
+
+    override fun updateFavList(ad: Ad, userId: String, addToFav: Boolean) {
+
+        val favDoc = firestore.collection("Users").document(userId)
+            .collection("Favorites").document(ad.id)
+        val likerDoc = firestore.collection("Ads").document(ad.id)
+            .collection("Liked By").document(userId)
+
+        firestore.runBatch { batch ->
+            if (addToFav) {
+                batch.set(favDoc, hashMapOf("timestamp" to ad.timestamp, "sellerId" to ad.sellerId))
+                batch.set(likerDoc, hashMapOf("exists" to true))
+            } else {
+                batch.delete(favDoc)
+                batch.delete(likerDoc)
+            }
+        }
+    }
+
+    override fun addToViewersList(adId: String, userId: String) {
+        firestore.collection("Ads").document(adId).collection("Viewed By")
+            .document(userId).set(hashMapOf("exists" to true))
     }
 }

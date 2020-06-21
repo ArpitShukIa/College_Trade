@@ -10,7 +10,7 @@ import com.example.collegetrade.Event
 import com.example.collegetrade.data.Ad
 import com.example.collegetrade.sell.reviewDetails.Actions.*
 import com.example.collegetrade.util.getCurrentDate
-import com.instacart.library.truetime.TrueTime
+import io.tempo.Tempo
 import kotlinx.coroutines.launch
 
 enum class Actions { EMPTY_NAME, UPLOAD_STARTED, UPLOAD_SUCCEEDED, UPLOAD_FAILED }
@@ -53,7 +53,7 @@ class ReviewDetailsViewModel(private val application: Application) : ViewModel()
 
         if(ad.timestamp == 0L) {
             val timestamp = if (application.trueTimeAvailable)
-                TrueTime.now().time
+                Tempo.now()!!
             else
                 System.currentTimeMillis()
 
@@ -66,6 +66,7 @@ class ReviewDetailsViewModel(private val application: Application) : ViewModel()
 
     fun getAdDetails(ad: Ad) {
         this.ad = ad
-        name.value = ad.sellerName
+        if(ad.sellerName.isNotEmpty())
+            name.value = ad.sellerName
     }
 }

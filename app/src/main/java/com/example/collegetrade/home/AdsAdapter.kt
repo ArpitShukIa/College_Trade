@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.collegetrade.data.Ad
 import com.example.collegetrade.databinding.AdItemLayoutBinding
 import com.example.collegetrade.home.AdsAdapter.ViewHolder
+import com.like.LikeButton
+import com.like.OnLikeListener
 
 class AdsAdapter(private val viewModel: HomeViewModel) :
     ListAdapter<Ad, ViewHolder>(AdDiffCallback()) {
@@ -35,6 +37,20 @@ class AdsAdapter(private val viewModel: HomeViewModel) :
             binding.viewModel = viewModel
             binding.ad = ad
             binding.executePendingBindings()
+
+            binding.favoriteIcon.setOnLikeListener(object : OnLikeListener {
+                override fun liked(likeButton: LikeButton?) {
+                    viewModel.updateFavList(ad, true)
+                    ad.isLiked = true
+                    ad.likesCount++
+                }
+
+                override fun unLiked(likeButton: LikeButton?) {
+                    viewModel.updateFavList(ad, false)
+                    ad.isLiked = false
+                    ad.likesCount--
+                }
+            })
 
             binding.adLayout.setOnClickListener {
                 val directions = HomeFragmentDirections.actionHomeFragmentToAdFragment(ad)

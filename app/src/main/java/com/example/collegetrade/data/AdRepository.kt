@@ -13,4 +13,12 @@ interface AdRepository {
     ): HashMap<String, Any?>
 
     suspend fun getAdFromId(id: String): Ad?
+
+    suspend fun getLikesCount(adId: String): Int
+    suspend fun getViewsCount(adId: String): Int
+    suspend fun isLiked(adId: String, uid: String): Boolean
+
+    fun updateFavList(ad: Ad, userId: String, addToFav: Boolean)
+
+    fun addToViewersList(adId: String, userId: String)
 }

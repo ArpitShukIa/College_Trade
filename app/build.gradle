@@ -97,5 +97,5 @@ dependencies {
 
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
-    implementation 'com.github.instacart.truetime-android:library:3.4'
+    implementation 'com.github.AllanHasegawa.Tempo:tempo:0.2.0'
 }

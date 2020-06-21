@@ -62,7 +62,7 @@
             android:layout_marginEnd="16dp"
             android:autofillHints="Anonymous"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textCapSentences"
             android:text="@={viewModel.name}"
             app:layout_constraintBottom_toBottomOf="@+id/seller_image"
             app:layout_constraintEnd_toEndOf="parent"

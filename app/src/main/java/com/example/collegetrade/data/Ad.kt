@@ -19,9 +19,10 @@ data class Ad(
     var datePosted: String = "",
     var viewsCount: Int = 0,
     var likesCount: Int = 0,
+    var isLiked: Boolean = false,
     var isPremium: Boolean = false
 ): Parcelable {
     override fun toString(): String {
-        return "Ad(id='$id', sellerName='$sellerName', sellerId='$sellerId', sellerPhoto='$sellerPhoto', category='$category', subCategory='$subCategory', title='$title', description='$description', image='$image', price='$price', timestamp=$timestamp, datePosted='$datePosted', viewsCount=$viewsCount, likesCount=$likesCount, isPremium=$isPremium)"
+        return "Ad(id='$id', sellerName='$sellerName', sellerId='$sellerId', sellerPhoto='$sellerPhoto', category='$category', subCategory='$subCategory', title='$title', description='$description', image='$image', price='$price', timestamp=$timestamp, datePosted='$datePosted', viewsCount=$viewsCount, likesCount=$likesCount, isLiked=$isLiked, isPremium=$isPremium)"
     }
 }
