@@ -1,6 +1,5 @@
 package com.example.collegetrade.home.ad
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.collegetrade.Application
 import com.example.collegetrade.Event
@@ -35,14 +34,6 @@ class AdViewModel(application: Application) : ViewModel() {
                 }
                 _goBackEvent.value = Event(it == null)
             }
-        }
-    }
-
-    fun updateFavList(addToFav: Boolean) {
-        try {
-            repository.updateFavList(ad.value!!, userId, addToFav)
-        } catch (e: Exception) {
-            Log.e("TAG", "updateFavList: ${e.stackTrace}", e)
         }
     }
 }

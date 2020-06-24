@@ -21,4 +21,6 @@ interface AdRepository {
     fun updateFavList(ad: Ad, userId: String, addToFav: Boolean)
 
     fun addToViewersList(adId: String, userId: String)
+
+    suspend fun getFavorites(userId: String): TreeMap<String, Ad>
 }

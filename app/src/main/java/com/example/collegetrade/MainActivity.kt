@@ -11,7 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.collegetrade.data.User
 import com.example.collegetrade.databinding.ActivityMainBinding
-import com.example.collegetrade.home.HomeViewModel
+import com.example.collegetrade.favorites.HomeFavSharedViewModel
 import com.example.collegetrade.util.getViewModelFactory
 import com.example.collegetrade.util.showToast
 import com.google.firebase.auth.ktx.auth
@@ -20,9 +20,7 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: HomeViewModel by viewModels {
-        getViewModelFactory()
-    }
+    private val viewModel: HomeFavSharedViewModel by viewModels { getViewModelFactory() }
 
     private lateinit var binding: ActivityMainBinding
 
@@ -33,8 +31,10 @@ class MainActivity : AppCompatActivity() {
 
         updateDatabase()
 
-        if (savedInstanceState == null || !savedInstanceState.containsKey("refresh"))
-            viewModel.refresh()
+        if (savedInstanceState == null || !savedInstanceState.containsKey("refresh")) {
+            viewModel.refreshHome()
+            viewModel.refreshFav()
+        }
 
         val rootDestinations = setOf(
             R.id.homeFragment,

@@ -9,12 +9,13 @@
 
         <variable
             name="viewModel"
-            type="com.example.collegetrade.home.HomeViewModel" />
+            type="com.example.collegetrade.favorites.HomeFavSharedViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:background="@color/white"
         tools:context=".home.HomeFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,8 +61,8 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_layout"
-            app:onRefreshListener="@{viewModel::refresh}"
-            app:refreshing="@{viewModel.refreshing}">
+            app:onRefreshListener="@{viewModel::refreshHome}"
+            app:refreshing="@{viewModel.refreshingHome}">
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/scroll_view"
@@ -111,16 +112,17 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <com.facebook.shimmer.ShimmerFrameLayout
-                        animation="@{viewModel.refreshing}"
+                        animation="@{viewModel.refreshingHome}"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="4dp"
-                        android:visibility="@{viewModel.refreshing ? View.VISIBLE : View.GONE}"
+                        android:visibility="@{viewModel.refreshingHome ? View.VISIBLE : View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/filter_layout">
+                        app:layout_constraintTop_toBottomOf="@+id/filter_layout"
+                        tools:visibility="gone">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -155,7 +157,7 @@
                         android:clipToPadding="false"
                         android:nestedScrollingEnabled="false"
                         android:paddingBottom="70dp"
-                        android:visibility="@{viewModel.refreshing ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{viewModel.refreshingHome ? View.GONE : View.VISIBLE}"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

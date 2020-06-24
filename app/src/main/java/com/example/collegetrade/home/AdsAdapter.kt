@@ -2,17 +2,20 @@ package com.example.collegetrade.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.collegetrade.R
 import com.example.collegetrade.data.Ad
 import com.example.collegetrade.databinding.AdItemLayoutBinding
+import com.example.collegetrade.favorites.HomeFavSharedViewModel
 import com.example.collegetrade.home.AdsAdapter.ViewHolder
 import com.like.LikeButton
 import com.like.OnLikeListener
 
-class AdsAdapter(private val viewModel: HomeViewModel) :
+class AdsAdapter(private val viewModel: HomeFavSharedViewModel) :
     ListAdapter<Ad, ViewHolder>(AdDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,28 +36,27 @@ class AdsAdapter(private val viewModel: HomeViewModel) :
     class ViewHolder(val binding: AdItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(viewModel: HomeViewModel, ad: Ad) {
-            binding.viewModel = viewModel
+        fun bind(viewModel: HomeFavSharedViewModel, ad: Ad) {
             binding.ad = ad
             binding.executePendingBindings()
 
             binding.favoriteIcon.setOnLikeListener(object : OnLikeListener {
                 override fun liked(likeButton: LikeButton?) {
-                    viewModel.updateFavList(ad, true)
                     ad.isLiked = true
                     ad.likesCount++
+                    viewModel.updateFavList(ad, true)
                 }
 
                 override fun unLiked(likeButton: LikeButton?) {
-                    viewModel.updateFavList(ad, false)
                     ad.isLiked = false
                     ad.likesCount--
+                    viewModel.updateFavList(ad, false)
                 }
             })
 
             binding.adLayout.setOnClickListener {
-                val directions = HomeFragmentDirections.actionHomeFragmentToAdFragment(ad)
-                binding.root.findNavController().navigate(directions)
+                val args = bundleOf("ad" to ad)
+                binding.root.findNavController().navigate(R.id.adFragment, args)
             }
         }
     }

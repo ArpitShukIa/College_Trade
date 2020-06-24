@@ -9,9 +9,6 @@
             name="ad"
             type="com.example.collegetrade.data.Ad" />
 
-        <variable
-            name="viewModel"
-            type="com.example.collegetrade.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,35 +33,23 @@
             tools:src="@drawable/cycle" />
 
         <TextView
-            android:id="@+id/rupee_sign"
-            android:layout_width="wrap_content"
+            android:id="@+id/ad_price"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/Rs"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_image" />
-
-        <TextView
-            android:id="@+id/ad_price"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
             android:gravity="center_vertical"
-            android:text="@{ad.price}"
+            android:text="@{@string/price(ad.price)}"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             app:autoSizeMaxTextSize="18sp"
             app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toBottomOf="@+id/rupee_sign"
             app:layout_constraintEnd_toStartOf="@+id/favorite_icon"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/rupee_sign"
-            app:layout_constraintTop_toTopOf="@+id/rupee_sign"
-            tools:text="1,250" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_image"
+            tools:text="\u20B9 1,200" />
 
         <TextView
             android:id="@+id/ad_title"

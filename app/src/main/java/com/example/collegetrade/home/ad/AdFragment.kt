@@ -6,23 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.collegetrade.EventObserver
 import com.example.collegetrade.R
+import com.example.collegetrade.data.Ad
 import com.example.collegetrade.databinding.FragmentAdBinding
+import com.example.collegetrade.favorites.HomeFavSharedViewModel
 import com.example.collegetrade.util.getViewModelFactory
 import com.example.collegetrade.util.showToast
 import com.like.LikeButton
 import com.like.OnLikeListener
 
-
 class AdFragment : Fragment() {
 
-    private val args: AdFragmentArgs by navArgs()
-
     private val viewModel: AdViewModel by viewModels { getViewModelFactory() }
+    private val sharedViewModel: HomeFavSharedViewModel by activityViewModels { getViewModelFactory() }
 
     private var _binding: FragmentAdBinding? = null
     private val binding get() = _binding!!
@@ -39,7 +39,7 @@ class AdFragment : Fragment() {
         setUpListeners()
 
         try {
-            viewModel.updateAd(args.ad)
+            viewModel.updateAd(arguments?.get("ad") as Ad)
         } catch (e: Exception) {
             binding.progressLayout.visibility = View.VISIBLE
             val adId = arguments?.getString("adId")!!
@@ -75,19 +75,19 @@ class AdFragment : Fragment() {
 
         binding.favoriteIcon.setOnLikeListener(object : OnLikeListener {
             override fun liked(likeButton: LikeButton?) {
-                viewModel.updateFavList(true)
                 val ad = viewModel.ad.value!!
                 ad.likesCount++
                 ad.isLiked = true
                 viewModel.ad.value = ad
+                sharedViewModel.updateFavList(ad,true)
             }
 
             override fun unLiked(likeButton: LikeButton?) {
-                viewModel.updateFavList(false)
                 val ad = viewModel.ad.value!!
                 ad.likesCount--
                 ad.isLiked = false
                 viewModel.ad.value = ad
+                sharedViewModel.updateFavList(ad,false)
             }
         })
     }

@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.collegetrade.databinding.FragmentHomeBinding
+import com.example.collegetrade.favorites.HomeFavSharedViewModel
 import com.example.collegetrade.util.adjustResize
 import com.example.collegetrade.util.getViewModelFactory
 
 class HomeFragment : Fragment() {
 
-    private val viewModel: HomeViewModel by activityViewModels { getViewModelFactory() }
+    private val viewModel: HomeFavSharedViewModel by activityViewModels { getViewModelFactory() }
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!

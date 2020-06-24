@@ -132,4 +132,27 @@ object DefaultAdRepository : AdRepository {
         firestore.collection("Ads").document(adId).collection("Viewed By")
             .document(userId).set(hashMapOf("exists" to true))
     }
+
+    override suspend fun getFavorites(userId: String): TreeMap<String, Ad> {
+
+        val docsSnapshot = firestore.collection("Users").document(userId)
+            .collection("Favorites").get().await()
+
+        val favTreeMap = TreeMap<String, Ad>()
+
+        for (doc in docsSnapshot) {
+            var key = doc.get("timestamp").toString() + doc.id
+            val sellerId = doc.get("sellerId").toString()
+            key = if (sellerId == userId) "2$key" else "1$key"
+            val ad =
+                firestore.collection("Ads").document(doc.id).get().await()
+                    .toObject(Ad::class.java)!!
+            ad.likesCount = getLikesCount(ad.id)
+            ad.viewsCount = getViewsCount(ad.id)
+            ad.isLiked = true
+
+            favTreeMap[key] = ad
+        }
+        return favTreeMap
+    }
 }

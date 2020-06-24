@@ -2,6 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
     <fragment
@@ -21,7 +22,13 @@
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.example.collegetrade.favorites.FavoritesFragment"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_adFragment"
+            app:destination="@id/adFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
+    </fragment>
     <fragment
         android:id="@+id/accountFragment"
         android:name="com.example.collegetrade.account.AccountFragment"
@@ -151,7 +158,9 @@
             app:argType="com.example.collegetrade.data.Ad" />
         <action
             android:id="@+id/action_adFragment_to_postAdFlow"
-            app:destination="@id/postAdFlow">
+            app:destination="@id/postAdFlow"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out">
             <argument
                 android:name="ad"
                 app:argType="com.example.collegetrade.data.Ad" />
