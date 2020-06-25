@@ -61,5 +61,17 @@
     <string name="more_icon">More Icon</string>
     <string name="share_text">Hey check out this ad on College Trade about \"%s\"\nwww.collegetrade.com/ad/%s</string>
     <string name="app_logo_and_name">App Logo and Name</string>
+    <string name="my_ads_icon">My Ads Icon</string>
+    <string name="my_ads">My Ads</string>
+    <string name="feedback_icon">Feedback Icon</string>
+    <string name="feedback">Feedback</string>
+    <string name="invite_a_friend_icon">Invite a friend Icon</string>
+    <string name="invite_a_friend">Invite a friend</string>
+    <string name="rate_us_icon">Rate Us Icon</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="logout_icon">Logout Icon</string>
+    <string name="logout">LOGOUT</string>
+    <string name="college_trade_logo">College Trade Logo</string>
+    <string name="v_1_0_0">v 1.0.0</string>
 
 </resources>

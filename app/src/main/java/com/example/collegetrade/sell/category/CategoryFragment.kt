@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -45,14 +44,6 @@ class CategoryFragment : Fragment(), View.OnClickListener {
         }
 
         doneNavigation = false
-
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().navigate(R.id.action_global_homeFragment)
-                }
-            })
 
         binding.topAppBar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
