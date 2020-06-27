@@ -35,6 +35,8 @@ class HomeFavSharedViewModel(application: Application) : ViewModel() {
     private val _showProgressBar = MutableLiveData(false)
     val showProgressBar: LiveData<Boolean> = _showProgressBar
 
+    var isDeepLinkHandled = false
+
     private suspend fun getAdsBatch() {
         if (allAdsShown) return
 

@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.collegetrade.EventObserver
 import com.example.collegetrade.R
-import com.example.collegetrade.data.Ad
 import com.example.collegetrade.databinding.FragmentAdBinding
 import com.example.collegetrade.favorites.HomeFavSharedViewModel
 import com.example.collegetrade.util.getViewModelFactory
@@ -20,6 +20,8 @@ import com.like.LikeButton
 import com.like.OnLikeListener
 
 class AdFragment : Fragment() {
+
+    private val args: AdFragmentArgs by navArgs()
 
     private val viewModel: AdViewModel by viewModels { getViewModelFactory() }
     private val sharedViewModel: HomeFavSharedViewModel by activityViewModels { getViewModelFactory() }
@@ -38,12 +40,13 @@ class AdFragment : Fragment() {
 
         setUpListeners()
 
-        try {
-            viewModel.updateAd(arguments?.get("ad") as Ad)
-        } catch (e: Exception) {
+        val ad = args.ad
+        if (ad.sellerId.isEmpty() && !sharedViewModel.isDeepLinkHandled) {
             binding.progressLayout.visibility = View.VISIBLE
-            val adId = arguments?.getString("adId")!!
-            viewModel.getAd(adId)
+            viewModel.getAd(ad.id)
+            sharedViewModel.isDeepLinkHandled = true
+        } else if (ad.sellerId.isNotEmpty()) {
+            viewModel.updateAd(ad)
         }
 
         viewModel.goBackEvent.observe(viewLifecycleOwner, EventObserver {
@@ -54,7 +57,6 @@ class AdFragment : Fragment() {
                 binding.progressLayout.visibility = View.GONE
             }
         })
-        
 
         return binding.root
     }
@@ -79,7 +81,7 @@ class AdFragment : Fragment() {
                 ad.likesCount++
                 ad.isLiked = true
                 viewModel.ad.value = ad
-                sharedViewModel.updateFavList(ad,true)
+                sharedViewModel.updateFavList(ad, true)
             }
 
             override fun unLiked(likeButton: LikeButton?) {
@@ -87,13 +89,14 @@ class AdFragment : Fragment() {
                 ad.likesCount--
                 ad.isLiked = false
                 viewModel.ad.value = ad
-                sharedViewModel.updateFavList(ad,false)
+                sharedViewModel.updateFavList(ad, false)
             }
         })
     }
 
     private fun shareAd() {
-        val text = getString(R.string.share_text, viewModel.ad.value!!.title, viewModel.ad.value!!.id)
+        val text =
+            getString(R.string.share_text, viewModel.ad.value!!.title, viewModel.ad.value!!.id)
         val sendIntent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, text)

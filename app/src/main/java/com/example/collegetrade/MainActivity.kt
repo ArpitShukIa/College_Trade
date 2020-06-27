@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -32,14 +31,17 @@ class MainActivity : AppCompatActivity() {
         updateDatabase()
 
         if (savedInstanceState == null || !savedInstanceState.containsKey("refresh")) {
-            viewModel.refreshHome()
-            viewModel.refreshFav()
+            Firebase.auth.currentUser?.let {
+                viewModel.refreshHome()
+                viewModel.refreshFav()
+            }
         }
 
         val rootDestinations = setOf(
             R.id.homeFragment,
             R.id.chatsFragment,
-            R.id.favoritesFragment
+            R.id.favoritesFragment,
+            R.id.accountFragment
         )
 
         val navController = findNavController(R.id.nav_host)
@@ -57,13 +59,6 @@ class MainActivity : AppCompatActivity() {
                 binding.sellFab.visibility = View.GONE
                 binding.bottomNavigation.visibility = View.GONE
             }
-        }
-
-        // Deep Link scenario
-        val adId = intent.getStringExtra("adId")
-        if (!adId.isNullOrEmpty()) {
-            val bundle = bundleOf("adId" to adId)
-            navController.navigate(R.id.adFragment, bundle)
         }
     }
 

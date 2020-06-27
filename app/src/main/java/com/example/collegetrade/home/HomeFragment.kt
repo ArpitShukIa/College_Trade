@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.example.collegetrade.data.Ad
 import com.example.collegetrade.databinding.FragmentHomeBinding
 import com.example.collegetrade.favorites.HomeFavSharedViewModel
-import com.example.collegetrade.util.adjustResize
 import com.example.collegetrade.util.getViewModelFactory
 
 class HomeFragment : Fragment() {
@@ -23,10 +24,11 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        adjustResize(requireActivity(), false)
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        handleDeepLink()
 
         binding.adsRecyclerView.adapter = AdsAdapter(viewModel)
 
@@ -37,6 +39,15 @@ class HomeFragment : Fragment() {
                 viewModel.getAds()
         }
         return binding.root
+    }
+
+    private fun handleDeepLink() {
+        val adId = requireActivity().intent.getStringExtra("adId")
+        if(!adId.isNullOrEmpty() && !viewModel.isDeepLinkHandled) {
+            val ad = Ad(id = adId)
+            val directions = HomeFragmentDirections.actionHomeFragmentToAdFragment(ad)
+            findNavController().navigate(directions)
+        }
     }
 
     override fun onDestroyView() {

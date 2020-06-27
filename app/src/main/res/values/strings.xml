@@ -2,6 +2,7 @@
     <string name="app_name">College Trade</string>
     <string name="app_tag_line">ONE-STOP SOLUTION FOR ALL YOUR COLLEGE NEEDS</string>
     <string name="app_icon">App Icon</string>
+    <string name="app_version">v 1.0.0</string>
 
     <string name="facebook_application_id">356210038674161</string>
     <string name="home">Home</string>
@@ -59,7 +60,7 @@
     <string name="edit_icon">Edit Icon</string>
     <string name="share_icon">Share Icon</string>
     <string name="more_icon">More Icon</string>
-    <string name="share_text">Hey check out this ad on College Trade about \"%s\"\nwww.collegetrade.com/ad/%s</string>
+    <string name="share_text">Hey check out this ad on College Trade about \"%s\"\nhttps://arpitshukla62.github.io/college-trade/?ad=%s</string>
     <string name="app_logo_and_name">App Logo and Name</string>
     <string name="my_ads_icon">My Ads Icon</string>
     <string name="my_ads">My Ads</string>
@@ -72,6 +73,5 @@
     <string name="logout_icon">Logout Icon</string>
     <string name="logout">LOGOUT</string>
     <string name="college_trade_logo">College Trade Logo</string>
-    <string name="v_1_0_0">v 1.0.0</string>
 
 </resources>

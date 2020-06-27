@@ -24,25 +24,33 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private var adId: String? = ""
 
+    private var intentHandled = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen)
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        intent?.let {
-            adId = it.data?.lastPathSegment
-        }
+        handleIntent(intent)
+    }
 
-        if (firebaseAuth.currentUser == null) {
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intentHandled = true
+        handleIntent(intent)
+        Handler().postDelayed({
+            intentHandled = false
+        }, 100)
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        adId = intent?.data?.getQueryParameter("ad")
+
+        if (firebaseAuth.currentUser == null)
             startSignInFlow()
-        } else {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("adId", adId)
-            startActivity(intent)
-            finish()
-        }
-
+        else
+            launchMainActivity()
     }
 
     private fun startSignInFlow() {
@@ -74,15 +82,13 @@ class SplashScreenActivity : AppCompatActivity() {
             when {
                 resultCode == Activity.RESULT_OK -> {
                     Log.d(TAG, "onActivityResult: Successfully signed in")
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.putExtra("adId", adId)
-                    startActivity(intent)
-                    finish()
+                    launchMainActivity()
                 }
                 response == null -> {
-                    Log.d(TAG, "onActivityResult: back button pressed")
+                    Log.d(TAG, "onActivityResult: back button pressed or new intent found")
                     Handler().postDelayed({
-                        finish()
+                        if (!intentHandled)
+                            finish()
                     }, 100)
                 }
                 else -> {
@@ -90,5 +96,17 @@ class SplashScreenActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun launchMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("adId", adId)
+        intent.flags =
+            if (adId.isNullOrEmpty())
+                Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            else
+                Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+        finish()
     }
 }
