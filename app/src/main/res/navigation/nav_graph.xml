@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.collegetrade.home.HomeFragment"
+        android:name="com.arpit.collegetrade.home.HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_adFragment"
@@ -17,11 +17,11 @@
     </fragment>
     <fragment
         android:id="@+id/chatsFragment"
-        android:name="com.example.collegetrade.chats.ChatsFragment"
+        android:name="com.arpit.collegetrade.chats.ChatsFragment"
         tools:layout="@layout/fragment_chats" />
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.example.collegetrade.favorites.FavoritesFragment"
+        android:name="com.arpit.collegetrade.favorites.FavoritesFragment"
         tools:layout="@layout/fragment_favorites" >
         <action
             android:id="@+id/action_favoritesFragment_to_adFragment"
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/accountFragment"
-        android:name="com.example.collegetrade.account.AccountFragment"
+        android:name="com.arpit.collegetrade.account.AccountFragment"
         tools:layout="@layout/fragment_account"/>
 
     <navigation
@@ -39,7 +39,7 @@
         app:startDestination="@id/categoryFragment">
         <fragment
             android:id="@+id/categoryFragment"
-            android:name="com.example.collegetrade.sell.category.CategoryFragment"
+            android:name="com.arpit.collegetrade.sell.category.CategoryFragment"
             tools:layout="@layout/fragment_category">
             <action
                 android:id="@+id/action_categoryFragment_to_subCategoryFragment"
@@ -58,20 +58,20 @@
 
                 <argument
                     android:name="ad"
-                    app:argType="com.example.collegetrade.data.Ad" />
+                    app:argType="com.arpit.collegetrade.data.Ad" />
 
             </action>
             <argument
                 android:name="ad"
-                app:argType="com.example.collegetrade.data.Ad" />
+                app:argType="com.arpit.collegetrade.data.Ad" />
         </fragment>
         <fragment
             android:id="@+id/subCategoryFragment"
-            android:name="com.example.collegetrade.sell.subcategory.SubCategoryFragment"
+            android:name="com.arpit.collegetrade.sell.subcategory.SubCategoryFragment"
             tools:layout="@layout/fragment_sub_category">
             <argument
                 android:name="ad"
-                app:argType="com.example.collegetrade.data.Ad" />
+                app:argType="com.arpit.collegetrade.data.Ad" />
             <action
                 android:id="@+id/action_subCategoryFragment_to_adDetailsFlow"
                 app:destination="@id/adDetailsFlow"
@@ -81,7 +81,7 @@
                 app:popExitAnim="@anim/slide_out_right">
                 <argument
                     android:name="ad"
-                    app:argType="com.example.collegetrade.data.Ad" />
+                    app:argType="com.arpit.collegetrade.data.Ad" />
             </action>
         </fragment>
         <navigation
@@ -89,7 +89,7 @@
             app:startDestination="@id/adDetailsFragment">
             <fragment
                 android:id="@+id/adDetailsFragment"
-                android:name="com.example.collegetrade.sell.adDetails.AdDetailsFragment"
+                android:name="com.arpit.collegetrade.sell.adDetails.AdDetailsFragment"
                 tools:layout="@layout/fragment_ad_details">
                 <action
                     android:id="@+id/action_adDetailsFragment_to_choosePhotoFragment"
@@ -100,11 +100,11 @@
                     app:popExitAnim="@anim/slide_out_right" />
                 <argument
                     android:name="ad"
-                    app:argType="com.example.collegetrade.data.Ad" />
+                    app:argType="com.arpit.collegetrade.data.Ad" />
             </fragment>
             <fragment
                 android:id="@+id/choosePhotoFragment"
-                android:name="com.example.collegetrade.sell.choosePhoto.ChoosePhotoFragment"
+                android:name="com.arpit.collegetrade.sell.choosePhoto.ChoosePhotoFragment"
                 tools:layout="@layout/fragment_choose_photo">
                 <action
                     android:id="@+id/action_choosePhotoFragment_to_setPriceFragment"
@@ -115,11 +115,11 @@
                     app:popExitAnim="@anim/slide_out_right" />
                 <argument
                     android:name="ad"
-                    app:argType="com.example.collegetrade.data.Ad" />
+                    app:argType="com.arpit.collegetrade.data.Ad" />
             </fragment>
             <fragment
                 android:id="@+id/setPriceFragment"
-                android:name="com.example.collegetrade.sell.price.SetPriceFragment"
+                android:name="com.arpit.collegetrade.sell.price.SetPriceFragment"
                 tools:layout="@layout/fragment_set_price">
                 <action
                     android:id="@+id/action_setPriceFragment_to_reviewDetailsFragment"
@@ -130,15 +130,15 @@
                     app:popExitAnim="@anim/slide_out_right" />
                 <argument
                     android:name="ad"
-                    app:argType="com.example.collegetrade.data.Ad" />
+                    app:argType="com.arpit.collegetrade.data.Ad" />
             </fragment>
             <fragment
                 android:id="@+id/reviewDetailsFragment"
-                android:name="com.example.collegetrade.sell.reviewDetails.ReviewDetailsFragment"
+                android:name="com.arpit.collegetrade.sell.reviewDetails.ReviewDetailsFragment"
                 tools:layout="@layout/fragment_review_details">
                 <argument
                     android:name="ad"
-                    app:argType="com.example.collegetrade.data.Ad" />
+                    app:argType="com.arpit.collegetrade.data.Ad" />
             </fragment>
         </navigation>
     </navigation>
@@ -150,12 +150,12 @@
         app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/adFragment"
-        android:name="com.example.collegetrade.home.ad.AdFragment"
+        android:name="com.arpit.collegetrade.home.ad.AdFragment"
         android:label="AdFragment"
         tools:layout="@layout/fragment_ad">
         <argument
             android:name="ad"
-            app:argType="com.example.collegetrade.data.Ad" />
+            app:argType="com.arpit.collegetrade.data.Ad" />
         <action
             android:id="@+id/action_adFragment_to_postAdFlow"
             app:destination="@id/postAdFlow"
@@ -163,7 +163,7 @@
             app:exitAnim="@anim/fade_out">
             <argument
                 android:name="ad"
-                app:argType="com.example.collegetrade.data.Ad" />
+                app:argType="com.arpit.collegetrade.data.Ad" />
         </action>
     </fragment>
 </navigation>

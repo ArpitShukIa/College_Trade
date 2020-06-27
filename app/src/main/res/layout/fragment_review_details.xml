@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.collegetrade.sell.reviewDetails.ReviewDetailsViewModel" />
+            type="com.arpit.collegetrade.sell.reviewDetails.ReviewDetailsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

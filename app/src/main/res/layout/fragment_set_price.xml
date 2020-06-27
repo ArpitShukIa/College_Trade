@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.collegetrade.sell.price.SetPriceViewModel" />
+            type="com.arpit.collegetrade.sell.price.SetPriceViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

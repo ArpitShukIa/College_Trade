@@ -7,7 +7,7 @@
 
         <variable
             name="ad"
-            type="com.example.collegetrade.data.Ad" />
+            type="com.arpit.collegetrade.data.Ad" />
 
     </data>
 

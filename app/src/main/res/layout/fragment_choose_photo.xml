@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.collegetrade.sell.choosePhoto.ChoosePhotoViewModel" />
+            type="com.arpit.collegetrade.sell.choosePhoto.ChoosePhotoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

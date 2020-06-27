@@ -12,7 +12,7 @@ android {
     buildToolsVersion "29.0.2"
 
     defaultConfig {
-        applicationId "com.example.collegetrade"
+        applicationId "com.arpit.collegetrade"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1

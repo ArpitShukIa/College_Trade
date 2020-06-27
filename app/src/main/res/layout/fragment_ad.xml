@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.collegetrade.home.ad.AdViewModel" />
+            type="com.arpit.collegetrade.home.ad.AdViewModel" />
 
     </data>
 
