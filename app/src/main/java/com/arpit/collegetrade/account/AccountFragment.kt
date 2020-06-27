@@ -1,6 +1,7 @@
 package com.arpit.collegetrade.account
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,7 @@ import com.arpit.collegetrade.databinding.FragmentAccountBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class AccountFragment : Fragment() {
+class AccountFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentAccountBinding? = null
     private val binding get() = _binding!!
@@ -24,9 +25,8 @@ class AccountFragment : Fragment() {
     ): View? {
         _binding = FragmentAccountBinding.inflate(inflater, container, false)
 
-        binding.logoutLayout.setOnClickListener {
-            handleLogout()
-        }
+        binding.logoutLayout.setOnClickListener(this)
+        binding.rateUsLayout.setOnClickListener(this)
 
         return binding.root
     }
@@ -44,9 +44,24 @@ class AccountFragment : Fragment() {
             }
     }
 
+    private fun openPlayStore() {
+        // TODO Replace the uri with College Trade link
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse("https://play.google.com/store/apps/details?id=com.tencent.iglite")
+            setPackage("com.android.vending")
+        }
+        startActivity(intent)
+    }
+
+    override fun onClick(v: View?) {
+        when (v) {
+            binding.logoutLayout -> handleLogout()
+            binding.rateUsLayout -> openPlayStore()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }
