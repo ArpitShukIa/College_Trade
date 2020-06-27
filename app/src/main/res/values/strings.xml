@@ -71,7 +71,9 @@
     <string name="rate_us_icon">Rate Us Icon</string>
     <string name="rate_us">Rate Us</string>
     <string name="logout_icon">Logout Icon</string>
-    <string name="logout">LOGOUT</string>
+    <string name="logout">Logout</string>
     <string name="college_trade_logo">College Trade Logo</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
