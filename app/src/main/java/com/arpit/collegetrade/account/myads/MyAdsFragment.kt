@@ -1,4 +1,4 @@
-package com.arpit.collegetrade.favorites
+package com.arpit.collegetrade.account.myads
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -8,27 +8,32 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.arpit.collegetrade.databinding.FragmentFavoritesBinding
+import com.arpit.collegetrade.databinding.FragmentMyAdsBinding
+import com.arpit.collegetrade.favorites.SharedViewModel
 import com.arpit.collegetrade.home.AdsAdapter
 import com.arpit.collegetrade.util.getViewModelFactory
 
-class FavoritesFragment : Fragment() {
+class MyAdsFragment : Fragment() {
 
     private val viewModel: SharedViewModel by activityViewModels { getViewModelFactory() }
 
-    private var _binding: FragmentFavoritesBinding? = null
+    private var _binding: FragmentMyAdsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
+        _binding = FragmentMyAdsBinding.inflate(inflater, container, false)
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        binding.favoritesList.apply {
+        binding.topAppBar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
+        binding.myAdsList.apply {
             layoutManager =
                 if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
                     GridLayoutManager(context, 2)

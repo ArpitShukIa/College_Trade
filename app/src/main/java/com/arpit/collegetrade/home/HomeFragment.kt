@@ -9,12 +9,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.arpit.collegetrade.data.Ad
 import com.arpit.collegetrade.databinding.FragmentHomeBinding
-import com.arpit.collegetrade.favorites.HomeFavSharedViewModel
+import com.arpit.collegetrade.favorites.SharedViewModel
 import com.arpit.collegetrade.util.getViewModelFactory
 
 class HomeFragment : Fragment() {
 
-    private val viewModel: HomeFavSharedViewModel by activityViewModels { getViewModelFactory() }
+    private val viewModel: SharedViewModel by activityViewModels { getViewModelFactory() }
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!

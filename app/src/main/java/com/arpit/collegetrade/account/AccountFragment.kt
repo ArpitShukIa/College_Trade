@@ -8,6 +8,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.arpit.collegetrade.R
 import com.arpit.collegetrade.SplashScreenActivity
@@ -28,6 +29,7 @@ class AccountFragment : Fragment(), OnClickListener {
         _binding = FragmentAccountBinding.inflate(inflater, container, false)
         binding.appBarLayout.outlineProvider = null
 
+        binding.myAdsLayout.setOnClickListener(this)
         binding.inviteFriendLayout.setOnClickListener(this)
         binding.rateUsLayout.setOnClickListener(this)
         binding.logoutLayout.setOnClickListener(this)
@@ -38,6 +40,11 @@ class AccountFragment : Fragment(), OnClickListener {
         }
 
         return binding.root
+    }
+
+    private fun navigateToMyAds() {
+        val directions = AccountFragmentDirections.actionAccountFragmentToMyAdsFragment()
+        findNavController().navigate(directions)
     }
 
     private fun sendInviteLink() {
@@ -77,6 +84,7 @@ class AccountFragment : Fragment(), OnClickListener {
 
     override fun onClick(v: View?) {
         when (v) {
+            binding.myAdsLayout -> navigateToMyAds()
             binding.inviteFriendLayout -> sendInviteLink()
             binding.rateUsLayout -> openPlayStore()
             binding.logoutLayout -> handleLogout()

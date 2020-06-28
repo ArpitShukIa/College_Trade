@@ -12,16 +12,18 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 @Suppress("UNCHECKED_CAST")
-class HomeFavSharedViewModel(application: Application) : ViewModel() {
+class SharedViewModel(application: Application) : ViewModel() {
 
     private val repository = application.repository
     private val userId = application.currentUserId
 
     private val adsTreeMap = MutableLiveData(TreeMap<String, Ad>())
     private val favTreeMap = MutableLiveData(TreeMap<String, Ad>())
+    private val myAdsTreeMap = MutableLiveData(TreeMap<String, Ad>())
 
     val ads: LiveData<List<Ad>> = adsTreeMap.map { getSortedMap(it) }
     val favAds: LiveData<List<Ad>> = favTreeMap.map { getSortedMap(it) }
+    val myAds: LiveData<List<Ad>> = myAdsTreeMap.map { getSortedMap(it) }
 
     private var lastDocSnapshot: DocumentSnapshot? = null
     private var allAdsShown = false
@@ -32,10 +34,21 @@ class HomeFavSharedViewModel(application: Application) : ViewModel() {
     private val _refreshingFav = MutableLiveData<Boolean>()
     val refreshingFav: LiveData<Boolean> = _refreshingFav
 
+    private val _refreshingMyAds = MutableLiveData<Boolean>()
+    val refreshingMyAds: LiveData<Boolean> = _refreshingMyAds
+
     private val _showProgressBar = MutableLiveData(false)
     val showProgressBar: LiveData<Boolean> = _showProgressBar
 
     var isDeepLinkHandled = false
+    var firstTimeRefresh = true
+
+    fun getAds() {
+        viewModelScope.launch {
+            if (!allAdsShown)
+                getAdsBatch()
+        }
+    }
 
     private suspend fun getAdsBatch() {
         if (allAdsShown) return
@@ -58,27 +71,31 @@ class HomeFavSharedViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun getAds() {
+    private fun loadFavorites() {
         viewModelScope.launch {
-            if (!allAdsShown)
-                getAdsBatch()
+            favTreeMap.value = repository.getAds(userId, "Favourites")
+            _refreshingFav.value = false
         }
     }
 
-    private fun loadFavorites() {
+    private fun loadMyAds() {
         viewModelScope.launch {
-            favTreeMap.value = repository.getFavorites(userId)
-            _refreshingFav.value = false
+            myAdsTreeMap.value = repository.getAds(userId, "My Ads")
+            _refreshingMyAds.value = false
         }
     }
 
     fun updateFavList(ad: Ad, addToFav: Boolean) {
         val adsTreeMap = adsTreeMap.value!!
         val favTreeMap = favTreeMap.value!!
+        val myAdsTreeMap = myAdsTreeMap.value!!
         val key = "${ad.timestamp}${ad.id}"
 
         if (adsTreeMap.containsKey(key))
             adsTreeMap[key] = ad
+
+        if(myAdsTreeMap.containsKey(key))
+            myAdsTreeMap[key] = ad
 
         if (addToFav) {
             if (ad.sellerId != userId)
@@ -92,8 +109,9 @@ class HomeFavSharedViewModel(application: Application) : ViewModel() {
                 favTreeMap.remove("2$key")
         }
 
-        this.favTreeMap.value = favTreeMap
         this.adsTreeMap.value = adsTreeMap
+        this.myAdsTreeMap.value = myAdsTreeMap
+        this.favTreeMap.value = favTreeMap
 
         try {
             repository.updateFavList(ad, userId, addToFav)
@@ -123,6 +141,11 @@ class HomeFavSharedViewModel(application: Application) : ViewModel() {
     fun refreshFav() {
         _refreshingFav.value = true
         loadFavorites()
+    }
+
+    fun refreshMyAds() {
+        _refreshingMyAds.value = true
+        loadMyAds()
     }
 
 }

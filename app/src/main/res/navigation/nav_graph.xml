@@ -22,7 +22,7 @@
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.arpit.collegetrade.favorites.FavoritesFragment"
-        tools:layout="@layout/fragment_favorites" >
+        tools:layout="@layout/fragment_favorites">
         <action
             android:id="@+id/action_favoritesFragment_to_adFragment"
             app:destination="@id/adFragment"
@@ -32,7 +32,15 @@
     <fragment
         android:id="@+id/accountFragment"
         android:name="com.arpit.collegetrade.account.AccountFragment"
-        tools:layout="@layout/fragment_account"/>
+        tools:layout="@layout/fragment_account" >
+        <action
+            android:id="@+id/action_accountFragment_to_myAdsFragment"
+            app:destination="@id/myAdsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <navigation
         android:id="@+id/postAdFlow"
@@ -166,4 +174,9 @@
                 app:argType="com.arpit.collegetrade.data.Ad" />
         </action>
     </fragment>
+    <fragment
+        android:id="@+id/myAdsFragment"
+        android:name="com.arpit.collegetrade.account.myads.MyAdsFragment"
+        android:label="MyAdsFragment"
+        tools:layout="@layout/fragment_my_ads" />
 </navigation>

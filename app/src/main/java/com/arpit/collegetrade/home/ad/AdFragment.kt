@@ -13,7 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.arpit.collegetrade.EventObserver
 import com.arpit.collegetrade.R
 import com.arpit.collegetrade.databinding.FragmentAdBinding
-import com.arpit.collegetrade.favorites.HomeFavSharedViewModel
+import com.arpit.collegetrade.favorites.SharedViewModel
 import com.arpit.collegetrade.util.getViewModelFactory
 import com.arpit.collegetrade.util.showToast
 import com.like.LikeButton
@@ -24,7 +24,7 @@ class AdFragment : Fragment() {
     private val args: AdFragmentArgs by navArgs()
 
     private val viewModel: AdViewModel by viewModels { getViewModelFactory() }
-    private val sharedViewModel: HomeFavSharedViewModel by activityViewModels { getViewModelFactory() }
+    private val sharedViewModel: SharedViewModel by activityViewModels { getViewModelFactory() }
 
     private var _binding: FragmentAdBinding? = null
     private val binding get() = _binding!!

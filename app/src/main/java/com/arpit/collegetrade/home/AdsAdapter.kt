@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.arpit.collegetrade.R
 import com.arpit.collegetrade.data.Ad
 import com.arpit.collegetrade.databinding.AdItemLayoutBinding
-import com.arpit.collegetrade.favorites.HomeFavSharedViewModel
+import com.arpit.collegetrade.favorites.SharedViewModel
 import com.arpit.collegetrade.home.AdsAdapter.ViewHolder
 import com.like.LikeButton
 import com.like.OnLikeListener
 
-class AdsAdapter(private val viewModel: HomeFavSharedViewModel) :
+class AdsAdapter(private val viewModel: SharedViewModel) :
     ListAdapter<Ad, ViewHolder>(AdDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,7 +36,7 @@ class AdsAdapter(private val viewModel: HomeFavSharedViewModel) :
     class ViewHolder(val binding: AdItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(viewModel: HomeFavSharedViewModel, ad: Ad) {
+        fun bind(viewModel: SharedViewModel, ad: Ad) {
             binding.ad = ad
             binding.executePendingBindings()
 

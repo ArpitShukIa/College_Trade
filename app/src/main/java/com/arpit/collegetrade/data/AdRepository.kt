@@ -19,5 +19,5 @@ interface AdRepository {
 
     suspend fun addToViewersList(adId: String, userId: String)
 
-    suspend fun getFavorites(userId: String): TreeMap<String, Ad>
+    suspend fun getAds(userId: String, location: String): TreeMap<String, Ad>
 }

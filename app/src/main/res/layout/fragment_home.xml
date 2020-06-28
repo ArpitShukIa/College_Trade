@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.arpit.collegetrade.favorites.HomeFavSharedViewModel" />
+            type="com.arpit.collegetrade.favorites.SharedViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

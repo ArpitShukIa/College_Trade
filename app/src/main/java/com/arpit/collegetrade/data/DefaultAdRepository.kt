@@ -25,8 +25,8 @@ object DefaultAdRepository : AdRepository {
 
         val adsCollection = firestore.collection("Ads")
         val doc1 = if (ad.id == "") adsCollection.document() else adsCollection.document(ad.id)
-        val doc2 = firestore.collection("Users")
-            .document(ad.sellerId).collection("My Ads").document(doc1.id)
+        val doc2 = firestore.collection("Users").document(ad.sellerId)
+            .collection("My Ads").document(doc1.id)
         val imageRef = storage.child("Ad Images/${doc1.id}/main_image.jpeg")
 
         if (!ad.image.startsWith("https")) {
@@ -39,7 +39,7 @@ object DefaultAdRepository : AdRepository {
 
         firestore.runBatch { batch ->
             batch.set(doc1, ad)
-            batch.set(doc2, ad)
+            batch.set(doc2, hashMapOf("timestamp" to ad.timestamp, "sellerId" to ad.sellerId))
         }.await()
     }
 
@@ -102,8 +102,7 @@ object DefaultAdRepository : AdRepository {
                 transaction.update(adDoc, "likers", likers)
 
                 transaction.set(
-                    favDoc,
-                    hashMapOf("timestamp" to ad.timestamp, "sellerId" to ad.sellerId)
+                    favDoc, hashMapOf("timestamp" to ad.timestamp, "sellerId" to ad.sellerId)
                 )
             } else {
                 val snapshot = transaction.get(adDoc)
@@ -122,23 +121,24 @@ object DefaultAdRepository : AdRepository {
         adDocRef.update("viewsCount", views)
     }
 
-    override suspend fun getFavorites(userId: String): TreeMap<String, Ad> {
+    override suspend fun getAds(userId: String, location: String): TreeMap<String, Ad> {
 
         val docsSnapshot = firestore.collection("Users").document(userId)
-            .collection("Favourites").get().await()
+            .collection(location).get().await()
 
-        val favTreeMap = TreeMap<String, Ad>()
+        val adsTreeMap = TreeMap<String, Ad>()
 
         for (doc in docsSnapshot) {
             val ad = firestore.collection("Ads").document(doc.id).get().await()
                 .toObject(Ad::class.java)!!
             var key = "${ad.timestamp}${ad.id}"
-            key = if (ad.sellerId == userId) "2$key" else "1$key"
+            if (location == "Favourites")
+                key = if (ad.sellerId == userId) "2$key" else "1$key"
             ad.likesCount = ad.likers.size
-            ad.isLiked = true
+            ad.isLiked = ad.likers.contains(userId)
 
-            favTreeMap[key] = ad
+            adsTreeMap[key] = ad
         }
-        return favTreeMap
+        return adsTreeMap
     }
 }

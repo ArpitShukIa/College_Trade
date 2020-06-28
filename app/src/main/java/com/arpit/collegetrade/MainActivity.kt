@@ -10,7 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.arpit.collegetrade.data.User
 import com.arpit.collegetrade.databinding.ActivityMainBinding
-import com.arpit.collegetrade.favorites.HomeFavSharedViewModel
+import com.arpit.collegetrade.favorites.SharedViewModel
 import com.arpit.collegetrade.util.getViewModelFactory
 import com.arpit.collegetrade.util.showToast
 import com.google.firebase.auth.ktx.auth
@@ -19,7 +19,7 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: HomeFavSharedViewModel by viewModels { getViewModelFactory() }
+    private val viewModel: SharedViewModel by viewModels { getViewModelFactory() }
 
     private lateinit var binding: ActivityMainBinding
 
@@ -30,12 +30,15 @@ class MainActivity : AppCompatActivity() {
 
         updateDatabase()
 
-        if (savedInstanceState == null || !savedInstanceState.containsKey("refresh")) {
-            Firebase.auth.currentUser?.let {
-                viewModel.refreshHome()
-                viewModel.refreshFav()
+        viewModel.apply {
+            if (firstTimeRefresh) {
+                refreshHome()
+                refreshFav()
+                refreshMyAds()
+                firstTimeRefresh = false
             }
         }
+
 
         val rootDestinations = setOf(
             R.id.homeFragment,
