@@ -25,10 +25,33 @@ class AccountFragment : Fragment(), View.OnClickListener {
     ): View? {
         _binding = FragmentAccountBinding.inflate(inflater, container, false)
 
-        binding.logoutLayout.setOnClickListener(this)
+        binding.inviteFriendLayout.setOnClickListener(this)
         binding.rateUsLayout.setOnClickListener(this)
+        binding.logoutLayout.setOnClickListener(this)
 
         return binding.root
+    }
+
+    private fun sendInviteLink() {
+        // TODO Change redirect url to College Trade link
+        val text = getString(R.string.invite_msg)
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, text)
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
+    }
+
+    private fun openPlayStore() {
+        // TODO Replace the uri with College Trade link
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse("https://play.google.com/store/apps/details?id=com.tencent.iglite")
+            setPackage("com.android.vending")
+        }
+        startActivity(intent)
     }
 
     private fun handleLogout() {
@@ -44,19 +67,11 @@ class AccountFragment : Fragment(), View.OnClickListener {
             }
     }
 
-    private fun openPlayStore() {
-        // TODO Replace the uri with College Trade link
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse("https://play.google.com/store/apps/details?id=com.tencent.iglite")
-            setPackage("com.android.vending")
-        }
-        startActivity(intent)
-    }
-
     override fun onClick(v: View?) {
         when (v) {
-            binding.logoutLayout -> handleLogout()
+            binding.inviteFriendLayout -> sendInviteLink()
             binding.rateUsLayout -> openPlayStore()
+            binding.logoutLayout -> handleLogout()
         }
     }
 
