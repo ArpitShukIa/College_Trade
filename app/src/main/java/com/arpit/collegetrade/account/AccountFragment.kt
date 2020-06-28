@@ -5,16 +5,18 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.arpit.collegetrade.R
 import com.arpit.collegetrade.SplashScreenActivity
 import com.arpit.collegetrade.databinding.FragmentAccountBinding
+import com.arpit.collegetrade.util.showToast
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class AccountFragment : Fragment(), View.OnClickListener {
+class AccountFragment : Fragment(), OnClickListener {
 
     private var _binding: FragmentAccountBinding? = null
     private val binding get() = _binding!!
@@ -24,10 +26,16 @@ class AccountFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAccountBinding.inflate(inflater, container, false)
+        binding.appBarLayout.outlineProvider = null
 
         binding.inviteFriendLayout.setOnClickListener(this)
         binding.rateUsLayout.setOnClickListener(this)
         binding.logoutLayout.setOnClickListener(this)
+
+        binding.topAppBar.setOnMenuItemClickListener {
+            showToast(requireContext(), "About")
+            true
+        }
 
         return binding.root
     }
