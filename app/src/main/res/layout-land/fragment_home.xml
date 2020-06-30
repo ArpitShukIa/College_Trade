@@ -12,190 +12,226 @@
             type="com.arpit.collegetrade.favorites.SharedViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".home.HomeFragment">
+        tools:openDrawer="start">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/search_layout"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/primary80"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:background="@color/primary5"
+            tools:context=".home.HomeFragment">
 
-            <TextView
-                android:id="@+id/search_dialog"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/search_dialog_background"
-                android:paddingStart="40dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="@string/search_college_trade"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="RtlSymmetry" />
-
-            <ImageView
-                android:id="@+id/search_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:contentDescription="@string/search_icon"
-                app:layout_constraintBottom_toBottomOf="@+id/search_dialog"
-                app:layout_constraintStart_toStartOf="@+id/search_dialog"
-                app:layout_constraintTop_toTopOf="@+id/search_dialog"
-                app:srcCompat="@drawable/ic_search" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_layout"
-            app:onRefreshListener="@{viewModel::refreshHome}"
-            app:refreshing="@{viewModel.refreshingHome}">
-
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/scroll_view"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="0dp">
+                android:layout_height="wrap_content"
+                android:background="@null"
+                app:elevation="0dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/scroll_view_child"
+                <com.google.android.material.appbar.MaterialToolbar
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    app:contentInsetStart="0dp"
+                    app:layout_scrollFlags="scroll|enterAlways">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/filter_layout"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:background="@drawable/filter_button_background"
-                        android:paddingStart="8dp"
-                        android:paddingTop="4dp"
-                        android:paddingEnd="8dp"
-                        android:paddingBottom="4dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:id="@+id/filter_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_marginEnd="8dp"
-                            android:contentDescription="@string/filter_icon"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/filter_text"
-                            app:layout_constraintTop_toTopOf="@+id/filter_text"
-                            app:srcCompat="@drawable/ic_filter" />
+                        android:background="@null">
 
                         <TextView
-                            android:id="@+id/filter_text"
+                            android:id="@+id/search_dialog"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/search_dialog_background"
+                            android:elevation="8dp"
+                            android:gravity="center_vertical"
+                            android:paddingStart="60dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="@string/search_college_trade"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="RtlSymmetry" />
+
+                        <ImageView
+                            android:id="@+id/drawer_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
-                            android:text="@string/filter"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:layout_marginStart="16dp"
+                            android:contentDescription="@string/search_icon"
+                            android:elevation="8dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/search_dialog"
+                            app:layout_constraintStart_toStartOf="@+id/search_dialog"
+                            app:layout_constraintTop_toTopOf="@+id/search_dialog"
+                            app:srcCompat="@drawable/ic_drawer" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.facebook.shimmer.ShimmerFrameLayout
-                        animation="@{viewModel.refreshingHome}"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="4dp"
-                        android:visibility="@{viewModel.refreshingHome ? View.VISIBLE : View.GONE}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/filter_layout">
+                </com.google.android.material.appbar.MaterialToolbar>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:onRefreshListener="@{viewModel::refreshHome}"
+                app:refreshing="@{viewModel.refreshingHome}">
+
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/scroll_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/scroll_view_child"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/filter_layout"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:baselineAligned="false"
-                            android:weightSum="100">
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:background="@drawable/filter_button_background"
+                            android:paddingStart="8dp"
+                            android:paddingTop="4dp"
+                            android:paddingEnd="8dp"
+                            android:paddingBottom="4dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                            <include
-                                android:id="@+id/layout1"
-                                layout="@layout/ads_placeholder_layout"
-                                android:layout_width="0dp"
+                            <ImageView
+                                android:id="@+id/filter_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_marginEnd="8dp"
+                                android:contentDescription="@string/filter_icon"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/filter_text"
+                                app:layout_constraintTop_toTopOf="@+id/filter_text"
+                                app:srcCompat="@drawable/ic_filter" />
+
+                            <TextView
+                                android:id="@+id/filter_text"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="25" />
+                                android:fontFamily="sans-serif"
+                                android:text="@string/filter"
+                                android:textColor="@color/black"
+                                android:textSize="20sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                            <include
-                                android:id="@+id/layout2"
-                                layout="@layout/ads_placeholder_layout"
-                                android:layout_width="0dp"
+                        <com.facebook.shimmer.ShimmerFrameLayout
+                            animation="@{viewModel.refreshingHome}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="4dp"
+                            android:visibility="@{viewModel.refreshingHome ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/filter_layout">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="25" />
+                                android:baselineAligned="false"
+                                android:weightSum="100">
 
-                            <include
-                                android:id="@+id/layout3"
-                                layout="@layout/ads_placeholder_layout"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="25" />
+                                <include
+                                    android:id="@+id/layout1"
+                                    layout="@layout/ads_placeholder_layout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="25" />
+
+                                <include
+                                    android:id="@+id/layout2"
+                                    layout="@layout/ads_placeholder_layout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="25" />
+
+                                <include
+                                    android:id="@+id/layout3"
+                                    layout="@layout/ads_placeholder_layout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="25" />
 
 
-                            <include
-                                android:id="@+id/layout4"
-                                layout="@layout/ads_placeholder_layout"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="25" />
+                                <include
+                                    android:id="@+id/layout4"
+                                    layout="@layout/ads_placeholder_layout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="25" />
 
-                        </LinearLayout>
+                            </LinearLayout>
 
-                    </com.facebook.shimmer.ShimmerFrameLayout>
+                        </com.facebook.shimmer.ShimmerFrameLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/adsRecyclerView"
-                        items="@{viewModel.ads}"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="4dp"
-                        android:clipToPadding="false"
-                        android:nestedScrollingEnabled="false"
-                        android:paddingBottom="70dp"
-                        android:visibility="@{viewModel.refreshingHome ? View.GONE : View.VISIBLE}"
-                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/filter_layout"
-                        app:spanCount="4"
-                        tools:listitem="@layout/ad_item_layout" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/adsRecyclerView"
+                            items="@{viewModel.ads}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="4dp"
+                            android:clipToPadding="false"
+                            android:nestedScrollingEnabled="false"
+                            android:paddingBottom="100dp"
+                            android:visibility="@{viewModel.refreshingHome ? View.GONE : View.VISIBLE}"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/filter_layout"
+                            app:spanCount="4"
+                            tools:listitem="@layout/ad_item_layout" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.core.widget.NestedScrollView>
+                </androidx.core.widget.NestedScrollView>
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="80dp"
+                android:visibility="@{viewModel.showProgressBar ? View.VISIBLE : View.GONE}"
+                app:layout_anchor="@id/adsRecyclerView"
+                app:layout_anchorGravity="bottom|center_horizontal" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigation_drawer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
-            android:visibility="@{viewModel.showProgressBar ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_header"
+            app:itemIconTint="@color/colorPrimaryDark"
+            app:itemTextColor="@color/colorPrimaryDark"
+            app:menu="@menu/drawer_menu" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
 </layout>

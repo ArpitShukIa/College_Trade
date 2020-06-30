@@ -44,8 +44,9 @@ class MainActivity : AppCompatActivity() {
             R.id.homeFragment,
             R.id.chatsFragment,
             R.id.favoritesFragment,
-            R.id.accountFragment
+            R.id.myAdsFragment
         )
+
 
         val navController = findNavController(R.id.nav_host)
         binding.bottomNavigation.setupWithNavController(navController)

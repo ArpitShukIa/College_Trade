@@ -10,50 +10,122 @@
             type="com.arpit.collegetrade.favorites.SharedViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@id/drawer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:background="@color/white"
-        tools:context=".favorites.FavoritesFragment">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:background="@color/primary5"
+            tools:context=".home.HomeFragment">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
-                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:title="@string/favorites" />
+                android:layout_height="wrap_content"
+                android:background="@null"
+                app:elevation="0dp">
 
-        </com.google.android.material.appbar.AppBarLayout>
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    app:contentInsetStart="0dp"
+                    app:layout_scrollFlags="scroll|enterAlways">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:onRefreshListener="@{viewModel::refreshFav}"
-            app:refreshing="@{viewModel.refreshingFav}"
-            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-            app:layout_constraintBottom_toBottomOf="parent">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null">
 
-            <androidx.recyclerview.widget.RecyclerView
+                        <TextView
+                            android:id="@+id/search_dialog"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/search_dialog_background"
+                            android:elevation="8dp"
+                            android:gravity="center_vertical"
+                            android:paddingStart="60dp"
+                            android:text="@string/search_college_trade"
+                            android:textSize="18sp"
+                            app:autoSizeMaxTextSize="18sp"
+                            app:autoSizeTextType="uniform"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="RtlSymmetry" />
+
+                        <ImageView
+                            android:id="@+id/drawer_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:contentDescription="@string/search_icon"
+                            android:elevation="8dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/search_dialog"
+                            app:layout_constraintStart_toStartOf="@+id/search_dialog"
+                            app:layout_constraintTop_toTopOf="@+id/search_dialog"
+                            app:srcCompat="@drawable/ic_drawer" />
+
+                        <ImageView
+                            android:id="@+id/notification_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/notification_icon"
+                            android:elevation="8dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/search_dialog"
+                            app:layout_constraintEnd_toEndOf="@+id/search_dialog"
+                            app:layout_constraintTop_toTopOf="@+id/search_dialog"
+                            app:srcCompat="@drawable/ic_notifications" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.appbar.MaterialToolbar>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/favorites_list"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="4dp"
-                android:clipToPadding="false"
-                items="@{viewModel.favAds}"
-                android:paddingBottom="30dp"
-                tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                tools:spanCount="2"
-                tools:listitem="@layout/ad_item_layout"/>
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+                app:onRefreshListener="@{viewModel::refreshFav}"
+                app:refreshing="@{viewModel.refreshingFav}">
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/favorites_list"
+                    items="@{viewModel.favAds}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="4dp"
+                    android:clipToPadding="false"
+                    android:paddingBottom="50dp"
+                    tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    tools:listitem="@layout/ad_item_layout"
+                    tools:spanCount="2" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigation_drawer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_header"
+            app:itemIconTint="@color/colorPrimaryDark"
+            app:itemTextColor="@color/colorPrimaryDark"
+            app:menu="@menu/drawer_menu" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
 </layout>

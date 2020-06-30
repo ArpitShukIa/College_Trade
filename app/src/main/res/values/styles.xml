@@ -6,11 +6,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:listPreferredItemHeightSmall">36dp</item>
+        <item name="listPreferredItemHeightSmall">60dp</item>
+        <item name="navigationViewStyle">@style/AppNavigationViewStyle</item>
     </style>
 
     <style name="SplashScreenTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name ="android:windowBackground"> @drawable/splash_screen_background</item>
+        <item name="android:windowBackground">@drawable/splash_screen_background</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
     </style>
 
@@ -24,5 +25,19 @@
     <style name="RupeeSymbolStyle">
         <item name="android:textSize">18sp</item>
     </style>
+
+    <style name="AppNavigationViewStyle" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemTextAppearance">@style/AppNavigationViewItemTextAppearance</item>
+    </style>
+
+    <style name="AppNavigationViewItemTextAppearance" parent="@style/TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="SplashScreenTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="SplashScreenTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="SplashScreenTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

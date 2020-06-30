@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.arpit.collegetrade">
+    package="com.arpit.collegetrade" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -16,20 +16,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/SplashScreenTheme"
-        tools:ignore="UnusedAttribute">
-
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustResize"/>
-
+        tools:ignore="UnusedAttribute" >
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".SplashScreenActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter android:autoVerify="true">
+            <intent-filter android:autoVerify="true" >
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -40,7 +39,6 @@
                     android:pathPrefix="/college-trade/"
                     android:scheme="https" />
             </intent-filter>
-
         </activity>
 
         <meta-data
@@ -51,7 +49,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.arpit.collegetrade"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true" >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
@@ -60,7 +58,6 @@
         <meta-data
             android:name="firebase_performance_logcat_enabled"
             android:value="true" />
-
     </application>
 
 </manifest>

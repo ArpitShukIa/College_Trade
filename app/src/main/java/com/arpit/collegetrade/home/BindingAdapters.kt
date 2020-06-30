@@ -5,19 +5,20 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.arpit.collegetrade.R
+import com.arpit.collegetrade.data.Ad
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.arpit.collegetrade.R
-import com.arpit.collegetrade.data.Ad
 import com.facebook.shimmer.ShimmerFrameLayout
 
 @BindingAdapter("items")
 fun setItems(listView: RecyclerView, items: List<Ad>?) {
     items?.let {
-        (listView.adapter as? AdsAdapter)?.submitList(items)
+        if (it.isNotEmpty())
+            (listView.adapter as? AdsAdapter)?.submitList(items)
     }
 }
 

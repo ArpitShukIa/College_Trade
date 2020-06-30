@@ -35,7 +35,7 @@
         <TextView
             android:id="@+id/ad_price"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:gravity="center_vertical"
@@ -43,7 +43,6 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:autoSizeMaxTextSize="18sp"
             app:autoSizeTextType="uniform"
             app:layout_constraintEnd_toStartOf="@+id/favorite_icon"
             app:layout_constraintHorizontal_bias="0.0"

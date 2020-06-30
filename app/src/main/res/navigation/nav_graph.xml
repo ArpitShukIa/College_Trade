@@ -29,18 +29,6 @@
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out" />
     </fragment>
-    <fragment
-        android:id="@+id/accountFragment"
-        android:name="com.arpit.collegetrade.account.AccountFragment"
-        tools:layout="@layout/fragment_account" >
-        <action
-            android:id="@+id/action_accountFragment_to_myAdsFragment"
-            app:destination="@id/myAdsFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-    </fragment>
 
     <navigation
         android:id="@+id/postAdFlow"
@@ -176,7 +164,7 @@
     </fragment>
     <fragment
         android:id="@+id/myAdsFragment"
-        android:name="com.arpit.collegetrade.account.myads.MyAdsFragment"
+        android:name="com.arpit.collegetrade.myads.MyAdsFragment"
         android:label="MyAdsFragment"
         tools:layout="@layout/fragment_my_ads" />
 </navigation>
