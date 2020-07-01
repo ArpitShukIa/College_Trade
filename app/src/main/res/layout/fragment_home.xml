@@ -12,90 +12,17 @@
             type="com.arpit.collegetrade.favorites.SharedViewModel" />
     </data>
 
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/primary5"
             tools:context=".home.HomeFragment">
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appBarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                app:elevation="0dp">
-
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    app:contentInsetStart="0dp"
-                    app:layout_scrollFlags="scroll|enterAlways">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null">
-
-                        <TextView
-                            android:id="@+id/search_dialog"
-                            android:layout_width="0dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="8dp"
-                            android:background="@drawable/search_dialog_background"
-                            android:elevation="8dp"
-                            android:gravity="center_vertical"
-                            android:paddingStart="60dp"
-                            android:text="@string/search_college_trade"
-                            android:textSize="18sp"
-                            app:autoSizeMaxTextSize="18sp"
-                            app:autoSizeTextType="uniform"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="RtlSymmetry" />
-
-                        <ImageView
-                            android:id="@+id/drawer_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:background="?selectableItemBackgroundBorderless"
-                            android:contentDescription="@string/drawer_icon"
-                            android:elevation="8dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/search_dialog"
-                            app:layout_constraintStart_toStartOf="@+id/search_dialog"
-                            app:layout_constraintTop_toTopOf="@+id/search_dialog"
-                            android:src="@drawable/ic_drawer" />
-
-                        <ImageView
-                            android:id="@+id/notification_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:contentDescription="@string/notification_icon"
-                            android:elevation="8dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/search_dialog"
-                            app:layout_constraintEnd_toEndOf="@+id/search_dialog"
-                            app:layout_constraintTop_toTopOf="@+id/search_dialog"
-                            android:src="@drawable/ic_notifications" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.appbar.MaterialToolbar>
-
-            </com.google.android.material.appbar.AppBarLayout>
-
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintTop_toTopOf="parent"
                 app:onRefreshListener="@{viewModel::refreshHome}"
                 app:refreshing="@{viewModel.refreshingHome}">
 
@@ -212,24 +139,14 @@
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="85dp"
+                android:layout_marginBottom="84dp"
                 android:indeterminateTint="@color/primary80"
                 android:visibility="@{viewModel.showProgressBar ? View.VISIBLE : View.GONE}"
-                app:layout_anchor="@id/adsRecyclerView"
-                app:layout_anchorGravity="bottom|center_horizontal" />
+                app:layout_anchorGravity="bottom|center_horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigation_drawer"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:headerLayout="@layout/nav_header"
-            app:itemIconTint="@color/colorPrimaryDark"
-            app:itemTextColor="@color/colorPrimaryDark"
-            app:menu="@menu/drawer_menu" />
-
-    </androidx.drawerlayout.widget.DrawerLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
