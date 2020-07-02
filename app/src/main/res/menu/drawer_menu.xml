@@ -2,7 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/feeback"
         android:title="@string/feedback"
         android:icon="@drawable/ic_feedback"/>
 
@@ -17,7 +16,6 @@
         android:icon="@drawable/ic_rate"/>
 
     <item
-        android:id="@+id/about"
         android:title="@string/about"
         android:icon="@drawable/ic_about"/>
 

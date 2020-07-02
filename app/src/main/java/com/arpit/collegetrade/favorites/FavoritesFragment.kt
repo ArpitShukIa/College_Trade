@@ -14,7 +14,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.arpit.collegetrade.databinding.FragmentFavoritesBinding
 import com.arpit.collegetrade.home.AdsAdapter
 import com.arpit.collegetrade.util.getViewModelFactory
-import com.arpit.collegetrade.util.setUpNavigationDrawer
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.search_bar_layout.view.*
 
 class FavoritesFragment : Fragment() {
 
@@ -32,25 +33,21 @@ class FavoritesFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        savedInstanceState?.let {
-            if (it["isDrawerOpen"] == true)
-                binding.drawer.openDrawer(GravityCompat.START)
+        binding.toolbar.drawer_icon.setOnClickListener {
+            requireActivity().drawer.openDrawer(GravityCompat.START)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if(binding.drawer.isDrawerOpen(GravityCompat.START))
-                        binding.drawer.closeDrawer(GravityCompat.START)
+                    if(requireActivity().drawer.isDrawerOpen(GravityCompat.START))
+                        requireActivity().drawer.closeDrawer(GravityCompat.START)
                     else
                         findNavController().navigateUp()
                 }
-            })
 
-        binding.drawerIcon.setOnClickListener {
-            binding.drawer.openDrawer(GravityCompat.START)
-        }
+            })
 
         binding.favoritesList.apply {
             layoutManager =
@@ -62,17 +59,7 @@ class FavoritesFragment : Fragment() {
             adapter = AdsAdapter(viewModel)
         }
 
-        setUpNavigationDrawer(binding.navigationDrawer, this)
-
         return binding.root
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        binding.drawer.let {
-            val isDrawerOpen = it.isDrawerOpen(GravityCompat.START)
-            outState.putBoolean("isDrawerOpen", isDrawerOpen)
-        }
     }
 
     override fun onDestroyView() {

@@ -138,12 +138,6 @@
             </fragment>
         </navigation>
     </navigation>
-    <action
-        android:id="@+id/action_global_homeFragment"
-        app:destination="@id/homeFragment"
-        app:launchSingleTop="true"
-        app:popUpTo="@id/homeFragment"
-        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/adFragment"
         android:name="com.arpit.collegetrade.home.ad.AdFragment"
@@ -155,8 +149,8 @@
         <action
             android:id="@+id/action_adFragment_to_postAdFlow"
             app:destination="@id/postAdFlow"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out">
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit">
             <argument
                 android:name="ad"
                 app:argType="com.arpit.collegetrade.data.Ad" />
@@ -167,4 +161,7 @@
         android:name="com.arpit.collegetrade.myads.MyAdsFragment"
         android:label="MyAdsFragment"
         tools:layout="@layout/fragment_my_ads" />
+    <action
+        android:id="@+id/action_global_homeFragment"
+        app:destination="@id/homeFragment" />
 </navigation>

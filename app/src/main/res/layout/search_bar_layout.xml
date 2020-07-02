@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/primary5">
+
+    <TextView
+        android:id="@+id/search_dialog"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/search_dialog_background"
+        android:clickable="true"
+        android:elevation="6dp"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingStart="56dp"
+        android:paddingEnd="56dp"
+        android:text="@string/search_college_trade"
+        android:textSize="18sp"
+        app:autoSizeMaxTextSize="18sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/drawer_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:contentDescription="@string/drawer_icon"
+        android:elevation="8dp"
+        android:padding="4dp"
+        android:src="@drawable/ic_drawer"
+        app:layout_constraintBottom_toBottomOf="@+id/search_dialog"
+        app:layout_constraintStart_toStartOf="@+id/search_dialog"
+        app:layout_constraintTop_toTopOf="@+id/search_dialog" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:clickable="true"
+        android:contentDescription="@string/notification_icon"
+        android:elevation="8dp"
+        android:focusable="true"
+        android:padding="4dp"
+        android:src="@drawable/ic_notifications"
+        app:layout_constraintBottom_toBottomOf="@+id/search_dialog"
+        app:layout_constraintEnd_toEndOf="@+id/search_dialog"
+        app:layout_constraintTop_toTopOf="@+id/search_dialog" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

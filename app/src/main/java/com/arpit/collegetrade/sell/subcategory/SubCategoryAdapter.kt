@@ -38,7 +38,7 @@ class SubCategoryAdapter : RecyclerView.Adapter<SubCategoryAdapter.ViewHolder>()
             itemView.apply {
                 itemView.subcategory_title.text = subcategory
                 setOnClickListener {
-                    ad.subCategory = "$adapterPosition"
+                    ad.subCategory = "$absoluteAdapterPosition"
                     val directions = SubCategoryFragmentDirections
                         .actionSubCategoryFragmentToAdDetailsFlow(ad)
                     findNavController().navigate(directions)

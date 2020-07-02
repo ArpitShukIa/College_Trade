@@ -2,14 +2,12 @@
     <string name="app_name">College Trade</string>
     <string name="app_tag_line">ONE-STOP SOLUTION FOR ALL YOUR COLLEGE NEEDS</string>
     <string name="app_icon">App Icon</string>
-    <string name="app_version">v 1.0.0</string>
 
     <string name="facebook_application_id">356210038674161</string>
     <string name="home">Home</string>
     <string name="chats">Chats</string>
     <string name="sell">Sell</string>
     <string name="favorites">Favourites</string>
-    <string name="account">Account</string>
 
     <string name="categories_title">WHAT ARE YOU OFFERING?</string>
     <string name="other_stuff">Other Stuff</string>
@@ -47,9 +45,6 @@
     <string name="ad_posted">Your ad has been successfully posted.</string>
     <string name="sign_in_failed">Sign In Failed. Try again…</string>
     <string name="search_college_trade">Search College Trade</string>
-    <string name="filter">Filter</string>
-    <string name="search_icon">Search Icon</string>
-    <string name="filter_icon">Filter Icon</string>
     <string name="chat">Chat</string>
     <string name="ad_posted_by">Ad Posted By</string>
     <string name="description">Description</string>
@@ -62,33 +57,16 @@
     <string name="more_icon">More Icon</string>
     <string name="share_text">Hey check out this ad on College Trade about \"%s\"\nhttps://arpitshukla62.github.io/college-trade/?ad=%s</string>
     <string name="app_logo_and_name">App Logo and Name</string>
-    <string name="my_ads_icon">My Ads Icon</string>
     <string name="my_ads">My Ads</string>
-    <string name="feedback_icon">Feedback Icon</string>
     <string name="feedback">Give Feedback</string>
-    <string name="invite_a_friend_icon">Invite a friend Icon</string>
     <string name="invite_a_friend">Invite a friend</string>
-    <string name="rate_us_icon">Rate Us Icon</string>
     <string name="rate_us">Rate Us</string>
-    <string name="logout_icon">Logout Icon</string>
     <string name="logout">Logout</string>
-    <string name="college_trade_logo">College Trade Logo</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="cancel">Cancel</string>
     <string name="invite_msg">Join me on College Trade, an amazing app for buying and selling products in college campus.\nhttps://arpitshukla62.github.io/college-trade/</string>
     <string name="about">About</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="notifications">Notifications</string>
     <string name="notification_icon">Notification Icon</string>
     <string name="drawer_icon">Navigation Drawer Icon</string>
     <string name="arpit_shukla">Arpit Shukla</string>

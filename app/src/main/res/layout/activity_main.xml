@@ -5,7 +5,6 @@
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer"
-        tools:openDrawer="start"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -15,103 +14,25 @@
             tools:background="@color/primary5"
             tools:context=".MainActivity">
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appBarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                app:elevation="0dp">
-
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    app:contentInsetStart="0dp"
-                    app:layout_scrollFlags="scroll|enterAlways">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null">
-
-                        <TextView
-                            android:id="@+id/search_dialog"
-                            android:layout_width="0dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="8dp"
-                            android:background="@drawable/search_dialog_background"
-                            android:elevation="8dp"
-                            android:gravity="center_vertical"
-                            android:paddingStart="60dp"
-                            android:text="@string/search_college_trade"
-                            android:textSize="18sp"
-                            app:autoSizeMaxTextSize="18sp"
-                            app:autoSizeTextType="uniform"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="RtlSymmetry" />
-
-                        <ImageView
-                            android:id="@+id/drawer_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:background="?selectableItemBackgroundBorderless"
-                            android:contentDescription="@string/drawer_icon"
-                            android:elevation="8dp"
-                            android:src="@drawable/ic_drawer"
-                            app:layout_constraintBottom_toBottomOf="@+id/search_dialog"
-                            app:layout_constraintStart_toStartOf="@+id/search_dialog"
-                            app:layout_constraintTop_toTopOf="@+id/search_dialog" />
-
-                        <ImageView
-                            android:id="@+id/notification_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:contentDescription="@string/notification_icon"
-                            android:elevation="8dp"
-                            android:src="@drawable/ic_notifications"
-                            app:layout_constraintBottom_toBottomOf="@+id/search_dialog"
-                            app:layout_constraintEnd_toEndOf="@+id/search_dialog"
-                            app:layout_constraintTop_toTopOf="@+id/search_dialog" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.appbar.MaterialToolbar>
-
-            </com.google.android.material.appbar.AppBarLayout>
-
             <fragment
                 android:id="@+id/nav_host"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:defaultNavHost="true"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:navGraph="@navigation/nav_graph"
                 tools:ignore="FragmentTagUsage" />
-
-            <View
-                android:id="@+id/guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="84dp"
-                android:orientation="horizontal" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/sell_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
                 android:src="@drawable/ic_add"
                 app:backgroundTint="@color/colorPrimary"
                 app:elevation="8.01dp"
                 app:fabSize="normal"
-                app:layout_anchor="@id/guideline"
-                app:layout_anchorGravity="bottom|center_horizontal"
+                app:layout_anchor="@id/bottom_navigation"
+                app:layout_anchorGravity="center_horizontal"
                 app:maxImageSize="36dp"
                 app:tint="@color/white" />
 
@@ -119,12 +40,11 @@
                 android:id="@+id/bottom_navigation"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:layout_gravity="bottom"
                 app:elevation="8dp"
                 app:labelVisibilityMode="labeled"
-                app:layout_anchor="@id/sell_fab"
-                app:layout_anchorGravity="bottom"
-                android:layout_gravity="bottom"
                 app:menu="@menu/bottom_nav_menu" />
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <com.google.android.material.navigation.NavigationView

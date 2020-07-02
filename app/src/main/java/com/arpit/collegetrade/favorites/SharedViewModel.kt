@@ -1,5 +1,6 @@
 package com.arpit.collegetrade.favorites
 
+import android.os.Parcelable
 import android.util.Log
 import androidx.lifecycle.*
 import com.arpit.collegetrade.Application
@@ -42,6 +43,8 @@ class SharedViewModel(application: Application) : ViewModel() {
 
     var isDeepLinkHandled = false
     var firstTimeRefresh = true
+
+    var stateHome: Parcelable? = null
 
     fun getAds() {
         viewModelScope.launch {
@@ -94,7 +97,7 @@ class SharedViewModel(application: Application) : ViewModel() {
         if (adsTreeMap.containsKey(key))
             adsTreeMap[key] = ad
 
-        if(myAdsTreeMap.containsKey(key))
+        if (myAdsTreeMap.containsKey(key))
             myAdsTreeMap[key] = ad
 
         if (addToFav) {

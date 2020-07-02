@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.arpit.collegetrade.data.Ad
 import com.arpit.collegetrade.databinding.FragmentHomeBinding
 import com.arpit.collegetrade.favorites.SharedViewModel
 import com.arpit.collegetrade.util.getViewModelFactory
-
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.search_bar_layout.view.*
 
 class HomeFragment : Fragment() {
 
@@ -33,12 +37,28 @@ class HomeFragment : Fragment() {
 
         binding.adsRecyclerView.adapter = AdsAdapter(viewModel)
 
-        binding.scrollView.setOnScrollChangeListener { v, _, scrollY, _, _ ->
-            val view = binding.scrollViewChild
-            val diff = view.bottom - (v.height + scrollY)
-            if (diff <= 0)
-                viewModel.getAds()
+        binding.toolbar.drawer_icon.setOnClickListener {
+            requireActivity().drawer.openDrawer(GravityCompat.START)
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if(requireActivity().drawer.isDrawerOpen(GravityCompat.START))
+                        requireActivity().drawer.closeDrawer(GravityCompat.START)
+                    else
+                        requireActivity().finish()
+                }
+
+            })
+
+        binding.adsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (!recyclerView.canScrollVertically(1))
+                    viewModel.getAds()
+            }
+        })
 
         return binding.root
     }
@@ -50,6 +70,16 @@ class HomeFragment : Fragment() {
             val directions = HomeFragmentDirections.actionHomeFragmentToAdFragment(ad)
             findNavController().navigate(directions)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.adsRecyclerView.layoutManager?.onRestoreInstanceState(viewModel.stateHome)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.stateHome = binding.adsRecyclerView.layoutManager?.onSaveInstanceState()
     }
 
     override fun onDestroyView() {

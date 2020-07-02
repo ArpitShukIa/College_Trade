@@ -17,7 +17,7 @@ import com.facebook.shimmer.ShimmerFrameLayout
 @BindingAdapter("items")
 fun setItems(listView: RecyclerView, items: List<Ad>?) {
     items?.let {
-        if (it.isNotEmpty())
+        if (listView.id != R.id.adsRecyclerView || items.isNotEmpty())
             (listView.adapter as? AdsAdapter)?.submitList(items)
     }
 }

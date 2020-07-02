@@ -19,6 +19,8 @@ import com.arpit.collegetrade.util.showToast
 import com.like.LikeButton
 import com.like.OnLikeListener
 
+// TODO Provide Chat, Mark as Sold & Report Ad options
+
 class AdFragment : Fragment() {
 
     private val args: AdFragmentArgs by navArgs()

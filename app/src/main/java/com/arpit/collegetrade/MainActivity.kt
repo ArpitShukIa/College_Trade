@@ -6,12 +6,14 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.arpit.collegetrade.data.User
 import com.arpit.collegetrade.databinding.ActivityMainBinding
 import com.arpit.collegetrade.favorites.SharedViewModel
 import com.arpit.collegetrade.util.getViewModelFactory
+import com.arpit.collegetrade.util.setUpNavigationDrawer
 import com.arpit.collegetrade.util.showToast
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -39,7 +41,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
         val rootDestinations = setOf(
             R.id.homeFragment,
             R.id.chatsFragment,
@@ -47,21 +48,25 @@ class MainActivity : AppCompatActivity() {
             R.id.myAdsFragment
         )
 
+        binding.apply {
+            val navController = findNavController(R.id.nav_host)
+            bottomNavigation.setupWithNavController(navController)
+            setUpNavigationDrawer(navigationDrawer, this@MainActivity)
 
-        val navController = findNavController(R.id.nav_host)
-        binding.bottomNavigation.setupWithNavController(navController)
+            sellFab.setOnClickListener {
+                navController.navigate(R.id.postAdFlow)
+            }
 
-        binding.sellFab.setOnClickListener {
-            navController.navigate(R.id.postAdFlow)
-        }
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id in rootDestinations) {
-                binding.sellFab.visibility = View.VISIBLE
-                binding.bottomNavigation.visibility = View.VISIBLE
-            } else {
-                binding.sellFab.visibility = View.GONE
-                binding.bottomNavigation.visibility = View.GONE
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+                if (destination.id in rootDestinations) {
+                    drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                    sellFab.visibility = View.VISIBLE
+                    bottomNavigation.visibility = View.VISIBLE
+                } else {
+                    drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    sellFab.visibility = View.GONE
+                    bottomNavigation.visibility = View.GONE
+                }
             }
         }
     }
