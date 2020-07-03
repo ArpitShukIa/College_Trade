@@ -4,13 +4,14 @@ import android.annotation.SuppressLint
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
 import com.arpit.collegetrade.R
+import com.bumptech.glide.Glide
+import com.like.LikeButton
 
 @SuppressLint("SetTextI18n")
 @BindingAdapter("datePosted")
 fun setDate(view: TextView, date: String?) {
-    if(date.isNullOrEmpty()) return
+    if (date.isNullOrEmpty()) return
     val a = date.indexOf('/')
     val b = date.lastIndexOf('/')
     val d = date.substring(0, a)
@@ -33,4 +34,9 @@ fun setSellerImage(view: ImageView, uri: String?) {
         .load(uri)
         .placeholder(R.drawable.default_user_image)
         .into(view)
+}
+
+@BindingAdapter("isLiked")
+fun setLiked(view: LikeButton, likeTime: Long) {
+    view.isLiked = likeTime != 0L
 }

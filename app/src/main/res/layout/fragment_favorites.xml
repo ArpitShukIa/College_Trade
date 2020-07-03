@@ -45,19 +45,25 @@
             app:onRefreshListener="@{viewModel::refreshFav}"
             app:refreshing="@{viewModel.refreshingFav}">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/favorites_list"
-                items="@{viewModel.favAds}"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                android:paddingBottom="84dp"
-                tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                tools:listitem="@layout/ad_item_layout"
-                tools:spanCount="2" />
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/favorites_list"
+                    items="@{viewModel.favAds}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:paddingBottom="84dp"
+                    tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    tools:listitem="@layout/ad_item_layout"
+                    tools:spanCount="2" />
+
+            </LinearLayout>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

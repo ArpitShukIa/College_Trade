@@ -19,11 +19,11 @@ data class Ad(
     var datePosted: String = "",
     var viewsCount: Int = 0,
     var likesCount: Int = 0,
-    var isLiked: Boolean = false,
+    var likeTime: Long = 0,
     var isPremium: Boolean = false,
-    var likers: ArrayList<String> = ArrayList()
-): Parcelable {
+    var likers: HashMap<String, Long> = HashMap()
+) : Parcelable {
     override fun toString(): String {
-        return "Ad(id='$id', sellerName='$sellerName', sellerId='$sellerId', sellerPhoto='$sellerPhoto', category='$category', subCategory='$subCategory', title='$title', description='$description', image='$image', price='$price', timestamp=$timestamp, datePosted='$datePosted', viewsCount=$viewsCount, likesCount=$likesCount, isLiked=$isLiked, isPremium=$isPremium, likers=$likers)"
+        return "Ad(id='$id', sellerName='$sellerName', sellerId='$sellerId', sellerPhoto='$sellerPhoto', category='$category', subCategory='$subCategory', title='$title', description='$description', image='$image', price='$price', timestamp=$timestamp, datePosted='$datePosted', viewsCount=$viewsCount, likesCount=$likesCount, likeTime=$likeTime, isPremium=$isPremium, likers=$likers)"
     }
 }

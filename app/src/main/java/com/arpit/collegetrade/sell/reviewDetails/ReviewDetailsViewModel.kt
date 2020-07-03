@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 enum class Actions { EMPTY_NAME, UPLOAD_STARTED, UPLOAD_SUCCEEDED, UPLOAD_FAILED }
 
-class ReviewDetailsViewModel(private val application: Application) : ViewModel() {
+class ReviewDetailsViewModel(application: Application) : ViewModel() {
 
     private val TAG = "TAG ReviewDetailsModel"
 
@@ -52,10 +52,7 @@ class ReviewDetailsViewModel(private val application: Application) : ViewModel()
         ad.sellerName = name.value!!
 
         if(ad.timestamp == 0L) {
-            val timestamp = if (application.trueTimeAvailable)
-                Tempo.now()!!
-            else
-                System.currentTimeMillis()
+            val timestamp = Tempo.now() ?: System.currentTimeMillis()
 
             ad.sellerId = userId
             ad.timestamp = timestamp

@@ -14,17 +14,14 @@ class Application : Application() {
     var currentUserId = ""
     var currentUserName = "Anonymous"
     val repository: AdRepository by lazy { DefaultAdRepository }
-    var trueTimeAvailable = false
 
     override fun onCreate() {
         super.onCreate()
         AsyncTask.execute {
-            trueTimeAvailable = try {
+            try {
                 Tempo.initialize(this)
-                true
             } catch (e: Exception) {
                 Log.e(TAG, "onCreate: ${e.stackTrace}", e)
-                false
             }
         }
     }

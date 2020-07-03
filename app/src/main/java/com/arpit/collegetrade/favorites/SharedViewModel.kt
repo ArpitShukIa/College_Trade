@@ -6,7 +6,9 @@ import androidx.lifecycle.*
 import com.arpit.collegetrade.Application
 import com.arpit.collegetrade.data.Ad
 import com.google.firebase.firestore.DocumentSnapshot
+import io.tempo.Tempo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -17,6 +19,14 @@ class SharedViewModel(application: Application) : ViewModel() {
 
     private val repository = application.repository
     private val userId = application.currentUserId
+
+    val currentTime = liveData(viewModelScope.coroutineContext + Dispatchers.Default) {
+        while (true) {
+            val time = Tempo.now() ?: System.currentTimeMillis()
+            emit(time)
+            delay(1000)
+        }
+    }
 
     private val adsTreeMap = MutableLiveData(TreeMap<String, Ad>())
     private val favTreeMap = MutableLiveData(TreeMap<String, Ad>())
@@ -89,10 +99,13 @@ class SharedViewModel(application: Application) : ViewModel() {
     }
 
     fun updateFavList(ad: Ad, addToFav: Boolean) {
+
         val adsTreeMap = adsTreeMap.value!!
         val favTreeMap = favTreeMap.value!!
         val myAdsTreeMap = myAdsTreeMap.value!!
+
         val key = "${ad.timestamp}${ad.id}"
+        val favKey = "${ad.likeTime}${ad.id}"
 
         if (adsTreeMap.containsKey(key))
             adsTreeMap[key] = ad
@@ -100,17 +113,10 @@ class SharedViewModel(application: Application) : ViewModel() {
         if (myAdsTreeMap.containsKey(key))
             myAdsTreeMap[key] = ad
 
-        if (addToFav) {
-            if (ad.sellerId != userId)
-                favTreeMap["1$key"] = ad
-            else
-                favTreeMap["2$key"] = ad
-        } else {
-            if (favTreeMap.containsKey("1$key"))
-                favTreeMap.remove("1$key")
-            else if (favTreeMap.containsKey("2$key"))
-                favTreeMap.remove("2$key")
-        }
+        if (addToFav)
+            favTreeMap[favKey] = ad
+        else
+            favTreeMap.remove(favKey)
 
         this.adsTreeMap.value = adsTreeMap
         this.myAdsTreeMap.value = myAdsTreeMap

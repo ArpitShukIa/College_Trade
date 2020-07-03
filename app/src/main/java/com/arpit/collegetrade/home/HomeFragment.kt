@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if(requireActivity().drawer.isDrawerOpen(GravityCompat.START))
+                    if (requireActivity().drawer.isDrawerOpen(GravityCompat.START))
                         requireActivity().drawer.closeDrawer(GravityCompat.START)
                     else
                         requireActivity().finish()

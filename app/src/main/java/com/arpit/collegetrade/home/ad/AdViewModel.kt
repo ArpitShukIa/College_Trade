@@ -29,7 +29,7 @@ class AdViewModel(application: Application) : ViewModel() {
         viewModelScope.launch {
             repository.getAdFromId(id).also {
                 it?.apply {
-                    isLiked = this.likers.contains(userId)
+                    likeTime = this.likers[userId] ?: 0
                     likesCount = this.likers.size
                     updateAd(this)
                 }

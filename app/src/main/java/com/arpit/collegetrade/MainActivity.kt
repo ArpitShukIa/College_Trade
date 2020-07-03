@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.arpit.collegetrade.data.User
@@ -31,6 +32,8 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         updateDatabase()
+
+        viewModel.currentTime.observe(this, Observer {  })
 
         viewModel.apply {
             if (firstTimeRefresh) {
@@ -77,6 +80,7 @@ class MainActivity : AppCompatActivity() {
 
         val app = application as Application
         app.currentUserId = currentUserId
+
         firebaseAuth.currentUser?.displayName.also {
             if (!it.isNullOrEmpty()) app.currentUserName = it
         }

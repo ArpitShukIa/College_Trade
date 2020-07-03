@@ -81,17 +81,17 @@ class AdFragment : Fragment() {
             override fun liked(likeButton: LikeButton?) {
                 val ad = viewModel.ad.value!!
                 ad.likesCount++
-                ad.isLiked = true
+                ad.likeTime = sharedViewModel.currentTime.value ?: 0
                 viewModel.ad.value = ad
                 sharedViewModel.updateFavList(ad, true)
             }
 
             override fun unLiked(likeButton: LikeButton?) {
                 val ad = viewModel.ad.value!!
-                ad.likesCount--
-                ad.isLiked = false
-                viewModel.ad.value = ad
                 sharedViewModel.updateFavList(ad, false)
+                ad.likesCount--
+                ad.likeTime = 0L
+                viewModel.ad.value = ad
             }
         })
     }

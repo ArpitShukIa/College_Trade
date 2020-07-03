@@ -42,15 +42,15 @@ class AdsAdapter(private val viewModel: SharedViewModel) :
 
             binding.favoriteIcon.setOnLikeListener(object : OnLikeListener {
                 override fun liked(likeButton: LikeButton?) {
-                    ad.isLiked = true
+                    ad.likeTime = viewModel.currentTime.value ?: 0
                     ad.likesCount++
                     viewModel.updateFavList(ad, true)
                 }
 
                 override fun unLiked(likeButton: LikeButton?) {
-                    ad.isLiked = false
-                    ad.likesCount--
                     viewModel.updateFavList(ad, false)
+                    ad.likesCount--
+                    ad.likeTime = 0
                 }
             })
 

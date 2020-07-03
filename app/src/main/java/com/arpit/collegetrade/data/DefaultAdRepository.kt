@@ -66,7 +66,7 @@ object DefaultAdRepository : AdRepository {
                 val ad = doc.toObject(Ad::class.java)
                 val key = ad.timestamp.toString() + ad.id
                 ad.likesCount = ad.likers.size
-                ad.isLiked = ad.likers.contains(userId)
+                ad.likeTime = ad.likers[userId] ?: 0
                 adsTreeMap[key] = ad
             }
             lastVisible = documentSnapshots.documents[documentsCount - 1]
@@ -97,16 +97,13 @@ object DefaultAdRepository : AdRepository {
         firestore.runTransaction { transaction ->
             if (addToFav) {
                 val snapshot = transaction.get(adDoc)
-                val likers = snapshot.get("likers") as ArrayList<String>
-                likers.add(userId)
+                val likers = snapshot.get("likers") as HashMap<String, Long>
+                likers[userId] = ad.likeTime
                 transaction.update(adDoc, "likers", likers)
-
-                transaction.set(
-                    favDoc, hashMapOf("timestamp" to ad.timestamp, "sellerId" to ad.sellerId)
-                )
+                transaction.set(favDoc, hashMapOf("exists" to true))
             } else {
                 val snapshot = transaction.get(adDoc)
-                val likers = snapshot.get("likers") as ArrayList<String>
+                val likers = snapshot.get("likers") as HashMap<String, Long>
                 likers.remove(userId)
                 transaction.update(adDoc, "likers", likers)
                 transaction.delete(favDoc)
@@ -131,11 +128,12 @@ object DefaultAdRepository : AdRepository {
         for (doc in docsSnapshot) {
             val ad = firestore.collection("Ads").document(doc.id).get().await()
                 .toObject(Ad::class.java)!!
-            var key = "${ad.timestamp}${ad.id}"
-            if (location == "Favourites")
-                key = if (ad.sellerId == userId) "2$key" else "1$key"
             ad.likesCount = ad.likers.size
-            ad.isLiked = ad.likers.contains(userId)
+            ad.likeTime = ad.likers[userId] ?: 0
+            val key =
+                if (location == "Favourites")
+                    "${ad.likeTime}${ad.id}"
+                else "${ad.timestamp}${ad.id}"
 
             adsTreeMap[key] = ad
         }
