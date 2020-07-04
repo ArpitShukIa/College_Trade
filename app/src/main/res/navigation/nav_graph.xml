@@ -2,7 +2,6 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
     <fragment
@@ -15,10 +14,12 @@
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out" />
     </fragment>
+
     <fragment
         android:id="@+id/chatsFragment"
         android:name="com.arpit.collegetrade.chats.ChatsFragment"
         tools:layout="@layout/fragment_chats" />
+
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.arpit.collegetrade.favorites.FavoritesFragment"
@@ -51,16 +52,15 @@
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right">
-
                 <argument
                     android:name="ad"
                     app:argType="com.arpit.collegetrade.data.Ad" />
-
             </action>
             <argument
                 android:name="ad"
                 app:argType="com.arpit.collegetrade.data.Ad" />
         </fragment>
+
         <fragment
             android:id="@+id/subCategoryFragment"
             android:name="com.arpit.collegetrade.sell.subcategory.SubCategoryFragment"
@@ -80,6 +80,7 @@
                     app:argType="com.arpit.collegetrade.data.Ad" />
             </action>
         </fragment>
+
         <navigation
             android:id="@+id/adDetailsFlow"
             app:startDestination="@id/adDetailsFragment">
@@ -98,6 +99,7 @@
                     android:name="ad"
                     app:argType="com.arpit.collegetrade.data.Ad" />
             </fragment>
+
             <fragment
                 android:id="@+id/choosePhotoFragment"
                 android:name="com.arpit.collegetrade.sell.choosePhoto.ChoosePhotoFragment"
@@ -112,7 +114,20 @@
                 <argument
                     android:name="ad"
                     app:argType="com.arpit.collegetrade.data.Ad" />
+                <action
+                    android:id="@+id/action_choosePhotoFragment_to_zoomPhotoFragment"
+                    app:destination="@id/zoomPhotoFragment"
+                    app:enterAnim="@anim/fade_in"
+                    app:exitAnim="@anim/fade_out"
+                    app:popEnterAnim="@anim/fade_in"
+                    app:popExitAnim="@anim/fade_out">
+                    <argument
+                        android:name="uri"
+                        android:defaultValue='""'
+                        app:argType="string" />
+                </action>
             </fragment>
+
             <fragment
                 android:id="@+id/setPriceFragment"
                 android:name="com.arpit.collegetrade.sell.price.SetPriceFragment"
@@ -128,6 +143,7 @@
                     android:name="ad"
                     app:argType="com.arpit.collegetrade.data.Ad" />
             </fragment>
+
             <fragment
                 android:id="@+id/reviewDetailsFragment"
                 android:name="com.arpit.collegetrade.sell.reviewDetails.ReviewDetailsFragment"
@@ -136,8 +152,16 @@
                     android:name="ad"
                     app:argType="com.arpit.collegetrade.data.Ad" />
             </fragment>
+
+            <fragment
+                android:id="@+id/zoomPhotoFragment"
+                android:name="com.arpit.collegetrade.home.ad.ZoomPhotoFragment"
+                android:label="ZoomPhotoFragment"
+                tools:layout="@layout/fragment_zoom_photo"/>
+
         </navigation>
     </navigation>
+
     <fragment
         android:id="@+id/adFragment"
         android:name="com.arpit.collegetrade.home.ad.AdFragment"
@@ -155,7 +179,20 @@
                 android:name="ad"
                 app:argType="com.arpit.collegetrade.data.Ad" />
         </action>
+        <action
+            android:id="@+id/action_adFragment_to_zoomPhotoFragment"
+            app:destination="@id/zoomPhotoFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out">
+            <argument
+                android:name="uri"
+                android:defaultValue='""'
+                app:argType="string" />
+        </action>
     </fragment>
+
     <fragment
         android:id="@+id/myAdsFragment"
         android:name="com.arpit.collegetrade.myads.MyAdsFragment"
@@ -164,4 +201,15 @@
     <action
         android:id="@+id/action_global_homeFragment"
         app:destination="@id/homeFragment" />
+
+    <fragment
+        android:id="@+id/zoomPhotoFragment"
+        android:name="com.arpit.collegetrade.home.ad.ZoomPhotoFragment"
+        android:label="fragment_zoom_photo"
+        tools:layout="@layout/fragment_zoom_photo">
+        <argument
+            android:name="uri"
+            android:defaultValue='""'
+            app:argType="string" />
+    </fragment>
 </navigation>

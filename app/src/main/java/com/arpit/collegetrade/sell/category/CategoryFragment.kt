@@ -46,7 +46,7 @@ class CategoryFragment : Fragment(), View.OnClickListener {
         doneNavigation = false
 
         binding.topAppBar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
+            findNavController().navigateUp()
         }
 
         binding.apply {

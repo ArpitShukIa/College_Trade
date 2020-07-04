@@ -94,6 +94,14 @@ class AdFragment : Fragment() {
                 viewModel.ad.value = ad
             }
         })
+
+        binding.adImage.setOnClickListener {
+            val uri = viewModel.ad.value?.image ?: ""
+            if (uri.isNotEmpty()) {
+                val directions = AdFragmentDirections.actionAdFragmentToZoomPhotoFragment(uri)
+                findNavController().navigate(directions)
+            }
+        }
     }
 
     private fun shareAd() {

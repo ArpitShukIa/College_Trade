@@ -54,7 +54,6 @@
     <string name="close_icon">Close Icon</string>
     <string name="edit_icon">Edit Icon</string>
     <string name="share_icon">Share Icon</string>
-    <string name="more_icon">More Icon</string>
     <string name="share_text">Hey check out this ad on College Trade about \"%s\"\nhttps://arpitshukla62.github.io/college-trade/?ad=%s</string>
     <string name="app_logo_and_name">App Logo and Name</string>
     <string name="my_ads">My Ads</string>
@@ -70,5 +69,6 @@
     <string name="notification_icon">Notification Icon</string>
     <string name="drawer_icon">Navigation Drawer Icon</string>
     <string name="arpit_shukla">Arpit Shukla</string>
+    <string name="back_button">Back Button</string>
 
 </resources>

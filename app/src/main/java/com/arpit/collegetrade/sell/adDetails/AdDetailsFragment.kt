@@ -40,7 +40,7 @@ class AdDetailsFragment : Fragment() {
             adViewModel.setData(args.ad)
 
             topAppBar.setNavigationOnClickListener {
-                requireActivity().onBackPressed()
+                findNavController().navigateUp()
             }
 
             titleText.setOnClickListener {

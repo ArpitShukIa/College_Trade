@@ -34,7 +34,7 @@ class SetPriceFragment : Fragment() {
         adjustResize(requireActivity(), true)
 
         binding.topAppBar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
+            findNavController().navigateUp()
         }
 
         binding.lifecycleOwner = this

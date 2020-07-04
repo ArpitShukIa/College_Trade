@@ -64,10 +64,20 @@ class ChoosePhotoFragment : Fragment() {
         binding.viewModel = viewModel
 
         binding.topAppBar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
+            findNavController().navigateUp()
         }
 
-        viewModel.setImageUri(args.ad.image)
+        if (viewModel.imageUri.value == null)
+            viewModel.setImageUri(args.ad.image)
+
+        binding.adImage.setOnClickListener {
+            val uri = viewModel.imageUri.value.toString()
+            if (uri.isNotEmpty()) {
+                val directions =
+                    ChoosePhotoFragmentDirections.actionChoosePhotoFragmentToZoomPhotoFragment(uri)
+                findNavController().navigate(directions)
+            }
+        }
 
         viewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
             when (event) {

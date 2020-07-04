@@ -40,7 +40,7 @@ class ReviewDetailsFragment : Fragment() {
         viewModel.getAdDetails(args.ad)
 
         binding.topAppBar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
+            findNavController().navigateUp()
         }
 
         val dialog = MaterialDialog(requireContext())
