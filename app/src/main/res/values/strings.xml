@@ -70,5 +70,6 @@
     <string name="drawer_icon">Navigation Drawer Icon</string>
     <string name="arpit_shukla">Arpit Shukla</string>
     <string name="back_button">Back Button</string>
+    <string name="review_details_info_text">Please provide your name and an optional image that will be shown along with your ad</string>
 
 </resources>

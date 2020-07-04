@@ -32,6 +32,15 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/cycle" />
 
+        <ImageView
+            android:id="@+id/seller_image"
+            sellerImage="@{ad.sellerPhoto}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/seller_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/ad_price"
             android:layout_width="0dp"

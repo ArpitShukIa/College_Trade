@@ -1,6 +1,11 @@
 package com.arpit.collegetrade.sell.reviewDetails
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +20,14 @@ import com.arpit.collegetrade.R
 import com.arpit.collegetrade.databinding.FragmentReviewDetailsBinding
 import com.arpit.collegetrade.sell.reviewDetails.Actions.*
 import com.arpit.collegetrade.util.*
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.progress_bar.*
+import java.io.File
 
 class ReviewDetailsFragment : Fragment() {
+
+    private val TAG = "TAG ReviewDetailsFrag"
 
     private val args: ReviewDetailsFragmentArgs by navArgs()
 
@@ -27,6 +37,8 @@ class ReviewDetailsFragment : Fragment() {
     private val viewModel: ReviewDetailsViewModel by navGraphViewModels(R.id.adDetailsFlow) {
         getViewModelFactory()
     }
+
+    private val GALLERY_INTENT_REQUEST_CODE = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +61,12 @@ class ReviewDetailsFragment : Fragment() {
             .customView(R.layout.progress_bar)
         dialog.progress_title.text = getString(R.string.posting_ad)
 
+        binding.sellerImage.setOnClickListener {
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).also {
+                startActivityForResult(it, GALLERY_INTENT_REQUEST_CODE)
+            }
+        }
+
         viewModel.action.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 EMPTY_NAME -> showSnackBar(
@@ -70,6 +88,13 @@ class ReviewDetailsFragment : Fragment() {
                     showToast(requireContext(), getString(R.string.ad_posted))
                     navigate()
                 }
+
+                IMAGE_LOADING_FAILED -> {
+                    showSnackBar(
+                        binding.btnPost,
+                        "Image loading failed. Try again..."
+                    )
+                }
             }
         })
 
@@ -79,6 +104,44 @@ class ReviewDetailsFragment : Fragment() {
     fun navigate() {
         val directions = ReviewDetailsFragmentDirections.actionGlobalHomeFragment()
         findNavController().navigate(directions)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            GALLERY_INTENT_REQUEST_CODE -> {
+                if (resultCode == RESULT_OK) {
+                    data?.data?.let {
+                        launchImageCrop(it)
+                    }
+                } else {
+                    Log.e(TAG, "onActivityResult: Image Failed to Load")
+                }
+            }
+
+            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
+                val result = CropImage.getActivityResult(data)
+                if (resultCode == RESULT_OK) {
+                    val uri = result.uri
+                    try {
+                        val file = File(uri.path!!)
+                        viewModel.compressImage(file)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "onActivityResult: ${e.stackTrace}", e)
+                    }
+                } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Log.e(TAG, "onActivityResult: Crop Error: ${result.error}")
+                }
+            }
+        }
+    }
+
+    private fun launchImageCrop(uri: Uri) {
+        CropImage.activity(uri)
+            .setGuidelines(CropImageView.Guidelines.ON)
+            .setAspectRatio(1, 1)
+            .start(requireContext(), this)
     }
 
     override fun onStop() {

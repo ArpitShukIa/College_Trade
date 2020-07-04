@@ -27,12 +27,15 @@ object DefaultAdRepository : AdRepository {
         val doc1 = if (ad.id == "") adsCollection.document() else adsCollection.document(ad.id)
         val doc2 = firestore.collection("Users").document(ad.sellerId)
             .collection("My Ads").document(doc1.id)
-        val imageRef = storage.child("Ad Images/${doc1.id}/main_image.jpeg")
+        val adImageRef = storage.child("Ad Images/${doc1.id}/ad_image.jpeg")
+        val sellerImageRef = storage.child("Ad Images/${doc1.id}/seller_image.jpeg")
 
         if (!ad.image.startsWith("https")) {
-            imageRef.putFile(ad.image.toUri()).await()
-            val downloadUrl = imageRef.downloadUrl.await()
-            ad.image = downloadUrl.toString()
+            adImageRef.putFile(ad.image.toUri()).await()
+            ad.image = adImageRef.downloadUrl.await().toString()
+
+            sellerImageRef.putFile(ad.sellerPhoto.toUri()).await()
+            ad.sellerPhoto = sellerImageRef.downloadUrl.await().toString()
         }
 
         ad.id = doc1.id

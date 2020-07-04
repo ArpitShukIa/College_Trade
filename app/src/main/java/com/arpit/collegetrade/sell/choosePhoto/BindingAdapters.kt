@@ -4,10 +4,10 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.widget.Button
 import android.widget.ImageView
+import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.arpit.collegetrade.R
 import com.bumptech.glide.Glide
-
 
 @BindingAdapter("image")
 fun setImage(imageView: ImageView, uri: Uri?) {
@@ -19,12 +19,12 @@ fun setImage(imageView: ImageView, uri: Uri?) {
 
 @BindingAdapter("btnAlpha")
 fun setBtnAlpha(button: Button, uri: Uri?) {
-    button.alpha = if (uri == null) 1.0f else 0.8f
+    button.alpha = if (uri == "".toUri()) 1.0f else 0.8f
 }
 
 @BindingAdapter("isEnabled")
 fun enableButton(button: Button, uri: Uri?) {
-    if (uri == null) {
+    if (uri == "".toUri()) {
         button.isEnabled = false
         button.alpha = 0.5f
     } else {

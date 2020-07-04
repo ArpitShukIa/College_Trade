@@ -101,5 +101,7 @@ dependencies {
 
     implementation 'com.github.AllanHasegawa.Tempo:tempo:0.2.0'
 
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
 }
