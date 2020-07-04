@@ -33,7 +33,8 @@ object DefaultAdRepository : AdRepository {
         if (!ad.image.startsWith("https")) {
             adImageRef.putFile(ad.image.toUri()).await()
             ad.image = adImageRef.downloadUrl.await().toString()
-
+        }
+        if (!ad.sellerPhoto.startsWith("https") && ad.sellerPhoto.isNotBlank()) {
             sellerImageRef.putFile(ad.sellerPhoto.toUri()).await()
             ad.sellerPhoto = sellerImageRef.downloadUrl.await().toString()
         }

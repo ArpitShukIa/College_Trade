@@ -55,7 +55,8 @@
             app:civ_border_color="@color/colorPrimaryDark"
             app:civ_border_width="1dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/info_text" />
+            app:layout_constraintTop_toBottomOf="@+id/info_text"
+            tools:src="@drawable/default_user_image" />
 
         <TextView
             android:id="@+id/your_name_text"
@@ -87,12 +88,12 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_post"
+            isEnabled="@{viewModel.buttonEnabled}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:foreground="?selectableItemBackground"
             android:onClick="@{() -> viewModel.postAd()}"
-            isEnabled="@{viewModel.buttonEnabled}"
             android:text="@string/post_ad"
             android:textColor="@color/white"
             android:textSize="18sp"
