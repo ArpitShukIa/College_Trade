@@ -1,33 +1,29 @@
 package com.arpit.collegetrade.sell.choosePhoto
 
-import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.loader.content.CursorLoader
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
-import com.afollestad.materialdialogs.MaterialDialog
 import com.arpit.collegetrade.EventObserver
 import com.arpit.collegetrade.R
 import com.arpit.collegetrade.databinding.FragmentChoosePhotoBinding
 import com.arpit.collegetrade.sell.choosePhoto.SomeEvent.*
 import com.arpit.collegetrade.util.getViewModelFactory
 import com.arpit.collegetrade.util.showSnackBar
-import com.google.android.material.snackbar.Snackbar
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import java.io.File
 import java.io.IOException
 import java.text.DateFormat
@@ -48,11 +44,6 @@ class ChoosePhotoFragment : Fragment() {
 
     private val CAMERA_INTENT_REQUEST_CODE = 1
     private val GALLERY_INTENT_REQUEST_CODE = 2
-    private val READ_PERMISSION_REQUEST_CODE = 3
-
-    private var displayPermissionDenialMsg = true
-
-    private val readPermission = Manifest.permission.READ_EXTERNAL_STORAGE
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,7 +73,7 @@ class ChoosePhotoFragment : Fragment() {
         viewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
             when (event) {
                 CAMERA_INTENT -> launchCameraIntent()
-                GALLERY_INTENT -> checkPermissionAndLaunchGalleryIntent()
+                GALLERY_INTENT -> launchGalleryIntent()
                 NAVIGATE -> navigate()
                 ERROR_MSG -> showSnackBar(binding.btnNext, getString(R.string.something_went_wrong))
             }
@@ -110,64 +101,6 @@ class ChoosePhotoFragment : Fragment() {
         startActivityForResult(cameraIntent, CAMERA_INTENT_REQUEST_CODE)
     }
 
-    private fun checkPermissionAndLaunchGalleryIntent() {
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                readPermission
-            ) == PackageManager.PERMISSION_GRANTED -> launchGalleryIntent()
-
-            shouldShowRequestPermissionRationale(readPermission) -> {
-                displayPermissionDenialMsg = true
-                showInfoDialog(1)
-            }
-
-            else -> {
-                displayPermissionDenialMsg = false
-                requestPermissions(arrayOf(readPermission), READ_PERMISSION_REQUEST_CODE)
-            }
-        }
-    }
-
-    private fun showInfoDialog(code: Int) {
-        MaterialDialog(requireContext())
-            .show {
-                title(R.string.permission_dialog_title)
-                message(R.string.permission_dialog_message)
-                positiveButton(R.string.proceed) {
-                    if (code == 1) {
-                        requestPermissions(arrayOf(readPermission), READ_PERMISSION_REQUEST_CODE)
-                    } else {
-                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                            data = Uri.fromParts("package", requireContext().packageName, null)
-                            startActivity(this)
-                        }
-                    }
-                }
-                negativeButton(R.string.no_thanks)
-            }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == READ_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                launchGalleryIntent()
-            } else if (shouldShowRequestPermissionRationale(readPermission) || displayPermissionDenialMsg) {
-                showSnackBar(
-                    binding.btnNext,
-                    getString(R.string.permission_denial_message),
-                    Snackbar.LENGTH_LONG
-                )
-            } else {
-                showInfoDialog(2)
-            }
-        }
-    }
-
     private fun launchGalleryIntent() {
         Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).also {
             startActivityForResult(it, GALLERY_INTENT_REQUEST_CODE)
@@ -185,27 +118,40 @@ class ChoosePhotoFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            try {
-                when (requestCode) {
-                    CAMERA_INTENT_REQUEST_CODE -> {
-                        viewModel.currentPhotoPath?.let {
-                            val file = File(it)
-                            viewModel.compressImage(file)
-                        }
-                    }
 
-                    GALLERY_INTENT_REQUEST_CODE -> {
-                        val uri = data?.data!!
-                        val path = getPath(uri)
-                        path?.let {
-                            val file = File(it)
-                            viewModel.compressImage(file)
-                        }
+        when (requestCode) {
+            CAMERA_INTENT_REQUEST_CODE -> {
+                if (resultCode == RESULT_OK)
+                    viewModel.currentPhotoPath?.let {
+                        val file = File(it)
+                        launchImageCrop(file.toUri())
                     }
+                else
+                    Log.e(TAG, "onActivityResult: Image Failed to Load")
+            }
+
+            GALLERY_INTENT_REQUEST_CODE -> {
+                if (resultCode == RESULT_OK)
+                    data?.data?.let {
+                        launchImageCrop(it)
+                    }
+                else
+                    Log.e(TAG, "onActivityResult: Image Failed to Load")
+            }
+
+            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
+                val result = CropImage.getActivityResult(data)
+                if (resultCode == RESULT_OK) {
+                    val uri = result.uri
+                    try {
+                        val file = File(uri.path!!)
+                        viewModel.compressImage(file)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "onActivityResult: ${e.stackTrace}", e)
+                    }
+                } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Log.e(TAG, "onActivityResult: Crop Error: ${result.error}")
                 }
-            } catch (e: Exception) {
-                Log.e(TAG, "onActivityResult: ${e.stackTrace}", e)
             }
         }
     }
@@ -223,21 +169,10 @@ class ChoosePhotoFragment : Fragment() {
         }
     }
 
-    @Suppress("DEPRECATION")
-    private fun getPath(uri: Uri): String? {
-        return try {
-            val projection = arrayOf(MediaStore.Images.Media.DATA)
-            val loader = CursorLoader(requireContext(), uri, projection, null, null, null)
-            val cursor = loader.loadInBackground()!!
-            val columnIndex: Int = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-            cursor.moveToFirst()
-            cursor.getString(columnIndex).also {
-                cursor.close()
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "getPath: ${e.stackTrace}", e)
-            null
-        }
+    private fun launchImageCrop(uri: Uri) {
+        CropImage.activity(uri)
+            .setGuidelines(CropImageView.Guidelines.ON)
+            .start(requireContext(), this)
     }
 
     override fun onDestroyView() {
