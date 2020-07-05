@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.arpit.collegetrade.EventObserver
 import com.arpit.collegetrade.data.Ad
 import com.arpit.collegetrade.databinding.FragmentHomeBinding
 import com.arpit.collegetrade.favorites.SharedViewModel
@@ -58,6 +59,11 @@ class HomeFragment : Fragment() {
                 if (!recyclerView.canScrollVertically(1))
                     viewModel.getAds()
             }
+        })
+
+        viewModel.scrollToTop.observe(viewLifecycleOwner, EventObserver { scroll ->
+            if (scroll)
+                binding.adsRecyclerView.tag = "scroll"
         })
 
         return binding.root

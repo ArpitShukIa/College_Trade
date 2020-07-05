@@ -4,6 +4,7 @@ import android.os.Parcelable
 import android.util.Log
 import androidx.lifecycle.*
 import com.arpit.collegetrade.Application
+import com.arpit.collegetrade.Event
 import com.arpit.collegetrade.data.Ad
 import com.google.firebase.firestore.DocumentSnapshot
 import io.tempo.Tempo
@@ -47,6 +48,9 @@ class SharedViewModel(application: Application) : ViewModel() {
 
     private val _refreshingMyAds = MutableLiveData<Boolean>()
     val refreshingMyAds: LiveData<Boolean> = _refreshingMyAds
+
+    private val _scrollToTop = MutableLiveData(Event(false))
+    val scrollToTop: LiveData<Event<Boolean>> = _scrollToTop
 
     private val _showProgressBar = MutableLiveData(false)
     val showProgressBar: LiveData<Boolean> = _showProgressBar
@@ -137,6 +141,7 @@ class SharedViewModel(application: Application) : ViewModel() {
 
     fun refreshHome() {
         _refreshingHome.value = true
+        _scrollToTop.value = Event(false)
         lastDocSnapshot = null
         allAdsShown = false
 
@@ -144,6 +149,8 @@ class SharedViewModel(application: Application) : ViewModel() {
             adsTreeMap.value = TreeMap()
             getAdsBatch()
             _refreshingHome.value = false
+            if (adsTreeMap.value?.size in 1..8) // TODO Update the first batch size
+                _scrollToTop.value = Event(true)
         }
     }
 

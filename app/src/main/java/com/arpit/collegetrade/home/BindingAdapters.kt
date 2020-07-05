@@ -19,6 +19,12 @@ fun setItems(listView: RecyclerView, items: List<Ad>?) {
     items?.let {
         if (listView.id != R.id.adsRecyclerView || items.isNotEmpty())
             (listView.adapter as? AdsAdapter)?.submitList(items)
+
+        if (listView.tag == "scroll") {
+            listView.smoothScrollToPosition(0)
+            listView.tag = ""
+        }
+
     }
 }
 
