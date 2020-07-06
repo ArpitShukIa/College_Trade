@@ -1,7 +1,5 @@
 package com.arpit.collegetrade
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -30,20 +28,17 @@ class SplashScreenActivity : AppCompatActivity() {
     private var adId: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen)
 
         handleIntent(intent)
 
-        binding.splashScreenLayout.animate()
-            .alpha(0f)
-            .setDuration(500)
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    binding.splashScreenLayout.visibility = View.GONE
-                }
-            })
+        if (intent.action == Intent.ACTION_MAIN &&
+            intent.categories.contains(Intent.CATEGORY_LAUNCHER)
+        )
+            binding.mainLayout.animate().alpha(1f).duration = 500
+        else
+            binding.mainLayout.alpha = 1f
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))

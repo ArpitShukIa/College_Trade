@@ -4,33 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:alpha="0"
         android:background="@color/primaryLight"
         tools:context=".SplashScreenActivity">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/splash_screen_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            android:elevation="2dp">
-
-            <ImageView
-                android:id="@+id/splash_screen_image"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="32dp"
-                android:contentDescription="@string/splash_screen_image"
-                android:src="@drawable/splash_screen_image"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ScrollView
             android:id="@+id/scrollView"
@@ -155,6 +134,7 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:indeterminateTint="@color/colorPrimary"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
