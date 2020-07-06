@@ -1,16 +1,22 @@
 package com.arpit.collegetrade
 
-import android.app.Activity
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.arpit.collegetrade.databinding.ActivitySplashScreenBinding
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
-import com.google.firebase.auth.FirebaseAuth
+import com.arpit.collegetrade.util.showToast
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -18,84 +24,88 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashScreenBinding
 
-    private lateinit var firebaseAuth: FirebaseAuth
-
+    private lateinit var googleSignInClient: GoogleSignInClient
     private val RC_SIGN_IN = 1
 
     private var adId: String? = ""
 
-    private var intentHandled = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen)
 
-        firebaseAuth = FirebaseAuth.getInstance()
-
         handleIntent(intent)
+
+        binding.splashScreenLayout.animate()
+            .alpha(0f)
+            .setDuration(500)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    binding.splashScreenLayout.visibility = View.GONE
+                }
+            })
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(applicationContext, gso)
+
+        binding.btnSignIn.setOnClickListener {
+            val signInIntent = googleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        intentHandled = true
         handleIntent(intent)
-        Handler().postDelayed({
-            intentHandled = false
-        }, 100)
     }
 
     private fun handleIntent(intent: Intent?) {
         adId = intent?.data?.getQueryParameter("ad")
 
-        if (firebaseAuth.currentUser == null)
-            startSignInFlow()
-        else
+        Firebase.auth.currentUser?.let {
             launchMainActivity()
-    }
-
-    private fun startSignInFlow() {
-        val providers = arrayListOf(
-            AuthUI.IdpConfig.GoogleBuilder().build(),
-            AuthUI.IdpConfig.FacebookBuilder().build(),
-            AuthUI.IdpConfig.PhoneBuilder().build(),
-            AuthUI.IdpConfig.EmailBuilder().build()
-        )
-
-        // Create and launch sign-in intent
-        startActivityForResult(
-            AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(providers)
-                .setIsSmartLockEnabled(false)
-                .setLogo(R.drawable.app_icon)
-                .build(),
-            RC_SIGN_IN
-        )
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
-
-            when {
-                resultCode == Activity.RESULT_OK -> {
-                    Log.d(TAG, "onActivityResult: Successfully signed in")
-                    launchMainActivity()
-                }
-                response == null -> {
-                    Log.d(TAG, "onActivityResult: back button pressed or new intent found")
-                    Handler().postDelayed({
-                        if (!intentHandled)
-                            finish()
-                    }, 100)
-                }
-                else -> {
-                    Log.d(TAG, "onActivityResult: ${response.error}")
-                }
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                val domain = account.email!!.split("@")[1]
+                if (domain == "itbhu.ac.in")
+                    firebaseAuthWithGoogle(account.idToken!!)
+                else
+                    showToast(this, "Sign in failed.\nUse your institute id instead.")
+                googleSignInClient.signOut()
+            } catch (e: ApiException) {
+                Log.e(TAG, "Google sign in failed", e)
             }
         }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        binding.scrollView.alpha = 0.25f
+        binding.progressBar.visibility = View.VISIBLE
+
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        Firebase.auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    launchMainActivity()
+                } else {
+                    Log.e(TAG, "signInWithCredential: failure", task.exception)
+                    showToast(this, "Authentication Failed.")
+                    binding.scrollView.alpha = 1f
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
     }
 
     private fun launchMainActivity() {

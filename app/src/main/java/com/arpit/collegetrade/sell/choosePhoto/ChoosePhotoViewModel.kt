@@ -19,11 +19,9 @@ import java.io.File
 
 enum class SomeEvent { CAMERA_INTENT, GALLERY_INTENT, NAVIGATE, ERROR_MSG }
 
-class ChoosePhotoViewModel(application: Application) : ViewModel() {
+class ChoosePhotoViewModel(private val application: Application) : ViewModel() {
 
     var currentPhotoPath: String? = null
-
-    val context = application.applicationContext!!
 
     private val _imageUri = MutableLiveData<Uri?>(null)
     val imageUri: LiveData<Uri?> = _imageUri
@@ -31,7 +29,8 @@ class ChoosePhotoViewModel(application: Application) : ViewModel() {
     private val _event = MutableLiveData<Event<SomeEvent>>()
     val event: LiveData<Event<SomeEvent>> = _event
 
-    var backgroundColor = ContextCompat.getColor(context, R.color.adImageBack)
+    var backgroundColor =
+        ContextCompat.getColor(application.applicationContext, R.color.adImageBack)
 
     fun setImageUri(uri: String) {
         _imageUri.value = uri.toUri()
@@ -41,10 +40,13 @@ class ChoosePhotoViewModel(application: Application) : ViewModel() {
         viewModelScope.launch {
             withContext(Dispatchers.Default) {
                 try {
-                    val compressedImageFile = Compressor.compress(context, file)
+                    val compressedImageFile =
+                        Compressor.compress(application.applicationContext, file)
                     val uri = Uri.fromFile(compressedImageFile)
                     _imageUri.postValue(uri)
-                    backgroundColor = ContextCompat.getColor(context, R.color.primary15)
+
+                    backgroundColor =
+                        ContextCompat.getColor(application.applicationContext, R.color.primary15)
                 } catch (e: Exception) {
                     _event.postValue(Event(ERROR_MSG))
                 }

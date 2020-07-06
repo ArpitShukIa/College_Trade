@@ -1,13 +1,12 @@
 <resources>
     <string name="app_name">College Trade</string>
-    <string name="app_tag_line">ONE-STOP SOLUTION FOR ALL YOUR COLLEGE NEEDS</string>
     <string name="app_icon">App Icon</string>
 
-    <string name="facebook_application_id">356210038674161</string>
     <string name="home">Home</string>
     <string name="chats">Chats</string>
     <string name="sell">Sell</string>
     <string name="favorites">Favourites</string>
+    <string name="my_ads">My Ads</string>
 
     <string name="categories_title">WHAT ARE YOU OFFERING?</string>
     <string name="other_stuff">Other Stuff</string>
@@ -20,20 +19,12 @@
     <string name="ad_details_title">INCLUDE SOME DETAILS</string>
     <string name="next">Next</string>
     <string name="upload_photo_title">UPLOAD A PHOTO</string>
-    <string name="gallery_icon">Gallery Icon</string>
-    <string name="camera_icon">Camera Icon</string>
     <string name="pick_from_gallery">Pick from Gallery</string>
     <string name="take_a_picture">Take a picture</string>
-    <string name="ad_image">Ad Image</string>
     <string name="set_price_title">SET A PRICE</string>
     <string name="ad_price_hint">Price</string>
     <string name="Rs">"\u20B9 "</string>
     <string name="price">"\u20B9 %s"</string>
-    <string name="permission_dialog_title">Grant Permission</string>
-    <string name="permission_dialog_message">College Trade needs permission to access Gallery</string>
-    <string name="proceed">Proceed</string>
-    <string name="no_thanks">No Thanks</string>
-    <string name="permission_denial_message">Picking images from Gallery requires permission that you just denied.</string>
     <string name="review_details_title">REVIEW YOUR DETAILS</string>
     <string name="post_ad">Post Ad</string>
     <string name="your_name">Your Name</string>
@@ -48,15 +39,7 @@
     <string name="chat">Chat</string>
     <string name="ad_posted_by">Ad Posted By</string>
     <string name="description">Description</string>
-    <string name="views_icon">Views Icon</string>
-    <string name="likes_icon">Likes Icon</string>
-    <string name="seller_image">Seller Image</string>
-    <string name="close_icon">Close Icon</string>
-    <string name="edit_icon">Edit Icon</string>
-    <string name="share_icon">Share Icon</string>
     <string name="share_text">Hey check out this ad on College Trade about \"%s\"\nhttps://arpitshukla62.github.io/college-trade/?ad=%s</string>
-    <string name="app_logo_and_name">App Logo and Name</string>
-    <string name="my_ads">My Ads</string>
     <string name="feedback">Give Feedback</string>
     <string name="invite_a_friend">Invite a friend</string>
     <string name="rate_us">Rate Us</string>
@@ -65,11 +48,30 @@
     <string name="cancel">Cancel</string>
     <string name="invite_msg">Join me on College Trade, an amazing app for buying and selling products in college campus.\nhttps://arpitshukla62.github.io/college-trade/</string>
     <string name="about">About</string>
-
-    <string name="notification_icon">Notification Icon</string>
-    <string name="drawer_icon">Navigation Drawer Icon</string>
     <string name="arpit_shukla">Arpit Shukla</string>
     <string name="back_button">Back Button</string>
     <string name="review_details_info_text">Please provide your name and an optional image that will be shown along with your ad</string>
+    <string name="sign_in_msg">To begin, sign in using your institute e-mail ID</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="loading_your_ad">Loading your ad…</string>
+
+<!--    Image Content Descriptions-->
+    <string name="ad_image">Ad Image</string>
+    <string name="seller_image">Seller Image</string>
+    <string name="views_icon">Views Icon</string>
+    <string name="likes_icon">Likes Icon</string>
+    <string name="close_icon">Close Icon</string>
+    <string name="edit_icon">Edit Icon</string>
+    <string name="share_icon">Share Icon</string>
+    <string name="gallery_icon">Gallery Icon</string>
+    <string name="camera_icon">Camera Icon</string>
+    <string name="notification_icon">Notification Icon</string>
+    <string name="drawer_icon">Navigation Drawer Icon</string>
+    <string name="splash_screen_image">Splash Screen Image</string>
+    <string name="bottom_right_border">Bottom Right Border</string>
+    <string name="bottom_left_border">Bottom Left Border</string>
+    <string name="top_right_border">Top Right Border</string>
+    <string name="top_left_border">Top Left Border</string>
 
 </resources>

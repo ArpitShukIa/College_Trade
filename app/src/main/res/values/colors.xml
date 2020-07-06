@@ -6,6 +6,7 @@
 
     <color name="white">#FFF</color>
     <color name="ripple_white">#26FFFFFF</color>
+    <color name="primaryLight">#EFF2FA</color>
     <color name="primary5">#0D3867E3</color>
     <color name="primary15">#263867E3</color>
     <color name="primary80">#CC3867E3</color>
