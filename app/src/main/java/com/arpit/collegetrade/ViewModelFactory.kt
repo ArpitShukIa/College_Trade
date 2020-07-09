@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.arpit.collegetrade.favorites.SharedViewModel
 import com.arpit.collegetrade.home.ad.AdViewModel
+import com.arpit.collegetrade.navdrawer.ProfileViewModel
 import com.arpit.collegetrade.sell.choosePhoto.ChoosePhotoViewModel
 import com.arpit.collegetrade.sell.reviewDetails.ReviewDetailsViewModel
 
@@ -23,6 +24,9 @@ class ViewModelFactory(private val application: Application) : ViewModelProvider
 
             isAssignableFrom(SharedViewModel::class.java) ->
                 SharedViewModel(application)
+
+            isAssignableFrom(ProfileViewModel::class.java) ->
+                ProfileViewModel(application)
 
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

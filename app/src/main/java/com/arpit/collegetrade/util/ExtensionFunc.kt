@@ -6,7 +6,7 @@ import com.arpit.collegetrade.Application
 import com.arpit.collegetrade.ViewModelFactory
 
 fun Fragment.getViewModelFactory(): ViewModelFactory {
-    val application = (requireContext().applicationContext as Application)
+    val application = (requireActivity().application as Application)
     return ViewModelFactory(application)
 }
 

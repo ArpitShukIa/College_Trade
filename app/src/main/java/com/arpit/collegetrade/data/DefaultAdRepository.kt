@@ -2,7 +2,10 @@
 
 package com.arpit.collegetrade.data
 
+import android.util.Log
 import androidx.core.net.toUri
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -18,6 +21,7 @@ object DefaultAdRepository : AdRepository {
 
     private const val TAG = "TAG DefaultAdRepository"
 
+    private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val firestore: FirebaseFirestore by lazy { Firebase.firestore }
     private val storage: StorageReference by lazy { Firebase.storage.reference }
 
@@ -142,5 +146,36 @@ object DefaultAdRepository : AdRepository {
             adsTreeMap[key] = ad
         }
         return adsTreeMap
+    }
+
+    override suspend fun getUser(): User {
+        var user = User()
+        val currentUserId = auth.currentUser?.uid!!
+        val db = Firebase.firestore.collection("Users").document(currentUserId)
+
+        val userDoc = db.get().await()
+        if (userDoc.exists()) {
+            user = userDoc.toObject(User::class.java)!!
+        } else {
+            auth.currentUser?.apply {
+                user = User(uid, displayName!!, phoneNumber ?: "", email!!, photoUrl.toString())
+            }
+            db.set(user)
+        }
+
+        return user
+    }
+
+    override suspend fun updateUserInfo(user: User) {
+        try {
+            if (!user.photo.startsWith("https")) {
+                val userRef = storage.child("User Images/${user.id}/profile_image.jpeg")
+                userRef.putFile(user.photo.toUri()).await()
+                user.photo = userRef.downloadUrl.await().toString()
+            }
+            firestore.collection("Users").document(user.id).set(user).await()
+        } catch (e: Exception) {
+            Log.e(TAG, "updateUserInfo: ${e.stackTrace}", e)
+        }
     }
 }

@@ -5,19 +5,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.arpit.collegetrade.data.User
 import com.arpit.collegetrade.databinding.ActivityMainBinding
 import com.arpit.collegetrade.favorites.SharedViewModel
+import com.arpit.collegetrade.navdrawer.setUpNavigationDrawer
 import com.arpit.collegetrade.util.getViewModelFactory
-import com.arpit.collegetrade.util.setUpNavigationDrawer
 import com.arpit.collegetrade.util.showToast
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         updateDatabase()
 
-        viewModel.currentTime.observe(this, Observer {  })
+        viewModel.currentTime.observe(this, Observer { })
 
         viewModel.apply {
             if (firstTimeRefresh) {
@@ -45,10 +44,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val rootDestinations = setOf(
-            R.id.homeFragment,
-            R.id.chatsFragment,
-            R.id.favoritesFragment,
-            R.id.myAdsFragment
+            R.id.homeFragment, R.id.chatsFragment, R.id.favoritesFragment, R.id.myAdsFragment
         )
 
         binding.apply {
@@ -75,39 +71,39 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateDatabase() {
-        val firebaseAuth = Firebase.auth
-        val currentUserId = firebaseAuth.currentUser?.uid!!
-
         val app = application as Application
-        app.currentUserId = currentUserId
+        if (app.currentUser.id.isEmpty()) {
+            app.currentUser.id = Firebase.auth.currentUser?.uid!!
+        } else return
 
-        firebaseAuth.currentUser?.displayName.also {
-            if (!it.isNullOrEmpty()) app.currentUserName = it
-        }
+        viewModel.getUser()
+        viewModel.userRetrieved.observe(this, EventObserver { retrieved ->
+            if (retrieved)
+                setUpNavigationDrawer(
+                    binding.navigationDrawer,
+                    this
+                )
+            else
+                uploadFailed()
+        })
+    }
 
-        val db = Firebase.firestore.collection("Users").document(currentUserId)
-
-        db.get().addOnCompleteListener { task ->
-            if (task.isSuccessful && !task.result!!.exists()) {
-                // New User
-                val user = firebaseAuth.currentUser
-                var newUser = User()
-                user?.apply {
-                    newUser = User(uid, displayName, phoneNumber, email, photoUrl.toString())
-                }
-
-                db.set(newUser).addOnFailureListener {
-                    firebaseAuth.signOut()
-                    showToast(this, getString(R.string.sign_in_failed))
-                    startActivity(Intent(this, SplashScreenActivity::class.java))
-                    finish()
-                }
-            }
-        }
+    private fun uploadFailed() {
+        Firebase.auth.signOut()
+        showToast(this, getString(R.string.sign_in_failed))
+        startActivity(Intent(this, SplashScreenActivity::class.java))
+        finish()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean("refresh", false)
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawer.isDrawerOpen(GravityCompat.START))
+            binding.drawer.closeDrawers()
+        else
+            super.onBackPressed()
     }
 }

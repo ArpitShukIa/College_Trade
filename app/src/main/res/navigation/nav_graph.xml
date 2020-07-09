@@ -2,7 +2,6 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
     <fragment
@@ -158,7 +157,7 @@
                 android:id="@+id/zoomPhotoFragment"
                 android:name="com.arpit.collegetrade.home.ad.ZoomPhotoFragment"
                 android:label="ZoomPhotoFragment"
-                tools:layout="@layout/fragment_zoom_photo"/>
+                tools:layout="@layout/fragment_zoom_photo" />
 
         </navigation>
     </navigation>
@@ -213,4 +212,9 @@
             android:defaultValue='""'
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.arpit.collegetrade.navdrawer.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

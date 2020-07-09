@@ -5,14 +5,14 @@ import android.os.AsyncTask
 import android.util.Log
 import com.arpit.collegetrade.data.AdRepository
 import com.arpit.collegetrade.data.DefaultAdRepository
+import com.arpit.collegetrade.data.User
 import io.tempo.Tempo
 
 class Application : Application() {
 
     private val TAG = "TAG Application"
 
-    var currentUserId = ""
-    var currentUserName = "Anonymous"
+    var currentUser = User()
     val repository: AdRepository by lazy { DefaultAdRepository }
 
     override fun onCreate() {

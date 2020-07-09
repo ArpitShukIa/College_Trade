@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 class AdViewModel(application: Application) : ViewModel() {
 
     private val repository = application.repository
-    private val userId = application.currentUserId
+    private val userId = application.currentUser.id
 
     val ad = MutableLiveData(Ad())
     val isSeller = ad.map { it.sellerId == userId }

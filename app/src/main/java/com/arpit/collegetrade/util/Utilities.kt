@@ -9,6 +9,11 @@ import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import java.util.Calendar.*
 
+fun getUserName(name: String): String {
+    val words = name.split(" ")
+    return words[0] + " " + words[1]
+}
+
 fun getErrorMessage(s: String, n: Int): String? {
     val l = s.trim()
         .replace("\n", "")

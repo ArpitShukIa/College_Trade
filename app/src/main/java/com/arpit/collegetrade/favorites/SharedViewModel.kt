@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.arpit.collegetrade.Application
 import com.arpit.collegetrade.Event
 import com.arpit.collegetrade.data.Ad
+import com.arpit.collegetrade.util.getUserName
 import com.google.firebase.firestore.DocumentSnapshot
 import io.tempo.Tempo
 import kotlinx.coroutines.Dispatchers
@@ -16,10 +17,10 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 @Suppress("UNCHECKED_CAST")
-class SharedViewModel(application: Application) : ViewModel() {
+class SharedViewModel(private val application: Application) : ViewModel() {
 
     private val repository = application.repository
-    private val userId = application.currentUserId
+    private val userId = application.currentUser.id
 
     val currentTime = liveData(viewModelScope.coroutineContext + Dispatchers.Default) {
         while (true) {
@@ -55,10 +56,33 @@ class SharedViewModel(application: Application) : ViewModel() {
     private val _showProgressBar = MutableLiveData(false)
     val showProgressBar: LiveData<Boolean> = _showProgressBar
 
+    private val _userRetrieved = MutableLiveData<Event<Boolean>>()
+    val userRetrieved: LiveData<Event<Boolean>> = _userRetrieved
+
     var isDeepLinkHandled = false
     var firstTimeRefresh = true
 
     var stateHome: Parcelable? = null
+
+    fun getUser() {
+        viewModelScope.launch {
+            getUserFromDatabase()
+        }
+    }
+
+    private suspend fun getUserFromDatabase() {
+        try {
+            val user = repository.getUser()
+            user.name = getUserName(user.name)
+            if (user.contactNumber == null)
+                user.contactNumber = ""
+            application.currentUser = user
+            _userRetrieved.postValue(Event(true))
+        } catch (e: Exception) {
+            Log.e("TAG", "getUserFromDatabase: ${e.stackTrace}", e)
+            _userRetrieved.postValue(Event(false))
+        }
+    }
 
     fun getAds() {
         viewModelScope.launch {

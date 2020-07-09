@@ -25,12 +25,12 @@ class ReviewDetailsViewModel(private val application: Application) : ViewModel()
 
     private val TAG = "TAG ReviewDetailsModel"
 
-    private val userId = application.currentUserId
+    private val userId = application.currentUser.id
     private val repository = application.repository
 
-    val name = MutableLiveData(application.currentUserName)
+    val name = MutableLiveData(application.currentUser.name)
 
-    private val _sellerImage = MutableLiveData("")
+    private val _sellerImage = MutableLiveData(application.currentUser.photo)
     val sellerImage: LiveData<String> = _sellerImage
 
     private val _action = MutableLiveData<Event<Actions>>()

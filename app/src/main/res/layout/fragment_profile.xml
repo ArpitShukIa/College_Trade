@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.arpit.collegetrade.navdrawer.ProfileViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary5"
+        tools:context=".navdrawer.ProfileFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/topAppBar"
+                    style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:navigationIcon="@drawable/ic_back_white"
+                    app:title="Profile" />
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/userImage"
+                sellerImage="@{viewModel.imageUri}"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+                tools:src="@drawable/default_user_image" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@{viewModel.name}"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="24sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userImage"
+                tools:text="@string/arpit_shukla" />
+
+            <ImageView
+                android:id="@+id/mail_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:contentDescription="@string/mail_icon"
+                android:src="@drawable/ic_mail"
+                android:tint="@color/colorPrimaryDark"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="1dp"
+                android:text="@{viewModel.email}"
+                android:textColor="@color/colorPrimaryDark"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="@+id/mail_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mail_icon"
+                app:layout_constraintTop_toTopOf="@+id/mail_icon"
+                tools:text="arpit.shukla.cse19@itbhu.ac.in" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/display_number_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="32dp"
+                android:padding="8dp"
+                android:background="?selectableItemBackground"
+                android:visibility="@{viewModel.isNumberAvailable ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mail_icon"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/phone_number"
+                    android:layout_width="0dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="1dp"
+                    android:text="@{viewModel.number}"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="visible"
+                    app:autoSizeMaxTextSize="18sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toBottomOf="@+id/phone_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/phone_icon"
+                    app:layout_constraintTop_toTopOf="@+id/phone_icon"
+                    tools:text="+91 7607324641" />
+
+                <ImageView
+                    android:id="@+id/phone_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/phone_icon"
+                    android:src="@drawable/ic_phone"
+                    android:tint="@color/colorPrimaryDark"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/edit_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/edit_icon"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_edit"
+                    android:tint="#BBB"
+                    app:layout_constraintBottom_toBottomOf="@+id/phone_number"
+                    app:layout_constraintEnd_toEndOf="@+id/phone_number"
+                    app:layout_constraintTop_toTopOf="@+id/phone_number" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/btn_add_number"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="32dp"
+                android:text="@string/add_a_contact_number"
+                android:visibility="@{viewModel.isNumberAvailable ? View.GONE : View.VISIBLE}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mail_icon"
+                tools:visibility="gone" />
+
+            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                android:id="@+id/input_number_layout"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="24dp"-->
+            <!--                android:visibility="gone"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/mail_icon">-->
+
+            <!--                <ImageView-->
+            <!--                    android:id="@+id/phone_icon2"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginStart="16dp"-->
+            <!--                    android:src="@drawable/ic_phone"-->
+            <!--                    android:tint="@color/colorPrimaryDark"-->
+            <!--                    android:visibility="visible"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="@+id/et_number"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toTopOf="@+id/et_number" />-->
+
+            <!--                <TextView-->
+            <!--                    android:id="@+id/country_code"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="+91 "-->
+            <!--                    android:textColor="@color/colorPrimaryDark"-->
+            <!--                    android:textSize="18dp"-->
+            <!--                    android:textStyle="bold"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="@+id/et_number"-->
+            <!--                    app:layout_constraintStart_toStartOf="@+id/et_number"-->
+            <!--                    app:layout_constraintTop_toTopOf="@+id/et_number" />-->
+
+            <!--                <EditText-->
+            <!--                    android:id="@+id/et_number"-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginStart="16dp"-->
+            <!--                    android:layout_marginEnd="16dp"-->
+            <!--                    android:ems="10"-->
+            <!--                    android:inputType="phone"-->
+            <!--                    android:maxLength="10"-->
+            <!--                    android:paddingStart="35dp"-->
+            <!--                    android:text="@{viewModel.number.substring(4)}"-->
+            <!--                    android:textSize="18dp"-->
+            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                    app:layout_constraintStart_toEndOf="@+id/phone_icon2"-->
+            <!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+            <!--                <Button-->
+            <!--                    android:id="@+id/btn_send_otp"-->
+            <!--                    style="@style/Widget.MaterialComponents.Button.TextButton"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="0dp"-->
+            <!--                    android:layout_marginBottom="4dp"-->
+            <!--                    android:elevation="1dp"-->
+            <!--                    android:outlineProvider="none"-->
+            <!--                    android:text="Send OTP"-->
+            <!--                    android:textSize="14dp"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="@+id/et_number"-->
+            <!--                    app:layout_constraintEnd_toEndOf="@+id/et_number"-->
+            <!--                    app:layout_constraintTop_toTopOf="@+id/et_number"-->
+            <!--                    tools:ignore="SpUsage" />-->
+            <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                android:id="@+id/input_otp_layout"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="8dp"-->
+            <!--                android:visibility="gone"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/input_number_layout"-->
+            <!--                tools:layout_editor_absoluteX="1dp">-->
+
+            <!--                <EditText-->
+            <!--                    android:id="@+id/et_otp"-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginStart="56dp"-->
+            <!--                    android:layout_marginEnd="16dp"-->
+            <!--                    android:ems="10"-->
+            <!--                    android:hint="Enter OTP"-->
+            <!--                    android:inputType="number"-->
+            <!--                    android:maxLength="6"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+            <!--                <Button-->
+            <!--                    android:id="@+id/btn_verify"-->
+            <!--                    style="@style/Widget.MaterialComponents.Button.TextButton"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="0dp"-->
+            <!--                    android:layout_marginBottom="4dp"-->
+            <!--                    android:elevation="1dp"-->
+            <!--                    android:outlineProvider="none"-->
+            <!--                    android:text="Verify"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="@+id/et_otp"-->
+            <!--                    app:layout_constraintEnd_toEndOf="@+id/et_otp"-->
+            <!--                    app:layout_constraintTop_toTopOf="@+id/et_otp" />-->
+            <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>

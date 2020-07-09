@@ -55,8 +55,9 @@
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="welcome_to">Welcome to</string>
     <string name="loading_your_ad">Loading your ad…</string>
+    <string name="add_a_contact_number">Add a contact number</string>
 
-<!--    Image Content Descriptions-->
+    <!--    Image Content Descriptions-->
     <string name="ad_image">Ad Image</string>
     <string name="seller_image">Seller Image</string>
     <string name="views_icon">Views Icon</string>
@@ -68,10 +69,10 @@
     <string name="camera_icon">Camera Icon</string>
     <string name="notification_icon">Notification Icon</string>
     <string name="drawer_icon">Navigation Drawer Icon</string>
-    <string name="splash_screen_image">Splash Screen Image</string>
     <string name="bottom_right_border">Bottom Right Border</string>
     <string name="bottom_left_border">Bottom Left Border</string>
     <string name="top_right_border">Top Right Border</string>
     <string name="top_left_border">Top Left Border</string>
-
+    <string name="phone_icon">Phone Icon</string>
+    <string name="mail_icon">Mail Icon</string>
 </resources>
