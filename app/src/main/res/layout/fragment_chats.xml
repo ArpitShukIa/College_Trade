@@ -28,7 +28,21 @@
 
             </com.google.android.material.appbar.MaterialToolbar>
 
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/chat_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tabs_gradient"
+                app:tabGravity="fill"
+                app:tabMaxWidth="0dp" />
+
         </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
