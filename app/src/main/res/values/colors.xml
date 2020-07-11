@@ -15,5 +15,6 @@
     <color name="adImageBack">#E4EAED</color>
     <color name="light_gray">#F7F7F7</color>
     <color name="medium_gray">#DDD</color>
+    <color name="hint_color">#BBB</color>
     <color name="red">#F00</color>
 </resources>
