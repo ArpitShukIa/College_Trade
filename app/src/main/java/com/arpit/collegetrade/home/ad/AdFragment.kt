@@ -102,6 +102,11 @@ class AdFragment : Fragment() {
                 findNavController().navigate(directions)
             }
         }
+
+        binding.btnChat.setOnClickListener {
+            val directions = AdFragmentDirections.actionAdFragmentToChatFragment()
+            findNavController().navigate(directions)
+        }
     }
 
     private fun shareAd() {

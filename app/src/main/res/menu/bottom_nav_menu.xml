@@ -8,7 +8,7 @@
         android:title="@string/home"/>
 
     <item
-        android:id="@+id/chatsFragment"
+        android:id="@+id/allChatsFragment"
         android:enabled="true"
         android:icon="@drawable/ic_chat"
         android:title="@string/chats"/>

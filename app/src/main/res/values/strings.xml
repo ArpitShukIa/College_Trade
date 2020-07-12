@@ -76,4 +76,5 @@
     <string name="phone_icon">Phone Icon</string>
     <string name="mail_icon">Mail Icon</string>
     <string name="image">Image</string>
+    <string name="menu_icon">Menu Icon</string>
 </resources>

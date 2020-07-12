@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val rootDestinations = setOf(
-            R.id.homeFragment, R.id.chatsFragment, R.id.favoritesFragment, R.id.myAdsFragment
+            R.id.homeFragment, R.id.allChatsFragment, R.id.favoritesFragment, R.id.myAdsFragment
         )
 
         binding.apply {

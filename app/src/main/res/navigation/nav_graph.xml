@@ -12,25 +12,21 @@
         <action
             android:id="@+id/action_homeFragment_to_adFragment"
             app:destination="@id/adFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out" />
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
-        android:id="@+id/chatsFragment"
+        android:id="@+id/allChatsFragment"
         android:name="com.arpit.collegetrade.chats.ChatsFragment"
-        tools:layout="@layout/fragment_chats" />
+        tools:layout="@layout/fragment_all_chats" />
 
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.arpit.collegetrade.favorites.FavoritesFragment"
-        tools:layout="@layout/fragment_favorites">
-        <action
-            android:id="@+id/action_favoritesFragment_to_adFragment"
-            app:destination="@id/adFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out" />
-    </fragment>
+        tools:layout="@layout/fragment_favorites" />
 
     <navigation
         android:id="@+id/postAdFlow"
@@ -192,6 +188,9 @@
                 android:defaultValue='""'
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/action_adFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
     </fragment>
 
     <fragment
@@ -218,4 +217,9 @@
         android:name="com.arpit.collegetrade.navdrawer.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.arpit.collegetrade.chats.ChatFragment"
+        android:label="ChatFragment"
+        tools:layout="@layout/fragment_chat" />
 </navigation>

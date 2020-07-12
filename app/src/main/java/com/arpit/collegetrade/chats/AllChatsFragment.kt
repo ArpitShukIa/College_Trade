@@ -9,21 +9,21 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.arpit.collegetrade.chats.buy.BuyingFragment
 import com.arpit.collegetrade.chats.sell.SellingFragment
-import com.arpit.collegetrade.databinding.FragmentChatsBinding
+import com.arpit.collegetrade.databinding.FragmentAllChatsBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.search_bar_layout.view.*
 
 class ChatsFragment : Fragment() {
 
-    private var _binding: FragmentChatsBinding? = null
+    private var _binding: FragmentAllChatsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentChatsBinding.inflate(inflater, container, false)
+        _binding = FragmentAllChatsBinding.inflate(inflater, container, false)
 
         binding.toolbar.drawer_icon.setOnClickListener {
             requireActivity().drawer.openDrawer(GravityCompat.START)
