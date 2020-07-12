@@ -10,11 +10,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/gray"
         tools:context=".chats.ChatFragment">
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/chat_toolbar_layout" />
+
+        <include
+            android:id="@+id/send_msg_layout"
+            layout="@layout/chat_send_msg_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

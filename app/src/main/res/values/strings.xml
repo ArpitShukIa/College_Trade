@@ -77,4 +77,6 @@
     <string name="mail_icon">Mail Icon</string>
     <string name="image">Image</string>
     <string name="menu_icon">Menu Icon</string>
+    <string name="type_a_message">Type a message</string>
+    <string name="send_message">Send Message</string>
 </resources>

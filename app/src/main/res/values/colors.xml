@@ -6,6 +6,7 @@
 
     <color name="white">#FFF</color>
     <color name="ripple_white">#26FFFFFF</color>
+    <color name="ripple_white2">#40FFFFFF</color>
     <color name="primaryLight">#EFF2FA</color>
     <color name="primary5">#0D3867E3</color>
     <color name="primary15">#263867E3</color>
@@ -15,6 +16,7 @@
     <color name="adImageBack">#E4EAED</color>
     <color name="light_gray">#F7F7F7</color>
     <color name="medium_gray">#DDD</color>
+    <color name="gray">#E6E6E6</color>
     <color name="hint_color">#BBB</color>
     <color name="red">#F00</color>
 </resources>
