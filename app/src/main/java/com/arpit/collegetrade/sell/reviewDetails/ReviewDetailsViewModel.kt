@@ -26,7 +26,7 @@ class ReviewDetailsViewModel(private val application: Application) : ViewModel()
     private val TAG = "TAG ReviewDetailsModel"
 
     private val userId = application.currentUser.id
-    private val repository = application.repository
+    private val repository = application.adRepository
 
     val name = MutableLiveData(application.currentUser.name)
 

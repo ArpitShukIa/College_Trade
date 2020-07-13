@@ -104,7 +104,11 @@ class AdFragment : Fragment() {
         }
 
         binding.btnChat.setOnClickListener {
-            val directions = AdFragmentDirections.actionAdFragmentToChatFragment()
+            val ad = viewModel.ad.value!!
+            val chatId = ad.sellerId.take(10) + viewModel.userId.takeLast(10)
+            val directions = AdFragmentDirections.actionAdFragmentToChatFragment(
+                ad, chatId, ad.sellerName, ad.sellerPhoto
+            )
             findNavController().navigate(directions)
         }
     }

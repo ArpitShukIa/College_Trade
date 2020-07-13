@@ -36,7 +36,7 @@ class ProfileViewModel(private val application: Application) : ViewModel() {
 
                     application.currentUser.photo = uri.toString()
                     user.postValue(application.currentUser)
-                    application.repository.updateUserInfo(user.value!!)
+                    application.adRepository.updateUserInfo(user.value!!)
                 } catch (e: Exception) {
                     Log.e(TAG, "compressImage: ${e.stackTrace}", e)
                 }
@@ -52,7 +52,7 @@ class ProfileViewModel(private val application: Application) : ViewModel() {
                 numbers.add(phone)
             user.value = this
             viewModelScope.launch {
-                application.repository.updateUserInfo(this@apply)
+                application.adRepository.updateUserInfo(this@apply)
             }
         }
     }

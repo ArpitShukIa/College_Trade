@@ -19,7 +19,7 @@ import kotlin.collections.ArrayList
 @Suppress("UNCHECKED_CAST")
 class SharedViewModel(private val application: Application) : ViewModel() {
 
-    private val repository = application.repository
+    private val repository = application.adRepository
     private val userId = application.currentUser.id
 
     val currentTime = liveData(viewModelScope.coroutineContext + Dispatchers.Default) {

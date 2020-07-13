@@ -28,6 +28,9 @@ class ViewModelFactory(private val application: Application) : ViewModelProvider
             isAssignableFrom(ProfileViewModel::class.java) ->
                 ProfileViewModel(application)
 
+            isAssignableFrom(ChatViewModel::class.java) ->
+                ChatViewModel(application)
+
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
