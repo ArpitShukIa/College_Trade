@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.arpit.collegetrade.ChatViewModel" />
+            type="com.arpit.collegetrade.chats.ChatViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -188,4 +188,12 @@ class SharedViewModel(private val application: Application) : ViewModel() {
         loadMyAds()
     }
 
+    fun updateLastSeen(isOnline: Boolean) {
+        if (isOnline)
+            repository.updateLastSeen(userId, "online")
+        else {
+            val currentTime = Tempo.now() ?: System.currentTimeMillis()
+            repository.updateLastSeen(userId, currentTime.toString())
+        }
+    }
 }

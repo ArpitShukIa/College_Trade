@@ -178,4 +178,8 @@ object DefaultAdRepository : AdRepository {
             Log.e(TAG, "updateUserInfo: ${e.stackTrace}", e)
         }
     }
+
+    override fun updateLastSeen(userId: String, time: String) {
+        firestore.collection("Users").document(userId).update("lastSeen", time)
+    }
 }

@@ -17,7 +17,9 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import io.tempo.Tempo
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 
@@ -105,6 +107,9 @@ private fun handleLogout(activity: MainActivity) {
         .show {
             title(R.string.are_you_sure)
             positiveButton(R.string.logout) {
+                val uid = Firebase.auth.currentUser!!.uid
+                val time = Tempo.now() ?: System.currentTimeMillis()
+                Firebase.firestore.collection("Users").document(uid).update("lastSeen", time)
                 Firebase.auth.signOut()
                 activity.startActivity(Intent(activity, SplashScreenActivity::class.java))
                 activity.finish()

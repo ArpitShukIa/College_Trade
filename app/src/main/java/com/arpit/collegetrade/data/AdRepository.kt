@@ -24,4 +24,6 @@ interface AdRepository {
     suspend fun getUser(): User
 
     suspend fun updateUserInfo(user: User)
+
+    fun updateLastSeen(userId: String, time: String)
 }

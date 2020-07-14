@@ -106,4 +106,14 @@ class MainActivity : AppCompatActivity() {
         else
             super.onBackPressed()
     }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.updateLastSeen(true)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.updateLastSeen(false)
+    }
 }

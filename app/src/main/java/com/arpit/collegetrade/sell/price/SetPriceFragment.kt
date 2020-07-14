@@ -13,7 +13,6 @@ import com.arpit.collegetrade.EventObserver
 import com.arpit.collegetrade.R
 import com.arpit.collegetrade.databinding.FragmentSetPriceBinding
 import com.arpit.collegetrade.sell.price.PriceState.*
-import com.arpit.collegetrade.util.adjustResize
 import com.arpit.collegetrade.util.hideKeyboard
 import com.arpit.collegetrade.util.showSnackBar
 
@@ -31,7 +30,6 @@ class SetPriceFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSetPriceBinding.inflate(inflater, container, false)
-        adjustResize(requireActivity(), true)
 
         binding.topAppBar.setNavigationOnClickListener {
             findNavController().navigateUp()

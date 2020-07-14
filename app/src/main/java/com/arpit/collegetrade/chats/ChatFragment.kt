@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.arpit.collegetrade.ChatViewModel
 import com.arpit.collegetrade.databinding.FragmentChatBinding
 import com.arpit.collegetrade.util.getViewModelFactory
+import com.arpit.collegetrade.util.hideKeyboard
 
 class ChatFragment : Fragment() {
 
@@ -36,8 +36,12 @@ class ChatFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-
         return binding.root
+    }
+
+    override fun onPause() {
+        super.onPause()
+        hideKeyboard(requireActivity(), binding.root)
     }
 
     override fun onDestroyView() {

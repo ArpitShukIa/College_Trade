@@ -97,12 +97,13 @@
 
             <TextView
                 android:id="@+id/lastSeen_text"
+                isVisible="@{lastSeen}"
                 android:layout_width="0dp"
                 android:layout_height="18dp"
                 android:text="@{lastSeen}"
                 android:textColor="@color/white"
                 android:textSize="13sp"
-                android:visibility="@{lastSeen.equals(``) ? View.GONE : View.VISIBLE}"
+                android:visibility="gone"
                 app:autoSizeMinTextSize="8sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="parent"

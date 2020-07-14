@@ -11,13 +11,14 @@ import com.arpit.collegetrade.Application
 import com.arpit.collegetrade.Event
 import com.arpit.collegetrade.data.Ad
 import com.arpit.collegetrade.sell.reviewDetails.Actions.*
-import com.arpit.collegetrade.util.getCurrentDate
 import id.zelory.compressor.Compressor
 import io.tempo.Tempo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 enum class Actions { EMPTY_NAME, UPLOAD_STARTED, UPLOAD_SUCCEEDED, UPLOAD_FAILED, IMAGE_LOADING_FAILED }
 
@@ -68,7 +69,7 @@ class ReviewDetailsViewModel(private val application: Application) : ViewModel()
 
             ad.sellerId = userId
             ad.timestamp = timestamp
-            ad.datePosted = getCurrentDate()
+            ad.datePosted = SimpleDateFormat("dd/MM/yyyy", Locale.US).format(Date(timestamp))
         }
         return ad
     }

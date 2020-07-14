@@ -39,6 +39,7 @@
     <string name="chat">Chat</string>
     <string name="ad_posted_by">Ad Posted By</string>
     <string name="description">Description</string>
+    <string name="ad_posted_on">Ad Posted on %s %s</string>
     <string name="share_text">Hey check out this ad on College Trade about \"%s\"\nhttps://arpitshukla62.github.io/college-trade/?ad=%s</string>
     <string name="feedback">Give Feedback</string>
     <string name="invite_a_friend">Invite a friend</string>
@@ -56,6 +57,7 @@
     <string name="welcome_to">Welcome to</string>
     <string name="loading_your_ad">Loading your ad…</string>
     <string name="add_a_contact_number">Add a contact number</string>
+    <string name="type_a_message">Type a message</string>
 
     <!--    Image Content Descriptions-->
     <string name="ad_image">Ad Image</string>
@@ -77,6 +79,5 @@
     <string name="mail_icon">Mail Icon</string>
     <string name="image">Image</string>
     <string name="menu_icon">Menu Icon</string>
-    <string name="type_a_message">Type a message</string>
     <string name="send_message">Send Message</string>
 </resources>

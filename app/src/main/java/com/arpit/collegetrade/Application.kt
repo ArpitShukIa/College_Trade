@@ -15,6 +15,7 @@ class Application : Application() {
     private val TAG = "TAG Application"
 
     var currentUser = User()
+    var chatPersonId = ""
     val adRepository: AdRepository by lazy { DefaultAdRepository }
     val chatRepository: ChatRepository by lazy { DefaultChatRepository }
 

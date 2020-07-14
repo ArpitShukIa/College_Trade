@@ -2,6 +2,7 @@ package com.arpit.collegetrade
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.arpit.collegetrade.chats.ChatViewModel
 import com.arpit.collegetrade.favorites.SharedViewModel
 import com.arpit.collegetrade.home.ad.AdViewModel
 import com.arpit.collegetrade.navdrawer.ProfileViewModel

@@ -19,7 +19,10 @@ import com.arpit.collegetrade.EventObserver
 import com.arpit.collegetrade.R
 import com.arpit.collegetrade.databinding.FragmentReviewDetailsBinding
 import com.arpit.collegetrade.sell.reviewDetails.Actions.*
-import com.arpit.collegetrade.util.*
+import com.arpit.collegetrade.util.getViewModelFactory
+import com.arpit.collegetrade.util.hideKeyboard
+import com.arpit.collegetrade.util.showSnackBar
+import com.arpit.collegetrade.util.showToast
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.progress_bar.*
@@ -45,7 +48,6 @@ class ReviewDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentReviewDetailsBinding.inflate(inflater, container, false)
-        adjustResize(requireActivity(), true)
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel

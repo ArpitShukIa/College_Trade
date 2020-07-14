@@ -32,7 +32,6 @@ class AdDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAdDetailsBinding.inflate(inflater, container, false)
-        adjustResize(requireActivity(), true)
 
         binding.apply {
             viewModel = adViewModel
