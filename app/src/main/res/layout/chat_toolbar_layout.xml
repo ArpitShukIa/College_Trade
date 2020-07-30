@@ -5,19 +5,9 @@
 
     <data>
 
-        <import type="android.view.View" />
-
         <variable
-            name="name"
-            type="String" />
-
-        <variable
-            name="image"
-            type="String" />
-
-        <variable
-            name="lastSeen"
-            type="String" />
+            name="viewModel"
+            type="com.arpit.collegetrade.chats.ChatViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,7 +42,7 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_photo"
-                sellerImage="@{image}"
+                sellerImage="@{viewModel.image}"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="2dp"
@@ -84,7 +74,7 @@
                 android:fontFamily="@font/roboto_bold"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="@{name}"
+                android:text="@{viewModel.name}"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="normal"
@@ -97,10 +87,10 @@
 
             <TextView
                 android:id="@+id/lastSeen_text"
-                isVisible="@{lastSeen}"
+                isVisible="@{viewModel.lastSeen}"
                 android:layout_width="0dp"
                 android:layout_height="18dp"
-                android:text="@{lastSeen}"
+                android:text="@{viewModel.lastSeen}"
                 android:textColor="@color/white"
                 android:textSize="13sp"
                 android:visibility="gone"

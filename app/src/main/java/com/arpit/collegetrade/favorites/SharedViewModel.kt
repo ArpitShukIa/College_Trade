@@ -84,6 +84,10 @@ class SharedViewModel(private val application: Application) : ViewModel() {
         }
     }
 
+    fun getDeviceToken() {
+
+    }
+
     fun getAds() {
         viewModelScope.launch {
             if (!allAdsShown)
@@ -189,11 +193,9 @@ class SharedViewModel(private val application: Application) : ViewModel() {
     }
 
     fun updateLastSeen(isOnline: Boolean) {
-        if (isOnline)
-            repository.updateLastSeen(userId, "online")
-        else {
-            val currentTime = Tempo.now() ?: System.currentTimeMillis()
-            repository.updateLastSeen(userId, currentTime.toString())
-        }
+        repository.updateLastSeen(
+            userId,
+            if (isOnline) "online" else currentTime.value.toString()
+        )
     }
 }

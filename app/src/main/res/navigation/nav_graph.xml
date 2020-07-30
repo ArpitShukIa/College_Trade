@@ -200,7 +200,9 @@
         tools:layout="@layout/fragment_my_ads" />
     <action
         android:id="@+id/action_global_homeFragment"
-        app:destination="@id/homeFragment" />
+        app:destination="@id/homeFragment"
+        app:popUpTo="@id/homeFragment"
+        app:popUpToInclusive="true" />
 
     <fragment
         android:id="@+id/zoomPhotoFragment"
@@ -228,6 +230,10 @@
         <argument
             android:name="chatId"
             app:argType="string" />
+        <argument
+            android:name="otherUserId"
+            app:argType="string"
+            android:defaultValue='""' />
         <argument
             android:name="name"
             app:argType="string"

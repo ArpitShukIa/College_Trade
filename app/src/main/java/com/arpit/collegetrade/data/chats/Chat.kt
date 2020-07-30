@@ -7,7 +7,8 @@ data class Chat(
     var personImage: String = "",
     var adImage: String = "",
     var lastMsgTime: String = "",
+    var lastMsgBy: String = "",
     var timestamp: Long = 0,
-    var status: String = "",
+    var status: Int = -1,
     var unreadCount: Int = 0
 )

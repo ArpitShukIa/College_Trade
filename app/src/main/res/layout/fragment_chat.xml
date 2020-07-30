@@ -20,9 +20,7 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/chat_toolbar_layout"
-            bind:image="@{viewModel.image}"
-            bind:lastSeen="@{viewModel.lastSeen}"
-            bind:name="@{viewModel.name}" />
+            bind:viewModel="@{viewModel}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chats_recycler_view"
@@ -39,7 +37,8 @@
             layout="@layout/chat_send_msg_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            bind:viewModel="@={viewModel}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
