@@ -59,7 +59,7 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun handleIntent(intent: Intent?) {
-        adId = intent?.data?.getQueryParameter("ad")
+        adId = intent?.data?.lastPathSegment ?: ""
 
         Firebase.auth.currentUser?.let {
             launchMainActivity()

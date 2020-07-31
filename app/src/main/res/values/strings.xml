@@ -40,7 +40,7 @@
     <string name="ad_posted_by">Ad Posted By</string>
     <string name="description">Description</string>
     <string name="ad_posted_on">Ad Posted on %s %s</string>
-    <string name="share_text">Hey check out this ad on College Trade about \"%s\"\nhttps://arpitshukla62.github.io/college-trade/?ad=%s</string>
+    <string name="share_text">Hey check out this ad on College Trade about \"%s\"\nhttps://collegetrade.network/ad/%s</string>
     <string name="feedback">Give Feedback</string>
     <string name="invite_a_friend">Invite a friend</string>
     <string name="rate_us">Rate Us</string>

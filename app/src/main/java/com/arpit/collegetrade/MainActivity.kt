@@ -24,6 +24,8 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
+    private val TAG = "TAG MainActivity"
+
     private val viewModel: SharedViewModel by viewModels { getViewModelFactory() }
 
     private lateinit var binding: ActivityMainBinding
@@ -96,12 +98,12 @@ class MainActivity : AppCompatActivity() {
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener { task ->
                 if (!task.isSuccessful) {
-                    Log.w("TAG", "getInstanceId failed", task.exception)
+                    Log.e(TAG, "getInstanceId failed", task.exception)
                     return@addOnCompleteListener
                 }
 
                 val token = task.result?.token.toString()
-                Log.d("TAG", "token = $token")
+                Log.d(TAG, "token = $token")
                 Firebase.firestore.collection("Users").document(Firebase.auth.currentUser?.uid!!)
                     .update("deviceToken", token)
             }
