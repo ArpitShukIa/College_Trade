@@ -10,7 +10,7 @@ interface NotificationDao {
     @Insert
     fun insert(notification: Notification)
 
-    @Query("SELECT * from notification_table ORDER BY timestamp DESC")
+    @Query("SELECT * from notification_table ORDER BY timestamp ASC")
     fun getAllNotifications(): List<Notification>
 
     @Query("DELETE FROM notification_table WHERE chat_id = :chatId")
