@@ -27,7 +27,7 @@ fun setDate(view: TextView, date: String?) {
     val a = date.indexOf('/')
     val b = date.lastIndexOf('/')
     val d = date.substring(0, a)
-    val m = date.substring(a + 1, b).toInt()
+    val m = date.substring(a + 1, b).toInt() - 1
     val months =
         arrayOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
     view.text = view.context.getString(R.string.ad_posted_on, months[m], d)

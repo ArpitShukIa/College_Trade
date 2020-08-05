@@ -8,6 +8,7 @@ data class Message(
     val senderName: String,
     val senderImage: String,
     val receiverImage: String,
+    val adTitle: String,
     val timestamp: String,
     val status: Int,
     var deviceToken: String

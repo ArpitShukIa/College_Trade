@@ -46,12 +46,14 @@
             android:theme="@style/Base.Theme.AppCompat" />
 
         <service
-            android:name=".MyFirebaseMessagingService"
+            android:name=".notifications.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <receiver android:name=".notifications.DirectReplyReceiver"/>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

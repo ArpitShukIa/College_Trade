@@ -42,6 +42,7 @@ class ChatViewModel(val application: Application) : ViewModel() {
 
     val lastSeen = userDocLiveData.map {
         try {
+            // TODO Ignore the data from cache for the first time
             val time = it.getString("lastSeen")
             deviceToken = it.getString("deviceToken") ?: ""
             getLastSeen(time)
@@ -62,11 +63,11 @@ class ChatViewModel(val application: Application) : ViewModel() {
     fun sendMessage() {
         if (messageText.value!!.isEmpty()) return
         val currentTime = Tempo.now() ?: System.currentTimeMillis()
-        val senderName = if(ad.id == currentUser.id) ad.sellerName else currentUser.name
-        val senderImage = if(ad.id == currentUser.id) ad.sellerPhoto else currentUser.photo
+        val senderName = if (ad.id == currentUser.id) ad.sellerName else currentUser.name
+        val senderImage = if (ad.id == currentUser.id) ad.sellerPhoto else currentUser.photo
         val msg = Message(
-            "", messageText.value!!, currentUser.id, otherUserId.value!!,
-            senderName, senderImage, _image.value!!, currentTime.toString(), 0, deviceToken
+            "", messageText.value!!, currentUser.id, otherUserId.value!!, senderName,
+            senderImage, _image.value!!, ad.title, currentTime.toString(), 0, deviceToken
         )
 
         _messages.value!!.add(msg)

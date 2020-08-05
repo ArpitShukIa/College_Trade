@@ -36,6 +36,8 @@ functions.region('asia-east2')
         const payload = {
             data: {
                 id: msg.id,
+                chatId: chatId,
+                adTitle: msg.adTitle,
                 message: msg.message,
                 name: msg.senderName,
                 image: msg.senderImage,
@@ -46,6 +48,7 @@ functions.region('asia-east2')
                 deviceToken: msg.deviceToken
             }
         }
+        console.log(`deviceToken=${token_id}`)
         return admin.messaging().sendToDevice(token_id, payload)
     }
     catch(error) {

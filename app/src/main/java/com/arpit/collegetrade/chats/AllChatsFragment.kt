@@ -1,6 +1,8 @@
 package com.arpit.collegetrade.chats
 
+import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.arpit.collegetrade.chats.buy.BuyingFragment
 import com.arpit.collegetrade.chats.sell.SellingFragment
+import com.arpit.collegetrade.data.MyRoomDatabase
 import com.arpit.collegetrade.databinding.FragmentAllChatsBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,6 +27,12 @@ class ChatsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAllChatsBinding.inflate(inflater, container, false)
+
+        val notificationDao = MyRoomDatabase.getDatabase(requireActivity()).notificationDao()
+        AsyncTask.execute {
+            notificationDao.deleteAllNotifications()
+            Log.d("TAG", "onCreateView: done deletion")
+        }
 
         binding.toolbar.drawer_icon.setOnClickListener {
             requireActivity().drawer.openDrawer(GravityCompat.START)
