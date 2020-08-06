@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +23,7 @@ import com.arpit.collegetrade.util.getViewModelFactory
 import com.arpit.collegetrade.util.showSnackBar
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.text.DateFormat
@@ -87,7 +87,7 @@ class ChoosePhotoFragment : Fragment() {
         val photoFile = try {
             createImageFile()
         } catch (e: IOException) {
-            Log.e(TAG, "launchCameraIntent: ${e.stackTrace}", e)
+            Timber.tag(TAG).e(e)
             null
         }
         photoFile?.also {
@@ -127,7 +127,7 @@ class ChoosePhotoFragment : Fragment() {
                         launchImageCrop(file.toUri())
                     }
                 else
-                    Log.e(TAG, "onActivityResult: Image Failed to Load")
+                    Timber.tag(TAG).e("Image Failed to Load")
             }
 
             GALLERY_INTENT_REQUEST_CODE -> {
@@ -136,7 +136,7 @@ class ChoosePhotoFragment : Fragment() {
                         launchImageCrop(it)
                     }
                 else
-                    Log.e(TAG, "onActivityResult: Image Failed to Load")
+                    Timber.tag(TAG).e("Image Failed to load")
             }
 
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
@@ -147,10 +147,10 @@ class ChoosePhotoFragment : Fragment() {
                         val file = File(uri.path!!)
                         viewModel.compressImage(file)
                     } catch (e: Exception) {
-                        Log.e(TAG, "onActivityResult: ${e.stackTrace}", e)
+                        Timber.tag(TAG).e(e)
                     }
                 } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    Log.e(TAG, "onActivityResult: Crop Error: ${result.error}")
+                    Timber.tag(TAG).e(result.error)
                 }
             }
         }

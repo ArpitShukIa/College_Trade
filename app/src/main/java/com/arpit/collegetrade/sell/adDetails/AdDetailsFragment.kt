@@ -14,7 +14,6 @@ import androidx.navigation.navGraphViewModels
 import com.arpit.collegetrade.EventObserver
 import com.arpit.collegetrade.R
 import com.arpit.collegetrade.databinding.FragmentAdDetailsBinding
-import com.arpit.collegetrade.util.adjustResize
 import com.arpit.collegetrade.util.hideKeyboard
 import com.arpit.collegetrade.util.showSnackBar
 

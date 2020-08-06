@@ -1,7 +1,6 @@
 package com.arpit.collegetrade.favorites
 
 import android.os.Parcelable
-import android.util.Log
 import androidx.lifecycle.*
 import com.arpit.collegetrade.Application
 import com.arpit.collegetrade.Event
@@ -13,11 +12,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
 @Suppress("UNCHECKED_CAST")
 class SharedViewModel(private val application: Application) : ViewModel() {
+
+    private val TAG = "TAG SharedViewModel"
 
     private val repository = application.adRepository
     private val userId = application.currentUser.id
@@ -79,13 +81,9 @@ class SharedViewModel(private val application: Application) : ViewModel() {
             application.currentUser = user
             _userRetrieved.postValue(Event(true))
         } catch (e: Exception) {
-            Log.e("TAG", "getUserFromDatabase: ${e.stackTrace}", e)
+            Timber.tag(TAG).e(e)
             _userRetrieved.postValue(Event(false))
         }
-    }
-
-    fun getDeviceToken() {
-
     }
 
     fun getAds() {
@@ -157,7 +155,7 @@ class SharedViewModel(private val application: Application) : ViewModel() {
         try {
             repository.updateFavList(ad, userId, addToFav)
         } catch (e: Exception) {
-            Log.e("TAG", "updateFavList: ${e.stackTrace}", e)
+            Timber.tag(TAG).e(e)
         }
     }
 

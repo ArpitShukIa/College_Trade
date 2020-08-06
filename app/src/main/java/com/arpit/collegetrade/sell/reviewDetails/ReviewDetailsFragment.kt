@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +25,7 @@ import com.arpit.collegetrade.util.showToast
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.progress_bar.*
+import timber.log.Timber
 import java.io.File
 
 class ReviewDetailsFragment : Fragment() {
@@ -113,13 +113,10 @@ class ReviewDetailsFragment : Fragment() {
 
         when (requestCode) {
             GALLERY_INTENT_REQUEST_CODE -> {
-                if (resultCode == RESULT_OK) {
-                    data?.data?.let {
-                        launchImageCrop(it)
-                    }
-                } else {
-                    Log.e(TAG, "onActivityResult: Image Failed to Load")
-                }
+                if (resultCode == RESULT_OK)
+                    data?.data?.let { launchImageCrop(it) }
+                else
+                    Timber.tag(TAG).d("onActivityResult: Image Failed to Load")
             }
 
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
@@ -130,10 +127,10 @@ class ReviewDetailsFragment : Fragment() {
                         val file = File(uri.path!!)
                         viewModel.compressImage(file)
                     } catch (e: Exception) {
-                        Log.e(TAG, "onActivityResult: ${e.stackTrace}", e)
+                        Timber.tag(TAG).e(e)
                     }
                 } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    Log.e(TAG, "onActivityResult: Crop Error: ${result.error}")
+                    Timber.tag(TAG).e(result.error)
                 }
             }
         }

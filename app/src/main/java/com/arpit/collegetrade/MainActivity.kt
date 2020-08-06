@@ -2,7 +2,6 @@ package com.arpit.collegetrade
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +20,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.ktx.Firebase
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -98,12 +98,12 @@ class MainActivity : AppCompatActivity() {
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener { task ->
                 if (!task.isSuccessful) {
-                    Log.e(TAG, "getInstanceId failed", task.exception)
+                    Timber.tag(TAG).e(task.exception)
                     return@addOnCompleteListener
                 }
 
                 val token = task.result?.token.toString()
-                Log.d(TAG, "token = $token")
+                Timber.tag(TAG).d("getDeviceToken: token = $token")
                 Firebase.firestore.collection("Users").document(Firebase.auth.currentUser?.uid!!)
                     .update("deviceToken", token)
             }

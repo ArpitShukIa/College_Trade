@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +22,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 import java.io.File
 
 @Suppress("DEPRECATION")
@@ -99,7 +99,7 @@ class ProfileFragment : Fragment() {
                         launchImageCrop(it)
                     }
                 } else {
-                    Log.e(TAG, "onActivityResult: Image Failed to Load")
+                    Timber.tag(TAG).d("onActivityResult: Image Failed to Load")
                 }
             }
 
@@ -111,10 +111,10 @@ class ProfileFragment : Fragment() {
                         val file = File(uri.path!!)
                         viewModel.compressFile(file)
                     } catch (e: Exception) {
-                        Log.e(TAG, "onActivityResult: ${e.stackTrace}", e)
+                        Timber.tag(TAG).e(e)
                     }
                 } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    Log.e(TAG, "onActivityResult: Crop Error: ${result.error}")
+                    Timber.tag(TAG).e(result.error)
                 }
             }
 

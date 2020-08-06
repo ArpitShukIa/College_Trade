@@ -2,7 +2,6 @@ package com.arpit.collegetrade
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -15,6 +14,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import timber.log.Timber
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -80,7 +80,7 @@ class SplashScreenActivity : AppCompatActivity() {
                     showToast(this, "Sign in failed.\nUse your institute id instead.")
                 googleSignInClient.signOut()
             } catch (e: ApiException) {
-                Log.e(TAG, "Google sign in failed", e)
+                Timber.tag(TAG).e(e)
             }
         }
     }
@@ -95,7 +95,7 @@ class SplashScreenActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     launchMainActivity()
                 } else {
-                    Log.e(TAG, "signInWithCredential: failure", task.exception)
+                    Timber.tag(TAG).e(task.exception)
                     showToast(this, "Authentication Failed.")
                     binding.scrollView.alpha = 1f
                     binding.progressBar.visibility = View.GONE

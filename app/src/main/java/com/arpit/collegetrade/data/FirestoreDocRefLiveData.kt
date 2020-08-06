@@ -1,9 +1,9 @@
 package com.arpit.collegetrade.data
 
 import android.os.Handler
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.*
+import timber.log.Timber
 
 class FirestoreDocRefLiveData(private val doc: DocumentReference) : LiveData<DocumentSnapshot>() {
 
@@ -38,7 +38,7 @@ class FirestoreDocRefLiveData(private val doc: DocumentReference) : LiveData<Doc
 
         override fun onEvent(p0: DocumentSnapshot?, p1: FirebaseFirestoreException?) {
             if (p1 != null) {
-                Log.e(TAG, "onEvent: Listen Failed ${p1.stackTrace}", p1)
+                Timber.tag(TAG).e(p1)
                 return
             }
             value = p0!!

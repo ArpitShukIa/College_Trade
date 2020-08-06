@@ -1,7 +1,6 @@
 package com.arpit.collegetrade.navdrawer
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
@@ -11,6 +10,7 @@ import id.zelory.compressor.Compressor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.io.File
 
 class ProfileViewModel(private val application: Application) : ViewModel() {
@@ -38,7 +38,7 @@ class ProfileViewModel(private val application: Application) : ViewModel() {
                     user.postValue(application.currentUser)
                     application.adRepository.updateUserInfo(user.value!!)
                 } catch (e: Exception) {
-                    Log.e(TAG, "compressImage: ${e.stackTrace}", e)
+                    Timber.tag(TAG).e(e)
                 }
             }
         }

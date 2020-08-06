@@ -1,8 +1,8 @@
 package com.arpit.collegetrade.notifications
 
-import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import timber.log.Timber
 
 class NotificationsRepository {
 
@@ -20,13 +20,17 @@ class NotificationsRepository {
                     transaction.update(docRef, "status", 2)
             }
         } catch (e: Exception) {
-            Log.e(TAG, "markMessageAsDelivered: ${e.stackTrace}", e)
+            Timber.tag(TAG).e(e)
         }
     }
 
     fun markMessagesAsRead(messages: List<Notification>) {
-        for (M in messages)
-            firestore.collection("Chats").document(M.chatId)
-                .collection("Messages").document(M.messageId).update("status", 3)
+        try {
+            for (M in messages)
+                firestore.collection("Chats").document(M.chatId)
+                    .collection("Messages").document(M.messageId).update("status", 3)
+        } catch (e: Exception) {
+            Timber.tag(TAG).e(e)
+        }
     }
 }

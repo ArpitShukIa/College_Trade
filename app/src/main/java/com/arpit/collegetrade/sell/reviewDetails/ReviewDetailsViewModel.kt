@@ -1,7 +1,6 @@
 package com.arpit.collegetrade.sell.reviewDetails
 
 import android.net.Uri
-import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,6 +15,7 @@ import io.tempo.Tempo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -54,7 +54,7 @@ class ReviewDetailsViewModel(private val application: Application) : ViewModel()
                 repository.postAd(ad)
                 _action.value = Event(UPLOAD_SUCCEEDED)
             } catch (e: Exception) {
-                Log.e(TAG, "postAd: ${e.stackTrace}", e)
+                Timber.tag(TAG).e(e)
                 _action.value = Event(UPLOAD_FAILED)
             }
         }

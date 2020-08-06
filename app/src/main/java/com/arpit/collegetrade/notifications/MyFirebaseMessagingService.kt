@@ -9,7 +9,6 @@ import android.graphics.*
 import android.media.RingtoneManager
 import android.os.AsyncTask
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat.*
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.Person
@@ -27,6 +26,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import io.tempo.Tempo
+import timber.log.Timber
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -44,16 +44,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         val userId = Firebase.auth.currentUser?.uid ?: return
-        Log.d(TAG, "onNewToken token: $token")
+        Timber.tag(TAG).d("onNewToken: token = $token")
         Firebase.firestore.collection("Users").document(userId)
             .update("deviceToken", token)
     }
 
     override fun onMessageReceived(p0: RemoteMessage) {
         try {
-            Log.d(TAG, "onMessageReceived: started")
             val data = p0.data
-
             NotificationsRepository().markMessageAsDelivered(data["chatId"]!!, data["id"]!!)
 
             val bitmap = getCircleBitmap(data["myImage"]!!)
@@ -79,7 +77,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             filterNotifications(hashMap, data["chatId"]!!, receiver)
 
         } catch (e: Exception) {
-            Log.e(TAG, "onMessageReceived: ${e.stackTrace}", e)
+            Timber.tag(TAG).e(e)
         }
     }
 

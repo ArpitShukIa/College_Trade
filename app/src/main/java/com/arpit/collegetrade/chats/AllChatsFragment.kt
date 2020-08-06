@@ -2,7 +2,6 @@ package com.arpit.collegetrade.chats
 
 import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +30,6 @@ class ChatsFragment : Fragment() {
         val notificationDao = MyRoomDatabase.getDatabase(requireActivity()).notificationDao()
         AsyncTask.execute {
             notificationDao.deleteAllNotifications()
-            Log.d("TAG", "onCreateView: done deletion")
         }
 
         binding.toolbar.drawer_icon.setOnClickListener {

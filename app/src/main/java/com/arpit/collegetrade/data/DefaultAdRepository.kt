@@ -2,7 +2,6 @@
 
 package com.arpit.collegetrade.data
 
-import android.util.Log
 import androidx.core.net.toUri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -14,6 +13,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -175,7 +175,7 @@ object DefaultAdRepository : AdRepository {
             }
             firestore.collection("Users").document(user.id).set(user).await()
         } catch (e: Exception) {
-            Log.e(TAG, "updateUserInfo: ${e.stackTrace}", e)
+            Timber.tag(TAG).e(e)
         }
     }
 
