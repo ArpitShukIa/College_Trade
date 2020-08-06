@@ -13,6 +13,9 @@ interface NotificationDao {
     @Query("SELECT * from notification_table ORDER BY timestamp ASC")
     fun getAllNotifications(): List<Notification>
 
+    @Query("SELECT * FROM notification_table WHERE chat_id = :chatId")
+    fun getNotificationsByChatId(chatId: String): List<Notification>
+
     @Query("DELETE FROM notification_table WHERE chat_id = :chatId")
     fun deleteNotificationsByChatId(chatId: String)
 

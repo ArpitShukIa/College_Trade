@@ -107,5 +107,7 @@ dependencies {
 
     implementation 'com.github.AllanHasegawa.Tempo:tempo:0.2.0'
 
+//    implementation 'com.jakewharton.timber:timber:4.7.1'
+
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
 }

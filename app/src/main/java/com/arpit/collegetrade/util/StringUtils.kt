@@ -1,5 +1,6 @@
 package com.arpit.collegetrade.util
 
+import androidx.core.text.HtmlCompat
 import io.tempo.Tempo
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,6 +22,11 @@ fun getErrorMessage(s: String, n: Int): String? {
         else -> null
     }
 }
+
+fun getNotificationText(s1: String, s2: String, bold: Boolean) =
+    if (bold)
+        HtmlCompat.fromHtml("<b>$s1:</b> $s2", HtmlCompat.FROM_HTML_MODE_LEGACY)
+    else "$s1: $s2"
 
 fun getLastSeen(time: String?): String {
     return when (time) {

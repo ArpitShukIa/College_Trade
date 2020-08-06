@@ -5,8 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 class DirectReplyReceiver : BroadcastReceiver() {
 
@@ -16,7 +14,11 @@ class DirectReplyReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent) {
         try {
-            Log.d(TAG, "onReceive uid: ${Firebase.auth.currentUser?.uid}")
+            intent.getStringExtra("markAsRead")?.let {
+                Log.d(TAG, "onReceive: chatId=$it")
+                MyFirebaseMessagingService().updateDatabase(context!!, it, true)
+            }
+
             RemoteInput.getResultsFromIntent(intent)?.let {
                 val chatId = intent.getStringExtra("CHAT_ID")
                 val reply = it.getCharSequence(REMOTE_INPUT_KEY)

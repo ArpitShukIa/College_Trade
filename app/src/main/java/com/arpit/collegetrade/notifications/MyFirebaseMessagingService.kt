@@ -19,6 +19,7 @@ import androidx.core.text.HtmlCompat
 import com.arpit.collegetrade.R
 import com.arpit.collegetrade.SplashScreenActivity
 import com.arpit.collegetrade.data.MyRoomDatabase
+import com.arpit.collegetrade.util.getNotificationText
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -52,6 +53,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         try {
             Log.d(TAG, "onMessageReceived: started")
             val data = p0.data
+
+            NotificationsRepository().markMessageAsDelivered(data["chatId"]!!, data["id"]!!)
 
             val bitmap = getCircleBitmap(data["myImage"]!!)
             val receiver = Person.Builder()
@@ -98,6 +101,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         hashMap.forEach { (chatId, notifList) ->
 
+            msgCount += notifList.size
+
             val notInDrawer = notificationManager.activeNotifications
                 .find { it.id == getNotificationId(chatId) }
                 ?.notification == null
@@ -111,7 +116,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             val messagingStyle = MessagingStyle(receiver)
             messagingStyle.conversationTitle = notifList[0].adTitle
-            messagingStyle.isGroupConversation = true
+//            messagingStyle.isGroupConversation = true
 
             var timestamp = 0L
             title = notifList[0].adTitle
@@ -124,13 +129,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             notifList.forEach {
                 messagingStyle.addMessage(it.message, it.timestamp, sender)
                 timestamp = it.timestamp
-                msgCount++
-                val line1 = "<b>${it.senderName}:</b> ${it.message}"
-                text = HtmlCompat.fromHtml(line1, HtmlCompat.FROM_HTML_MODE_LEGACY)
-                if (chatsCount == 1)
-                    inboxStyle.addLine(text)
-                else
-                    inboxStyle.addLine("${it.senderName}: ${it.message}")
+                text = getNotificationText(it.senderName, it.message, chatsCount == 1)
+                inboxStyle.addLine(text)
             }
 
             if (isNotM && (notInDrawer || msgChatId == chatId))
@@ -144,10 +144,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
         inboxStyle.setSummaryText(summary)
 
-        if (isNotM) {
-            showSummaryNotification(inboxStyle)
-        } else {
+        if (isNotM)
+            showSummaryNotification(inboxStyle, this)
+        else {
             val contentText = if (msgCount == 1) text else summary
+            if (chatsCount > 1) title = "College Trade"
+            inboxStyle.setBigContentTitle(title)
             buildNotificationForM(chatsCount, title, inboxStyle, msgCount, contentText)
         }
     }
@@ -156,19 +158,20 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        val messagingStyle = notificationManager.activeNotifications
+        val notification = notificationManager.activeNotifications
             .find { it.id == getNotificationId(chatId) }
             ?.notification
+
+        val messagingStyle = notification
             ?.let { MessagingStyle.extractMessagingStyleFromNotification(it) }!!
 
-        val currentTime = Tempo.now() ?: System.currentTimeMillis()
-
         if (reply.isBlank()) {
-            buildNotification(chatId, messagingStyle, currentTime, context)
+            buildNotification(chatId, messagingStyle, notification.`when`, context)
             return
         }
-        clearDatabase(context, chatId)
+        updateDatabase(context, chatId, false)
 
+        val currentTime = Tempo.now() ?: System.currentTimeMillis()
         messagingStyle.addMessage(reply, currentTime, messagingStyle.user)
         buildNotification(chatId, messagingStyle, currentTime, context)
     }
@@ -179,8 +182,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         timestamp: Long,
         context: Context
     ) {
-        val activityIntent = Intent(context, SplashScreenActivity::class.java)
-        val contentIntent = PendingIntent.getActivity(context, 0, activityIntent, 0)
+        val broadcastIntent = Intent(context, DirectReplyReceiver::class.java)
+        broadcastIntent.putExtra("markAsRead", chatId)
+        val actionIntent =
+            PendingIntent.getBroadcast(context, getNotificationId(chatId) + 1, broadcastIntent, 0)
 
         val sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
@@ -188,20 +193,21 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setSmallIcon(R.drawable.app_icon)
             .setStyle(messagingStyle)
             .setColor(0x3867E3)
-            .setPriority(PRIORITY_LOW)
             .setSound(sound)
-            .setContentIntent(contentIntent)
             .setWhen(timestamp)
             .setShowWhen(true)
             .setAutoCancel(true)
             .setGroup(GROUP_KEY)
-            .setGroupAlertBehavior(GROUP_ALERT_SUMMARY)
             .setCategory(CATEGORY_MESSAGE)
+            .setGroupAlertBehavior(GROUP_ALERT_SUMMARY)
+            .setContentIntent(getContentIntent(context))
             .addAction(getRemoteInputAction(context, chatId))
 
+        if (this == context)
+            builder.addAction(R.drawable.ic_read, "Mark As Read", actionIntent)
+
         createNotificationChannel(context, GENERAL_CHANNEL_ID)
-        NotificationManagerCompat.from(context)
-            .notify(getNotificationId(chatId), builder.build())
+        NotificationManagerCompat.from(context).notify(getNotificationId(chatId), builder.build())
     }
 
     private fun buildNotificationForM(
@@ -211,38 +217,25 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         msgCount: Int,
         contentText: CharSequence
     ) {
-        val activityIntent = Intent(this, SplashScreenActivity::class.java)
-        val contentIntent = PendingIntent.getActivity(this, 0, activityIntent, 0)
-
         val sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-
         val builder = Builder(this, IMPORTANT_CHANNEL_ID)
             .setSmallIcon(R.drawable.app_icon)
             .setPriority(PRIORITY_HIGH)
             .setColor(0x3867E3)
             .setSound(sound)
+            .setContentTitle(title)
             .setContentText(contentText)
-            .setContentIntent(contentIntent)
+            .setContentIntent(getContentIntent(this))
             .setAutoCancel(true)
 
-        if (chatsCount == 1) {
-            builder.setLargeIcon(senderBitmap)
-                .setContentTitle(title)
-            inboxStyle.setBigContentTitle(title)
-        } else {
-            builder.setContentTitle("College Trade")
-            inboxStyle.setBigContentTitle("College Trade")
-        }
-
-        if (msgCount > 1)
-            builder.setStyle(inboxStyle)
+        if (msgCount > 1) builder.setStyle(inboxStyle)
+        if (chatsCount == 1) builder.setLargeIcon(senderBitmap)
 
         NotificationManagerCompat.from(this).notify(notificationId, builder.build())
     }
 
-    private fun getRemoteInputAction(
-        context: Context, chatId: String
-    ): Action? {
+    private fun getRemoteInputAction(context: Context, chatId: String): Action? {
+
         val remoteInput = RemoteInput.Builder(REMOTE_INPUT_KEY).setLabel("Reply").build()
         val intent = Intent(context, DirectReplyReceiver::class.java)
         intent.putExtra("CHAT_ID", chatId)
@@ -254,23 +247,21 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .addRemoteInput(remoteInput).build()
     }
 
-    private fun showSummaryNotification(inboxStyle: InboxStyle) {
-        val activityIntent = Intent(this, SplashScreenActivity::class.java)
-        val contentIntent = PendingIntent.getActivity(this, 0, activityIntent, 0)
-
-        val summaryNotification = Builder(this, IMPORTANT_CHANNEL_ID)
+    private fun showSummaryNotification(inboxStyle: InboxStyle, context: Context) {
+        val channelId = if (this == context) IMPORTANT_CHANNEL_ID else GENERAL_CHANNEL_ID
+        val summaryNotification = Builder(context, channelId)
             .setSmallIcon(R.drawable.app_icon)
             .setStyle(inboxStyle)
             .setColor(0x3867E3)
-            .setPriority(PRIORITY_HIGH)
             .setGroup(GROUP_KEY)
-            .setGroupAlertBehavior(GROUP_ALERT_SUMMARY)
             .setGroupSummary(true)
-            .setContentIntent(contentIntent)
+            .setGroupAlertBehavior(GROUP_ALERT_SUMMARY)
+            .setCategory(CATEGORY_MESSAGE)
+            .setContentIntent(getContentIntent(context))
             .build()
 
-        createNotificationChannel(this, IMPORTANT_CHANNEL_ID)
-        NotificationManagerCompat.from(this).notify(SUMMARY_ID, summaryNotification)
+        createNotificationChannel(context, channelId)
+        NotificationManagerCompat.from(context).notify(SUMMARY_ID, summaryNotification)
     }
 
     private fun createNotificationChannel(context: Context, channelId: String) {
@@ -293,7 +284,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun getNotificationId(chatId: String) =
-        (chatId.take(3) + chatId.takeLast(3)).hashCode()
+        (chatId.take(2) + chatId.takeLast(3)).hashCode()
+
+    private fun getContentIntent(context: Context) =
+        Intent(context, SplashScreenActivity::class.java).let {
+            PendingIntent.getActivity(context, 0, it, 0)
+        }
 
     private fun getAllNotifications(notification: Notification): List<Notification> {
         val notificationDao = MyRoomDatabase.getDatabase(this).notificationDao()
@@ -301,10 +297,33 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         return notificationDao.getAllNotifications()
     }
 
-    private fun clearDatabase(context: Context, chatId: String) {
+    fun updateDatabase(context: Context, chatId: String, clearNotification: Boolean) {
+
         val notificationDao = MyRoomDatabase.getDatabase(context).notificationDao()
+
         AsyncTask.execute {
+            notificationDao.getNotificationsByChatId(chatId).also {
+                NotificationsRepository().markMessagesAsRead(it)
+            }
             notificationDao.deleteNotificationsByChatId(chatId)
+
+            if (clearNotification) {
+                NotificationManagerCompat.from(context).cancel(getNotificationId(chatId))
+                val notifications = notificationDao.getAllNotifications()
+                val msgCount = notifications.size
+                if (msgCount == 0) {
+                    NotificationManagerCompat.from(context).cancel(SUMMARY_ID)
+                    return@execute
+                }
+
+                val chatsCount = notifications.distinctBy { it.chatId }.size
+                val summary = when {
+                    msgCount == 1 -> null
+                    chatsCount == 1 -> "$msgCount new messages"
+                    else -> "$msgCount messages from $chatsCount chats"
+                }
+                showSummaryNotification(InboxStyle().setSummaryText(summary), context)
+            }
         }
     }
 
