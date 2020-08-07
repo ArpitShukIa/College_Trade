@@ -111,6 +111,7 @@ private fun handleLogout(activity: MainActivity) {
                 val time = Tempo.now() ?: System.currentTimeMillis()
                 Firebase.firestore.collection("Users").document(uid).update("lastSeen", time)
                 Firebase.auth.signOut()
+                (activity.application as Application).userId = ""
                 activity.startActivity(Intent(activity, SplashScreenActivity::class.java))
                 activity.finish()
             }

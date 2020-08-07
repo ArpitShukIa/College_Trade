@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.arpit.collegetrade.notifications.Notification
 import com.arpit.collegetrade.notifications.NotificationDao
 
-@Database(entities = [Notification::class], version = 2, exportSchema = true)
+@Database(entities = [Notification::class], version = 3, exportSchema = true)
 abstract class MyRoomDatabase : RoomDatabase() {
 
     abstract fun notificationDao(): NotificationDao

@@ -41,11 +41,13 @@ functions.region('asia-east2')
                 message: msg.message,
                 name: msg.senderName,
                 image: msg.senderImage,
+                myName: msg.receiverName,
                 myImage: msg.receiverImage,
                 sender: msg.from,
                 receiver: msg.to,
                 time: msg.timestamp,
-                deviceToken: msg.deviceToken
+                deviceToken: msg.deviceToken,
+                deviceToken2: msg.receiverDeviceToken
             }
         }
         console.log(`deviceToken=${token_id}`)

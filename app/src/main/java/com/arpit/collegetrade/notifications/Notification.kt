@@ -22,6 +22,15 @@ data class Notification(
     @ColumnInfo(name = "timestamp")
     val timestamp: Long,
 
+    @ColumnInfo(name = "receiver_name")
+    val receiverName: String,
+
+    @ColumnInfo(name = "receiver_key")
+    val receiverKey: String,
+
+    @ColumnInfo(name = "receiver_icon")
+    val receiverImage: String,
+
     @ColumnInfo(name = "sender_name")
     val senderName: String,
 
@@ -29,5 +38,11 @@ data class Notification(
     val senderKey: String,
 
     @ColumnInfo(name = "sender_icon")
-    val senderIcon: String
+    val senderImage: String,
+
+    @ColumnInfo(name = "sender_device_token")
+    val senderDeviceToken: String,
+
+    @ColumnInfo(name = "receiver_device_token")
+    val receiverDeviceToken: String
 )

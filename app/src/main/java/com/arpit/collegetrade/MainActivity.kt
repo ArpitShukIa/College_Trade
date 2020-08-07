@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity() {
 
                 val token = task.result?.token.toString()
                 Timber.tag(TAG).d("getDeviceToken: token = $token")
+                (application as Application).deviceToken = token
                 Firebase.firestore.collection("Users").document(Firebase.auth.currentUser?.uid!!)
                     .update("deviceToken", token)
             }

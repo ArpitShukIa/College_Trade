@@ -9,15 +9,19 @@ import android.graphics.*
 import android.media.RingtoneManager
 import android.os.AsyncTask
 import android.os.Build
+import android.os.Bundle
 import androidx.core.app.NotificationCompat.*
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.Person
 import androidx.core.app.RemoteInput
 import androidx.core.graphics.drawable.IconCompat
+import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
+import com.arpit.collegetrade.Application
 import com.arpit.collegetrade.R
 import com.arpit.collegetrade.SplashScreenActivity
 import com.arpit.collegetrade.data.MyRoomDatabase
+import com.arpit.collegetrade.data.chats.Message
 import com.arpit.collegetrade.util.getNotificationText
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.ktx.auth
@@ -45,13 +49,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onNewToken(token)
         val userId = Firebase.auth.currentUser?.uid ?: return
         Timber.tag(TAG).d("onNewToken: token = $token")
-        Firebase.firestore.collection("Users").document(userId)
-            .update("deviceToken", token)
+        Firebase.firestore.collection("Users").document(userId).update("deviceToken", token)
     }
 
     override fun onMessageReceived(p0: RemoteMessage) {
         try {
             val data = p0.data
+
+            if ((application as Application).userId != data["receiver"]) return
+
             NotificationsRepository().markMessageAsDelivered(data["chatId"]!!, data["id"]!!)
 
             val bitmap = getCircleBitmap(data["myImage"]!!)
@@ -62,8 +68,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .build()
 
             val notification = Notification(
-                data["id"]!!, data["chatId"]!!, data["adTitle"]!!, data["message"]!!,
-                data["time"]!!.toLong(), data["name"]!!, data["sender"]!!, data["image"]!!
+                data["id"]!!, data["chatId"]!!, data["adTitle"]!!,
+                data["message"]!!, data["time"]!!.toLong(), data["myName"]!!,
+                data["receiver"]!!, data["myImage"]!!, data["name"]!!,
+                data["sender"]!!, data["image"]!!, data["deviceToken2"]!!, data["deviceToken"]!!
             )
 
             val notifications = getAllNotifications(notification)
@@ -105,19 +113,29 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .find { it.id == getNotificationId(chatId) }
                 ?.notification == null
 
-            senderBitmap = getCircleBitmap(notifList[0].senderIcon)
+            val n = notifList[0]
+
+            senderBitmap = getCircleBitmap(n.senderImage)
             val sender = Person.Builder()
-                .setKey(notifList[0].senderKey)
-                .setName(notifList[0].senderName)
+                .setKey(n.senderKey)
+                .setName(n.senderName)
                 .setIcon(IconCompat.createWithBitmap(senderBitmap))
                 .build()
 
             val messagingStyle = MessagingStyle(receiver)
-            messagingStyle.conversationTitle = notifList[0].adTitle
-//            messagingStyle.isGroupConversation = true
+            messagingStyle.conversationTitle = n.adTitle
+
+            val data = mapOf(
+                "adTitle" to n.adTitle,
+                "rKey" to n.receiverKey, "sKey" to n.senderKey,
+                "rName" to n.receiverName, "rImage" to n.receiverImage,
+                "sName" to n.senderName, "sImage" to n.senderImage,
+                "token1" to n.senderDeviceToken, "token2" to n.receiverDeviceToken
+            )
+            val extras = bundleOf("data" to data)
 
             var timestamp = 0L
-            title = notifList[0].adTitle
+            title = n.adTitle
 
             if (chatsCount > 1)
                 inboxStyle.addLine(
@@ -132,7 +150,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             }
 
             if (isNotM && (notInDrawer || msgChatId == chatId))
-                buildNotification(chatId, messagingStyle, timestamp, this)
+                buildNotification(chatId, messagingStyle, timestamp, this, extras)
         }
 
         val summary = when {
@@ -156,29 +174,30 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        val notification = notificationManager.activeNotifications
+        val n = notificationManager.activeNotifications
             .find { it.id == getNotificationId(chatId) }
-            ?.notification
+            ?.notification!!
 
-        val messagingStyle = notification
-            ?.let { MessagingStyle.extractMessagingStyleFromNotification(it) }!!
+        val messagingStyle = n.let { MessagingStyle.extractMessagingStyleFromNotification(it) }!!
 
         if (reply.isBlank()) {
-            buildNotification(chatId, messagingStyle, notification.`when`, context)
+            buildNotification(chatId, messagingStyle, n.`when`, context, n.extras)
             return
         }
+        createMessage(reply.toString(), chatId, n.extras)
         updateDatabase(context, chatId, false)
 
         val currentTime = Tempo.now() ?: System.currentTimeMillis()
         messagingStyle.addMessage(reply, currentTime, messagingStyle.user)
-        buildNotification(chatId, messagingStyle, currentTime, context)
+        buildNotification(chatId, messagingStyle, currentTime, context, n.extras)
     }
 
     private fun buildNotification(
         chatId: String,
         messagingStyle: MessagingStyle,
         timestamp: Long,
-        context: Context
+        context: Context,
+        extras: Bundle
     ) {
         val broadcastIntent = Intent(context, DirectReplyReceiver::class.java)
         broadcastIntent.putExtra("markAsRead", chatId)
@@ -200,6 +219,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setGroupAlertBehavior(GROUP_ALERT_SUMMARY)
             .setContentIntent(getContentIntent(context))
             .addAction(getRemoteInputAction(context, chatId))
+            .addExtras(extras)
 
         if (this == context)
             builder.addAction(R.drawable.ic_read, "Mark As Read", actionIntent)
@@ -306,23 +326,43 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             notificationDao.deleteNotificationsByChatId(chatId)
 
             if (clearNotification) {
-                NotificationManagerCompat.from(context).cancel(getNotificationId(chatId))
-                val notifications = notificationDao.getAllNotifications()
-                val msgCount = notifications.size
-                if (msgCount == 0) {
+                val notificationManager =
+                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                notificationManager.cancel(getNotificationId(chatId))
+
+                val activeNotificationsCount = notificationManager.activeNotifications.size
+                Timber.tag(TAG).d("updateDatabase: $activeNotificationsCount")
+                if (activeNotificationsCount == 1) {
                     NotificationManagerCompat.from(context).cancel(SUMMARY_ID)
                     return@execute
                 }
+                val notifications = notificationDao.getAllNotifications()
 
+                val msgCount = notifications.size
                 val chatsCount = notifications.distinctBy { it.chatId }.size
                 val summary = when {
-                    msgCount == 1 -> null
+                    msgCount < 2 -> null
                     chatsCount == 1 -> "$msgCount new messages"
                     else -> "$msgCount messages from $chatsCount chats"
                 }
                 showSummaryNotification(InboxStyle().setSummaryText(summary), context)
             }
         }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun createMessage(reply: String, chatId: String, extras: Bundle) {
+        val data = extras["data"] as Map<String, String>
+        val currentTime = (Tempo.now() ?: System.currentTimeMillis()).toString()
+        val message = Message(
+            "", reply,
+            data.getValue("rKey"), data.getValue("sKey"),
+            data.getValue("rName"), data.getValue("rImage"),
+            data.getValue("sName"), data.getValue("sImage"),
+            data.getValue("adTitle"), currentTime, 0,
+            data.getValue("token1"), data.getValue("token2")
+        )
+        NotificationsRepository().sendMessage(message, chatId)
     }
 
     private fun getCircleBitmap(imageUrl: String): Bitmap {

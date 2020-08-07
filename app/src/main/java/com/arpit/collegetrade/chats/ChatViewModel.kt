@@ -66,8 +66,9 @@ class ChatViewModel(val application: Application) : ViewModel() {
         val senderName = if (ad.id == currentUser.id) ad.sellerName else currentUser.name
         val senderImage = if (ad.id == currentUser.id) ad.sellerPhoto else currentUser.photo
         val msg = Message(
-            "", messageText.value!!, currentUser.id, otherUserId.value!!, senderName,
-            senderImage, _image.value!!, ad.title, currentTime.toString(), 0, deviceToken
+            "", messageText.value!!, currentUser.id, otherUserId.value!!,
+            senderName, senderImage, _name.value!!, _image.value!!, ad.title,
+            currentTime.toString(), 0, deviceToken, application.deviceToken
         )
 
         _messages.value!!.add(msg)

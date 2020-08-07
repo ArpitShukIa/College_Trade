@@ -7,9 +7,11 @@ data class Message(
     val to: String,
     val senderName: String,
     val senderImage: String,
+    val receiverName: String,
     val receiverImage: String,
     val adTitle: String,
     val timestamp: String,
     val status: Int,
-    var deviceToken: String
+    val deviceToken: String,
+    val receiverDeviceToken: String
 )
