@@ -53,7 +53,6 @@ functions.region('asia-east2')
         const options = { 
             priority: "high"
         }
-        console.log(`deviceToken=${token_id}`)
         return admin.messaging().sendToDevice(token_id, payload, options)
     }
     catch(error) {

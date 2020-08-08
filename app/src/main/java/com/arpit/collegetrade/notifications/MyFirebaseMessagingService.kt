@@ -2,6 +2,7 @@ package com.arpit.collegetrade.notifications
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.NotificationManager.IMPORTANCE_HIGH
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -37,8 +38,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private val TAG = "TAG FbMessagingService"
 
     private val GROUP_KEY = "group_key"
-    private val GENERAL_CHANNEL_ID = "general_channel"
-    private val IMPORTANT_CHANNEL_ID = "important_channel"
+    private val CHANNEL_ID = "my_channel"
     private val REMOTE_INPUT_KEY = "KEY_TEXT_REPLY"
     private val notificationId = 102 // For Android M
     private val SUMMARY_NOTIFICATION_ID = 101
@@ -205,27 +205,27 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val actionIntent =
             PendingIntent.getBroadcast(context, getNotificationId(chatId) + 1, broadcastIntent, 0)
 
-        val sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-
-        val builder = Builder(context, GENERAL_CHANNEL_ID)
+        val builder = Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.app_icon)
             .setStyle(messagingStyle)
             .setColor(0x3867E3)
-            .setSound(sound)
             .setWhen(timestamp)
             .setShowWhen(true)
             .setAutoCancel(true)
-            .setGroup(GROUP_KEY)
-            .setCategory(CATEGORY_MESSAGE)
-            .setGroupAlertBehavior(GROUP_ALERT_SUMMARY)
+            .setOnlyAlertOnce(true)
             .setContentIntent(getContentIntent(context))
             .addAction(getRemoteInputAction(context, chatId))
+            .setCategory(CATEGORY_MESSAGE)
             .addExtras(extras)
+            .setGroup(GROUP_KEY)
+            .setGroupAlertBehavior(
+                if (this == context) GROUP_ALERT_SUMMARY else GROUP_ALERT_CHILDREN
+            )
 
         if (this == context)
             builder.addAction(R.drawable.ic_read, "Mark As Read", actionIntent)
 
-        createNotificationChannel(context, GENERAL_CHANNEL_ID)
+        createNotificationChannel(context)
         NotificationManagerCompat.from(context).notify(getNotificationId(chatId), builder.build())
     }
 
@@ -237,7 +237,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         contentText: CharSequence
     ) {
         val sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val builder = Builder(this, IMPORTANT_CHANNEL_ID)
+        val builder = Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.app_icon)
             .setPriority(PRIORITY_HIGH)
             .setColor(0x3867E3)
@@ -270,42 +270,28 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        val channelId = if (this == context) IMPORTANT_CHANNEL_ID else GENERAL_CHANNEL_ID
-
-        val summaryNotification = Builder(context, channelId)
+        val summaryNotification = Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.app_icon)
             .setStyle(inboxStyle)
             .setColor(0x3867E3)
             .setGroup(GROUP_KEY)
-            .setGroupSummary(true)
-            .setGroupAlertBehavior(GROUP_ALERT_SUMMARY)
             .setCategory(CATEGORY_MESSAGE)
             .setContentIntent(getContentIntent(context))
-            .build()
+            .setGroupSummary(true)
+            .setGroupAlertBehavior(
+                if (this == context) GROUP_ALERT_SUMMARY else GROUP_ALERT_CHILDREN
+            ).build()
 
-        val activeNotificationsCount = notificationManager.activeNotifications.size
-        if (activeNotificationsCount > 1) {
-            createNotificationChannel(context, channelId)
+        if (notificationManager.activeNotifications.isNotEmpty())
             notificationManager.notify(SUMMARY_NOTIFICATION_ID, summaryNotification)
-        }
     }
 
-    private fun createNotificationChannel(context: Context, channelId: String) {
+    private fun createNotificationChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel =
-                if (channelId == GENERAL_CHANNEL_ID)
-                    NotificationChannel(
-                        GENERAL_CHANNEL_ID,
-                        "General",
-                        NotificationManager.IMPORTANCE_LOW
-                    )
-                else
-                    NotificationChannel(
-                        IMPORTANT_CHANNEL_ID,
-                        "Important",
-                        NotificationManager.IMPORTANCE_HIGH
-                    )
-            NotificationManagerCompat.from(context).createNotificationChannel(channel)
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val channel = NotificationChannel(CHANNEL_ID, "Chats", IMPORTANCE_HIGH)
+            notificationManager.createNotificationChannel(channel)
         }
     }
 
