@@ -22,6 +22,8 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.ktx.Firebase
 import timber.log.Timber
 
+// TODO Don't repeat database operations on configuration changes
+
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "TAG MainActivity"

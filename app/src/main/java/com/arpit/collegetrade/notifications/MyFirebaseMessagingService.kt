@@ -36,12 +36,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private val TAG = "TAG FbMessagingService"
 
-    private val GENERAL_CHANNEL_ID = "com.arpit.collegetrade.general_channel"
-    private val IMPORTANT_CHANNEL_ID = "com.arpit.collegetrade.important_channel"
-    private val GROUP_KEY = "com.arpit.collegetrade.group_notification_key"
+    private val GROUP_KEY = "group_key"
+    private val GENERAL_CHANNEL_ID = "general_channel"
+    private val IMPORTANT_CHANNEL_ID = "important_channel"
     private val REMOTE_INPUT_KEY = "KEY_TEXT_REPLY"
-    private val SUMMARY_ID = 101
     private val notificationId = 102 // For Android M
+    private val SUMMARY_NOTIFICATION_ID = 101
 
     private lateinit var senderBitmap: Bitmap
 
@@ -124,6 +124,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             val messagingStyle = MessagingStyle(receiver)
             messagingStyle.conversationTitle = n.adTitle
+            messagingStyle.isGroupConversation = true
 
             val data = mapOf(
                 "adTitle" to n.adTitle,
@@ -266,7 +267,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun showSummaryNotification(inboxStyle: InboxStyle, context: Context) {
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
         val channelId = if (this == context) IMPORTANT_CHANNEL_ID else GENERAL_CHANNEL_ID
+
         val summaryNotification = Builder(context, channelId)
             .setSmallIcon(R.drawable.app_icon)
             .setStyle(inboxStyle)
@@ -278,8 +283,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setContentIntent(getContentIntent(context))
             .build()
 
-        createNotificationChannel(context, channelId)
-        NotificationManagerCompat.from(context).notify(SUMMARY_ID, summaryNotification)
+        val activeNotificationsCount = notificationManager.activeNotifications.size
+        if (activeNotificationsCount > 1) {
+            createNotificationChannel(context, channelId)
+            notificationManager.notify(SUMMARY_NOTIFICATION_ID, summaryNotification)
+        }
     }
 
     private fun createNotificationChannel(context: Context, channelId: String) {
@@ -328,12 +336,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             if (clearNotification) {
                 val notificationManager =
                     context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
                 notificationManager.cancel(getNotificationId(chatId))
 
                 val activeNotificationsCount = notificationManager.activeNotifications.size
-                Timber.tag(TAG).d("updateDatabase: $activeNotificationsCount")
                 if (activeNotificationsCount == 1) {
-                    NotificationManagerCompat.from(context).cancel(SUMMARY_ID)
+                    NotificationManagerCompat.from(context).cancel(SUMMARY_NOTIFICATION_ID)
                     return@execute
                 }
                 val notifications = notificationDao.getAllNotifications()
