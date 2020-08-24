@@ -16,10 +16,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.search_bar_layout.view.*
 
-class ChatsFragment : Fragment() {
+class AllChatsFragment : Fragment() {
 
     private var _binding: FragmentAllChatsBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var tabLayoutMediator: TabLayoutMediator
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,15 +40,18 @@ class ChatsFragment : Fragment() {
 
         binding.viewPager.adapter = TabsAdapter(this)
 
-        TabLayoutMediator(binding.chatTabs, binding.viewPager) { tab, position ->
+        tabLayoutMediator = TabLayoutMediator(binding.chatTabs, binding.viewPager) { tab, position ->
             tab.text = if (position == 0) "BUYING" else "SELLING"
-        }.attach()
+        }
+        tabLayoutMediator.attach()
 
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        tabLayoutMediator.detach()
+        binding.viewPager.adapter = null
         _binding = null
     }
 }

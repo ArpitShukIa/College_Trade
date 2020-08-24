@@ -11,6 +11,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.arpit.collegetrade.chats.buy.BuyingViewModel
+import com.arpit.collegetrade.chats.sell.SellingViewModel
 import com.arpit.collegetrade.databinding.ActivityMainBinding
 import com.arpit.collegetrade.favorites.SharedViewModel
 import com.arpit.collegetrade.navdrawer.setUpNavigationDrawer
@@ -28,7 +30,9 @@ class MainActivity : AppCompatActivity() {
 
     private val TAG = "TAG MainActivity"
 
-    private val viewModel: SharedViewModel by viewModels { getViewModelFactory() }
+    val buyingViewModel: BuyingViewModel by viewModels { getViewModelFactory() }
+    val sellingViewModel: SellingViewModel by viewModels { getViewModelFactory() }
+    private val sharedViewModel: SharedViewModel by viewModels { getViewModelFactory() }
 
     private lateinit var binding: ActivityMainBinding
 
@@ -40,9 +44,9 @@ class MainActivity : AppCompatActivity() {
         updateDatabase()
         getDeviceToken()
 
-        viewModel.currentTime.observe(this, Observer { })
+        sharedViewModel.currentTime.observe(this, Observer { })
 
-        viewModel.apply {
+        sharedViewModel.apply {
             if (firstTimeRefresh) {
                 refreshHome()
                 refreshFav()
@@ -50,6 +54,14 @@ class MainActivity : AppCompatActivity() {
                 firstTimeRefresh = false
             }
         }
+
+        buyingViewModel.chatsList.observe(this, Observer {
+//            Timber.tag(TAG).d("onCreate: $it")
+        })
+
+        sellingViewModel.chatsList.observe(this, Observer {
+//            Timber.tag(TAG).d("onCreate: $it")
+        })
 
         val rootDestinations = setOf(
             R.id.homeFragment, R.id.allChatsFragment, R.id.favoritesFragment, R.id.myAdsFragment
@@ -84,8 +96,8 @@ class MainActivity : AppCompatActivity() {
             app.currentUser.id = Firebase.auth.currentUser?.uid!!
         } else return
 
-        viewModel.getUser()
-        viewModel.userRetrieved.observe(this, EventObserver { retrieved ->
+        sharedViewModel.getUser()
+        sharedViewModel.userRetrieved.observe(this, EventObserver { retrieved ->
             if (retrieved)
                 setUpNavigationDrawer(
                     binding.navigationDrawer,
@@ -133,11 +145,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.updateLastSeen(true)
+        sharedViewModel.updateLastSeen(true)
     }
 
     override fun onStop() {
         super.onStop()
-        viewModel.updateLastSeen(false)
+        sharedViewModel.updateLastSeen(false)
     }
 }

@@ -3,6 +3,8 @@ package com.arpit.collegetrade
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.arpit.collegetrade.chats.ChatViewModel
+import com.arpit.collegetrade.chats.buy.BuyingViewModel
+import com.arpit.collegetrade.chats.sell.SellingViewModel
 import com.arpit.collegetrade.favorites.SharedViewModel
 import com.arpit.collegetrade.home.ad.AdViewModel
 import com.arpit.collegetrade.navdrawer.ProfileViewModel
@@ -31,6 +33,12 @@ class ViewModelFactory(private val application: Application) : ViewModelProvider
 
             isAssignableFrom(ChatViewModel::class.java) ->
                 ChatViewModel(application)
+
+            isAssignableFrom(BuyingViewModel::class.java) ->
+                BuyingViewModel(application)
+
+            isAssignableFrom(SellingViewModel::class.java) ->
+                SellingViewModel(application)
 
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

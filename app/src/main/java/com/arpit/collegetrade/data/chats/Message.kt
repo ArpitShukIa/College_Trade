@@ -1,17 +1,17 @@
 package com.arpit.collegetrade.data.chats
 
 data class Message(
-    var id: String,
-    val message: String,
-    val from: String,
-    val to: String,
-    val senderName: String,
-    val senderImage: String,
-    val receiverName: String,
-    val receiverImage: String,
-    val adTitle: String,
-    val timestamp: String,
-    val status: Int,
-    val deviceToken: String,
-    val receiverDeviceToken: String
+    var id: String = "",
+    var message: String = "",
+    var from: String = "",
+    var to: String = "",
+    var senderName: String = "",
+    var senderImage: String = "",
+    var receiverName: String = "",
+    var receiverImage: String = "",
+    var adTitle: String = "",
+    var timestamp: String = "",
+    var status: Int = -1,
+    var deviceToken: String = "",
+    var receiverDeviceToken: String = ""
 )

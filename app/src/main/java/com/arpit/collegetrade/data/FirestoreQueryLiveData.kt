@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.*
 import timber.log.Timber
 
-class FirestoreLiveData(private val query: Query) : LiveData<QuerySnapshot>() {
+class FirestoreQueryLiveData(private val query: Query) : LiveData<QuerySnapshot>() {
 
     private val listener = SnapshotListener()
     private var registration: ListenerRegistration? = null
@@ -34,7 +34,7 @@ class FirestoreLiveData(private val query: Query) : LiveData<QuerySnapshot>() {
 
     private inner class SnapshotListener : EventListener<QuerySnapshot> {
 
-        private val TAG = "TAG FirestoreLiveData"
+        private val TAG = "TAG QueryLiveData"
 
         override fun onEvent(p0: QuerySnapshot?, p1: FirebaseFirestoreException?) {
             if (p1 != null) {

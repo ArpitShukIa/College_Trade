@@ -6,7 +6,7 @@ import com.arpit.collegetrade.Event
 import com.arpit.collegetrade.data.Ad
 import kotlinx.coroutines.launch
 
-class AdViewModel(private val application: Application) : ViewModel() {
+class AdViewModel(application: Application) : ViewModel() {
 
     private val repository = application.adRepository
     val userId = application.currentUser.id
@@ -19,7 +19,6 @@ class AdViewModel(private val application: Application) : ViewModel() {
 
     fun updateAd(ad: Ad) {
         this.ad.value = ad
-        application.chatPersonId = ad.sellerId
         if (ad.sellerId != userId)
             viewModelScope.launch {
                 repository.addToViewersList(ad.id, userId)

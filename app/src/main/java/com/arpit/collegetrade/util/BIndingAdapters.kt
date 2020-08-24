@@ -10,8 +10,11 @@ import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.arpit.collegetrade.Application
 import com.arpit.collegetrade.R
+import com.arpit.collegetrade.chats.ChatsAdapter
 import com.arpit.collegetrade.data.Ad
+import com.arpit.collegetrade.data.chats.Chat
 import com.arpit.collegetrade.home.AdsAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -130,4 +133,40 @@ fun setBackgroundColor(imageView: ImageView, color: Int) {
 @BindingAdapter("isVisible")
 fun setVisibility(view: TextView, s: String?) {
     view.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+}
+
+@BindingAdapter("status")
+fun setStatus(view: ImageView, status: Int) {
+    view.setBackgroundResource(
+        when (status) {
+            0 -> R.drawable.ic_sending
+            1 -> R.drawable.ic_sent
+            2 -> R.drawable.ic_delivered
+            else -> R.drawable.ic_read
+        }
+    )
+}
+
+@BindingAdapter("unreadCount")
+fun setUnreadCount(view: TextView, chat: Chat) {
+    view.text = "${chat.unreadCount}"
+    if (chat.unreadCount == 0 || chat.isLastMsgMine)
+        view.visibility = View.GONE
+}
+
+@BindingAdapter("timestamp")
+fun setTimeStamp(view: TextView, timestamp: String) {
+    view.text = getTime(timestamp, 2)
+}
+
+@BindingAdapter("chats")
+fun setChats(listView: RecyclerView, chats: List<Chat>?) {
+    (listView.adapter as ChatsAdapter).submitList(chats)
+}
+
+@BindingAdapter("visibility")
+fun setVisibility(view: ImageView, sellerId: String) {
+    view.visibility =
+        if ((view.context.applicationContext as Application).userId == sellerId)
+            View.INVISIBLE else View.VISIBLE
 }

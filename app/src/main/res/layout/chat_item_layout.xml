@@ -1,106 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?selectableItemBackground"
-    android:paddingStart="16dp"
-    android:paddingTop="16dp"
-    android:paddingEnd="16dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/ad_image"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:contentDescription="@string/ad_image"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/cycle" />
+    <data>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/image"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        app:layout_constraintStart_toStartOf="@+id/ad_image"
-        app:layout_constraintTop_toTopOf="@+id/ad_image"
-        tools:src="@drawable/sample_user_image" />
+        <import type="android.view.View" />
 
-    <View
-        android:id="@+id/divider"
+        <variable
+            name="chat"
+            type="com.arpit.collegetrade.data.chats.Chat" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/chatLayout"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@+id/image" />
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="8dp"
-        android:singleLine="true"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/last_msg"
-        app:layout_constraintEnd_toStartOf="@+id/timestamp"
-        app:layout_constraintStart_toEndOf="@+id/ad_image"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Arpit Shukla" />
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp">
 
-    <ImageView
-        android:id="@+id/last_msg_status"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:contentDescription="@string/image"
-        app:layout_constraintBottom_toBottomOf="@+id/last_msg"
-        app:layout_constraintStart_toStartOf="@+id/name"
-        app:layout_constraintTop_toTopOf="@+id/last_msg"
-        app:srcCompat="@drawable/ic_read" />
+        <ImageView
+            android:id="@+id/ad_image"
+            adImage="@{chat.ad.image}"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:contentDescription="@string/ad_image"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/cycle" />
 
-    <TextView
-        android:id="@+id/last_msg"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="8dp"
-        android:singleLine="true"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/ad_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/unread_count"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/last_msg_status"
-        app:layout_constraintTop_toBottomOf="@+id/name"
-        tools:text="This is a new message from some unknown person." />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image"
+            sellerImage="@{chat.personImage}"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            visibility="@{chat.ad.sellerId}"
+            app:layout_constraintStart_toStartOf="@+id/ad_image"
+            app:layout_constraintTop_toTopOf="@+id/ad_image"
+            tools:src="@drawable/sample_user_image" />
 
-    <TextView
-        android:id="@+id/unread_count"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:background="@drawable/badge_circle"
-        android:gravity="center"
-        android:textColor="@color/white"
-        app:autoSizeMinTextSize="8sp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/last_msg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/last_msg"
-        tools:text="99" />
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@+id/image" />
 
-    <TextView
-        android:id="@+id/timestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/name"
-        tools:text="18/02/20" />
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="8dp"
+            android:singleLine="true"
+            android:text="@{chat.name}"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/last_msg"
+            app:layout_constraintEnd_toStartOf="@+id/timestamp"
+            app:layout_constraintStart_toEndOf="@+id/ad_image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Arpit Shukla" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/last_msg_status"
+            status="@{chat.lastMsg.status}"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:contentDescription="@string/image"
+            android:visibility="@{chat.isLastMsgMine ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/last_msg"
+            app:layout_constraintStart_toStartOf="@+id/name"
+            app:layout_constraintTop_toTopOf="@+id/last_msg"
+            tools:srcCompat="@drawable/ic_read" />
+
+        <TextView
+            android:id="@+id/last_msg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:text="@{chat.lastMsg.message}"
+            app:layout_constraintBottom_toBottomOf="@+id/ad_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/unread_count"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/last_msg_status"
+            app:layout_constraintTop_toBottomOf="@+id/name"
+            tools:text="This is a new message from some unknown person." />
+
+        <TextView
+            android:id="@+id/unread_count"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/badge_circle"
+            android:gravity="center"
+            android:textColor="@color/white"
+            unreadCount="@{chat}"
+            app:autoSizeMinTextSize="8sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/last_msg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/last_msg"
+            tools:text="99" />
+
+        <TextView
+            android:id="@+id/timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            timestamp="@{chat.lastMsg.timestamp}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/name"
+            tools:text="18/02/20" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

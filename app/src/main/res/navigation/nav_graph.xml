@@ -20,8 +20,12 @@
 
     <fragment
         android:id="@+id/allChatsFragment"
-        android:name="com.arpit.collegetrade.chats.ChatsFragment"
-        tools:layout="@layout/fragment_all_chats" />
+        android:name="com.arpit.collegetrade.chats.AllChatsFragment"
+        tools:layout="@layout/fragment_all_chats">
+        <action
+            android:id="@+id/action_allChatsFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/favoritesFragment"

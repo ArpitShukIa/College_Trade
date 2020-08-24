@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.arpit.collegetrade.databinding.FragmentChatBinding
@@ -31,6 +32,7 @@ class ChatFragment : Fragment() {
         binding.viewModel = viewModel
 
         viewModel.setDetails(args.ad, args.chatId, args.otherUserId, args.name, args.image)
+        viewModel.messages.observe(viewLifecycleOwner, Observer {  })
 
         binding.toolbar.btnBackLayout.setOnClickListener {
             findNavController().navigateUp()

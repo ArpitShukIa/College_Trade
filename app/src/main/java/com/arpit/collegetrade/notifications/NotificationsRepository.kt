@@ -30,12 +30,13 @@ class NotificationsRepository {
 
     fun markMessagesAsRead(messages: List<Notification>) {
         try {
+            val chatRef = firestore.collection("Chats").document(messages[0].chatId)
             for (M in messages) {
-                val chatRef = firestore.collection("Chats").document(M.chatId)
                 val docRef = chatRef.collection("Messages").document(M.messageId)
                 docRef.update("status", 3)
                 chatRef.update("lastMsg.status", 3)
             }
+            chatRef.update("unreadCount", 0)
         } catch (e: Exception) {
             Timber.tag(TAG).e(e)
         }

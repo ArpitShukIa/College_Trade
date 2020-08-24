@@ -11,6 +11,7 @@ import com.arpit.collegetrade.notifications.NotificationDao
 abstract class MyRoomDatabase : RoomDatabase() {
 
     abstract fun notificationDao(): NotificationDao
+//    abstract fun unreadCountDao(): UnreadCountDao
 
     companion object {
         @Volatile

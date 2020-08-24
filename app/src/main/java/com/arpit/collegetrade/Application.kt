@@ -15,7 +15,6 @@ import timber.log.Timber.DebugTree
 class Application : Application() {
 
     var currentUser = User()
-    var chatPersonId = ""
     var deviceToken = ""
     var userId = ""
     val adRepository: AdRepository by lazy { DefaultAdRepository }

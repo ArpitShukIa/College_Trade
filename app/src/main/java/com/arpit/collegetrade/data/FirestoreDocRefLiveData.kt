@@ -34,7 +34,7 @@ class FirestoreDocRefLiveData(private val doc: DocumentReference) : LiveData<Doc
 
     private inner class SnapshotListener : EventListener<DocumentSnapshot> {
 
-        private val TAG = "TAG FirestoreLiveData"
+        private val TAG = "TAG QueryLiveData"
 
         override fun onEvent(p0: DocumentSnapshot?, p1: FirebaseFirestoreException?) {
             if (p1 != null) {
