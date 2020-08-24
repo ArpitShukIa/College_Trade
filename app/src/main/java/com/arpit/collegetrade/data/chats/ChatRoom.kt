@@ -10,4 +10,8 @@ data class ChatRoom(
     var buyerImage: String = "",
     var lastMsg: Message = Message(),
     var unreadCount: Int = -1
-)
+) {
+    override fun toString(): String {
+        return "ChatRoom(adTitle=${ad.title})\n"
+    }
+}

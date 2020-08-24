@@ -11,4 +11,8 @@ data class Chat(
     var personId: String = "",
     var isLastMsgMine: Boolean = false,
     var unreadCount: Int = 0
-)
+) {
+    override fun toString(): String {
+        return "Chat(adTitle='${ad.title}', name='$name', lastMsg=$lastMsg, unreadCount=$unreadCount)\n"
+    }
+}
