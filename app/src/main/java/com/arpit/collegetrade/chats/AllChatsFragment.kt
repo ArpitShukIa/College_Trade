@@ -57,7 +57,7 @@ class AllChatsFragment : Fragment() {
 
     private fun trackUnreadCounts() {
         val app = requireActivity().application as Application
-        app.buyUnreadCount.observe(viewLifecycleOwner, Observer { count ->
+        app.buyUnreadCount.observe(viewLifecycleOwner, { count ->
             if (count == 0)
                 binding.chatTabs.getTabAt(0)!!.removeBadge()
             else {
@@ -68,7 +68,7 @@ class AllChatsFragment : Fragment() {
             }
         })
 
-        app.sellUnreadCount.observe(viewLifecycleOwner, Observer { count ->
+        app.sellUnreadCount.observe(viewLifecycleOwner, { count ->
             if (count == 0)
                 binding.chatTabs.getTabAt(1)!!.removeBadge()
             else {

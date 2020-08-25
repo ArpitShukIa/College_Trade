@@ -66,11 +66,11 @@ class AdDetailsFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        adViewModel.titleError.observe(viewLifecycleOwner, Observer {
+        adViewModel.titleError.observe(viewLifecycleOwner, {
             if (it == null) binding.adTitle.error = null
         })
 
-        adViewModel.descError.observe(viewLifecycleOwner, Observer {
+        adViewModel.descError.observe(viewLifecycleOwner, {
             if (it == null) binding.adDescription.error = null
         })
 

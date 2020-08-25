@@ -60,7 +60,7 @@ class ProfileFragment : Fragment() {
         binding.btnAddNumber.setOnClickListener { requestPhoneNumber() }
         binding.displayNumberLayout.setOnClickListener { requestPhoneNumber() }
 
-        viewModel.imageUri.observe(viewLifecycleOwner, Observer {
+        viewModel.imageUri.observe(viewLifecycleOwner, {
             setUpNavigationDrawer(
                 requireActivity().navigation_drawer,
                 requireActivity() as MainActivity

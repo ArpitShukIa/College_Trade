@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.arpit.collegetrade.data.chats.Chat
 import com.arpit.collegetrade.databinding.ChatItemLayoutBinding
 
-class ChatsAdapter() :
+class ChatsAdapter :
     ListAdapter<Chat, ChatsAdapter.ViewHolder>(ChatDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

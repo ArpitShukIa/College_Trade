@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.arpit.collegetrade.chats.buy.BuyingViewModel
@@ -48,16 +47,16 @@ class MainActivity : AppCompatActivity() {
         updateDatabase()
         getDeviceToken()
 
-        app.buyUnreadCount.observe(this, Observer {
+        app.buyUnreadCount.observe(this, {
             val count = app.sellUnreadCount.value!! + it
             setBadge(count != 0)
         })
-        app.sellUnreadCount.observe(this, Observer {
+        app.sellUnreadCount.observe(this, {
             val count = app.buyUnreadCount.value!! + it
             setBadge(count != 0)
         })
 
-        sharedViewModel.currentTime.observe(this, Observer { })
+        sharedViewModel.currentTime.observe(this, { })
 
         sharedViewModel.apply {
             if (firstTimeRefresh) {
@@ -68,8 +67,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        buyingViewModel.chatsList.observe(this, Observer {})
-        sellingViewModel.chatsList.observe(this, Observer {})
+        buyingViewModel.chatsList.observe(this, {})
+        sellingViewModel.chatsList.observe(this, {})
 
         val rootDestinations = setOf(
             R.id.homeFragment, R.id.allChatsFragment, R.id.favoritesFragment, R.id.myAdsFragment

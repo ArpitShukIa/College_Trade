@@ -32,7 +32,7 @@ class ChatFragment : Fragment() {
         binding.viewModel = viewModel
 
         viewModel.setDetails(args.ad, args.chatId, args.otherUserId, args.name, args.image)
-        viewModel.messages.observe(viewLifecycleOwner, Observer {  })
+        viewModel.messages.observe(viewLifecycleOwner, {  })
 
         binding.toolbar.btnBackLayout.setOnClickListener {
             findNavController().navigateUp()

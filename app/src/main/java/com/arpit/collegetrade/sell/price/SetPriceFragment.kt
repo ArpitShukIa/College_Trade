@@ -39,7 +39,7 @@ class SetPriceFragment : Fragment() {
         binding.viewModel = viewModel
         viewModel.setPrice(args.ad.price)
 
-        viewModel.formattedPrice.observe(viewLifecycleOwner, Observer {
+        viewModel.formattedPrice.observe(viewLifecycleOwner, {
             if (it) binding.priceText.setSelection(binding.priceText.text!!.length)
         })
 
