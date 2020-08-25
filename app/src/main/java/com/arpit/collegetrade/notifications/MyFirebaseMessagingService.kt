@@ -55,8 +55,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(p0: RemoteMessage) {
         try {
             val data = p0.data
-
-            if ((application as Application).userId != data["receiver"]) return
+            val app = application as Application
+            if (app.userId != data["receiver"] || app.isActivityRunning) return
 
             NotificationsRepository().markMessageAsDelivered(data["chatId"]!!, data["id"]!!)
 

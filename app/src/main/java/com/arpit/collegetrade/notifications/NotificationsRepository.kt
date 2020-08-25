@@ -1,6 +1,7 @@
 package com.arpit.collegetrade.notifications
 
 import com.arpit.collegetrade.data.chats.Message
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import timber.log.Timber
@@ -49,6 +50,7 @@ class NotificationsRepository {
         firestore.runBatch { batch ->
             batch.set(doc, message)
             batch.update(chatRef, "lastMsg", message)
+            batch.update(chatRef, "unreadCount", FieldValue.increment(1))
         }
     }
 }

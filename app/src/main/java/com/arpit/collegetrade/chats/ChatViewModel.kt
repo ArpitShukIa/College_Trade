@@ -13,7 +13,6 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.tempo.Tempo
-import timber.log.Timber
 
 class ChatViewModel(val application: Application) : ViewModel() {
 
@@ -29,7 +28,7 @@ class ChatViewModel(val application: Application) : ViewModel() {
         FirestoreDocRefLiveData(userDoc)
     }
 
-    private var msgs: List<Message> = ArrayList()
+    private var msgsCount = 0
 
     val messageText = MutableLiveData("")
     private var chatId = MutableLiveData("")
@@ -42,16 +41,7 @@ class ChatViewModel(val application: Application) : ViewModel() {
         FirestoreQueryLiveData(query)
     }
 
-    val messages: LiveData<List<Message>> = messagesLiveData.map {
-        val msgList = msgs.toMutableList()
-        for (dc in it.documentChanges) {
-            val message = dc.document.toObject(Message::class.java)
-            msgList.add(message)
-        }
-//        Timber.tag(TAG).d("list of msgs: $msgList")
-        msgs = msgList
-        msgList
-    }
+    val messages = messagesLiveData.map { getMessages(it) }
 
     private val _name = MutableLiveData("")
     val name: LiveData<String> = _name
@@ -79,21 +69,37 @@ class ChatViewModel(val application: Application) : ViewModel() {
         _image.value = image
     }
 
+    private fun getMessages(snapshot: QuerySnapshot): List<Message> {
+        val msgList = mutableListOf<Message>()
+        var unreadMsgIds = arrayOf<String>()
+        for (doc in snapshot) {
+            val message = doc.toObject(Message::class.java)
+            msgList.add(message)
+            if (message.status != 3)
+                unreadMsgIds += message.id
+        }
+        msgsCount = msgList.size
+        return msgList.also {
+            if (it.isNotEmpty() && it.last().to == currentUser.id)
+                repository.markMessagesAsRead(unreadMsgIds, chatId.value!!)
+        }
+    }
+
     fun sendMessage() {
         if (messageText.value!!.isEmpty()) return
         val currentTime = Tempo.now() ?: System.currentTimeMillis()
         val senderName = if (ad.id == currentUser.id) ad.sellerName else currentUser.name
         val senderImage = if (ad.id == currentUser.id) ad.sellerPhoto else currentUser.photo
+
         val msg = Message(
-            "", messageText.value!!, currentUser.id, otherUserId.value!!,
+            "", messageText.value!!.trim(), currentUser.id, otherUserId.value!!,
             senderName, senderImage, _name.value!!, _image.value!!, ad.title,
             currentTime.toString(), 0, deviceToken, application.deviceToken
         )
 
-        Timber.tag(TAG).d("sendMessage: ${msgs.isEmpty()}")
-        val chatRoom = if (msgs.isEmpty())
+        val chatRoom = if (msgsCount == 0)
             ChatRoom(
-                chatId.value!!, ad, currentUser.id, currentUser.name, currentUser.photo, msg, 0
+                chatId.value!!, ad, currentUser.id, currentUser.name, currentUser.photo, msg, 1
             ) else ChatRoom(chatId.value!!)
 
         repository.sendMessage(msg, chatRoom)

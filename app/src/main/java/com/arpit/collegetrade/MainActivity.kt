@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -34,15 +35,27 @@ class MainActivity : AppCompatActivity() {
     val sellingViewModel: SellingViewModel by viewModels { getViewModelFactory() }
     private val sharedViewModel: SharedViewModel by viewModels { getViewModelFactory() }
 
+    private lateinit var app: Application
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        app = applicationContext as Application
 
         updateDatabase()
         getDeviceToken()
+
+        app.buyUnreadCount.observe(this, Observer {
+            val count = app.sellUnreadCount.value!! + it
+            setBadge(count != 0)
+        })
+        app.sellUnreadCount.observe(this, Observer {
+            val count = app.buyUnreadCount.value!! + it
+            setBadge(count != 0)
+        })
 
         sharedViewModel.currentTime.observe(this, Observer { })
 
@@ -55,13 +68,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        buyingViewModel.chatsList.observe(this, Observer {
-//            Timber.tag(TAG).d("onCreate: $it")
-        })
-
-        sellingViewModel.chatsList.observe(this, Observer {
-//            Timber.tag(TAG).d("onCreate: $it")
-        })
+        buyingViewModel.chatsList.observe(this, Observer {})
+        sellingViewModel.chatsList.observe(this, Observer {})
 
         val rootDestinations = setOf(
             R.id.homeFragment, R.id.allChatsFragment, R.id.favoritesFragment, R.id.myAdsFragment
@@ -90,8 +98,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setBadge(showBadge: Boolean) {
+        val badge = binding.bottomNavigation.getOrCreateBadge(R.id.allChatsFragment)
+        badge.backgroundColor = ContextCompat.getColor(this, R.color.colorPrimary)
+        if (!showBadge)
+            binding.bottomNavigation.removeBadge(R.id.allChatsFragment)
+    }
+
     private fun updateDatabase() {
-        val app = application as Application
         if (app.currentUser.id.isEmpty()) {
             app.currentUser.id = Firebase.auth.currentUser?.uid!!
         } else return
@@ -118,7 +132,7 @@ class MainActivity : AppCompatActivity() {
 
                 val token = task.result?.token.toString()
                 Timber.tag(TAG).d("getDeviceToken: token = $token")
-                (application as Application).deviceToken = token
+                app.deviceToken = token
                 Firebase.firestore.collection("Users").document(Firebase.auth.currentUser?.uid!!)
                     .update("deviceToken", token)
             }
@@ -145,11 +159,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        app.isActivityRunning = true
         sharedViewModel.updateLastSeen(true)
     }
 
     override fun onStop() {
         super.onStop()
+        app.isActivityRunning = false
         sharedViewModel.updateLastSeen(false)
     }
 }

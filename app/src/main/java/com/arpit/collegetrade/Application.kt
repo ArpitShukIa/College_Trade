@@ -1,6 +1,7 @@
 package com.arpit.collegetrade
 
 import android.app.Application
+import androidx.lifecycle.MutableLiveData
 import com.arpit.collegetrade.data.AdRepository
 import com.arpit.collegetrade.data.DefaultAdRepository
 import com.arpit.collegetrade.data.User
@@ -17,8 +18,12 @@ class Application : Application() {
     var currentUser = User()
     var deviceToken = ""
     var userId = ""
+    var isActivityRunning = false
     val adRepository: AdRepository by lazy { DefaultAdRepository }
     val chatRepository: ChatRepository by lazy { DefaultChatRepository }
+
+    val buyUnreadCount = MutableLiveData(0)
+    val sellUnreadCount = MutableLiveData(0)
 
     override fun onCreate() {
         super.onCreate()

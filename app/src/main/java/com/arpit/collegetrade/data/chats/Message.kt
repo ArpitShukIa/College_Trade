@@ -16,6 +16,6 @@ data class Message(
     var receiverDeviceToken: String = ""
 ) {
     override fun toString(): String {
-        return "Message(message='$message')"
+        return "\nMessage(message='$message', sender='$senderName', status=$status)"
     }
 }

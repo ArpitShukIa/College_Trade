@@ -149,9 +149,10 @@ fun setStatus(view: ImageView, status: Int) {
 
 @BindingAdapter("unreadCount")
 fun setUnreadCount(view: TextView, chat: Chat) {
+    view.visibility =
+        if (chat.unreadCount == 0 || chat.isLastMsgMine)
+            View.GONE else View.VISIBLE
     view.text = "${chat.unreadCount}"
-    if (chat.unreadCount == 0 || chat.isLastMsgMine)
-        view.visibility = View.GONE
 }
 
 @BindingAdapter("timestamp")
