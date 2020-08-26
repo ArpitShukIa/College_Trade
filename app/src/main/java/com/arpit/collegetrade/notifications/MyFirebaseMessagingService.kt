@@ -56,9 +56,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         try {
             val data = p0.data
             val app = application as Application
-            if (app.userId != data["receiver"] || app.isActivityRunning) return
+            if (app.userId != data["receiver"] || app.activeChatId == data["chatId"]) return
 
-            NotificationsRepository().markMessageAsDelivered(data["chatId"]!!, data["id"]!!)
+            if (!app.isActivityRunning)
+                NotificationsRepository().markMessageAsDelivered(data["chatId"]!!, data["id"]!!)
 
             val bitmap = getCircleBitmap(data["myImage"]!!)
             val receiver = Person.Builder()
@@ -185,8 +186,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             buildNotification(chatId, messagingStyle, n.`when`, context, n.extras)
             return
         }
-        createMessage(reply.toString(), chatId, n.extras)
-        updateDatabase(context, chatId, false)
+        val isFirstReply = !n.extras.containsKey("reply")
+        if (isFirstReply)
+            updateDatabase(context, chatId, false)
+        createMessage(reply.toString(), chatId, n.extras, isFirstReply)
 
         val currentTime = Tempo.now() ?: System.currentTimeMillis()
         messagingStyle.addMessage(reply, currentTime, messagingStyle.user)
@@ -224,6 +227,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         if (this == context)
             builder.addAction(R.drawable.ic_read, "Mark As Read", actionIntent)
+        else
+            builder.addExtras(bundleOf("reply" to true))
 
         createNotificationChannel(context)
         NotificationManagerCompat.from(context).notify(getNotificationId(chatId), builder.build())
@@ -345,7 +350,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun createMessage(reply: String, chatId: String, extras: Bundle) {
+    private fun createMessage(
+        reply: String,
+        chatId: String,
+        extras: Bundle,
+        isFirstReply: Boolean
+    ) {
         val data = extras["data"] as Map<String, String>
         val currentTime = (Tempo.now() ?: System.currentTimeMillis()).toString()
         val message = Message(
@@ -356,7 +366,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             data.getValue("adTitle"), currentTime, 0,
             data.getValue("token1"), data.getValue("token2")
         )
-        NotificationsRepository().sendMessage(message, chatId)
+        NotificationsRepository().sendMessage(message, chatId, isFirstReply)
     }
 
     private fun getCircleBitmap(imageUrl: String): Bitmap {

@@ -19,6 +19,7 @@ class Application : Application() {
     var deviceToken = ""
     var userId = ""
     var isActivityRunning = false
+    var activeChatId = ""
     val adRepository: AdRepository by lazy { DefaultAdRepository }
     val chatRepository: ChatRepository by lazy { DefaultChatRepository }
 

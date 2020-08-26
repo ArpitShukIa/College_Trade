@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         sharedViewModel.apply {
             if (firstTimeRefresh) {
+                NotificationManagerCompat.from(this@MainActivity).cancelAll()
                 refreshHome()
                 refreshFav()
                 refreshMyAds()
@@ -105,6 +107,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateDatabase() {
+        if (Firebase.auth.currentUser == null) signInAgain()
+
         if (app.currentUser.id.isEmpty()) {
             app.currentUser.id = Firebase.auth.currentUser?.uid!!
         } else return
@@ -116,8 +120,7 @@ class MainActivity : AppCompatActivity() {
                     binding.navigationDrawer,
                     this
                 )
-            else
-                uploadFailed()
+            else signInAgain()
         })
     }
 
@@ -137,7 +140,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    private fun uploadFailed() {
+    private fun signInAgain() {
         Firebase.auth.signOut()
         showToast(this, getString(R.string.sign_in_failed))
         startActivity(Intent(this, SplashScreenActivity::class.java))

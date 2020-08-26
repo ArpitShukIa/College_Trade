@@ -41,7 +41,8 @@ class SellingViewModel(private val application: Application) : ViewModel() {
             if (chat.lastMsg.status == 1 && !chat.isLastMsgMine)
                 markAsDelivered(chat.id, chat.unreadCount)
             list.add(chat)
-            totalUnreadCount += chat.unreadCount
+            if (!chat.isLastMsgMine)
+                totalUnreadCount += chat.unreadCount
         }
 
         application.sellUnreadCount.value = totalUnreadCount
